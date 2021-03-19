@@ -1,6 +1,5 @@
 #include "physics.hpp"
 
-#include <iostream>
 #include <vector>
 #include <cmath>
 

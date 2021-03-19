@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
 
 namespace fr {
 	struct Level {

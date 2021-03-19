@@ -1,11 +1,9 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 
 #include "input.hpp"
 #include "punch.hpp"
-#include "physics.hpp"
 
 namespace fr {
 	enum class Movement {

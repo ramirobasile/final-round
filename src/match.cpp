@@ -2,12 +2,10 @@
 
 #include <vector>
 #include <string>
-#include <iostream>
-#include <sstream>
 
 #include <toml++/toml.h>
-#include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
+#include "SFML/Window.hpp"
 #include "main.hpp"
 #include "level.hpp"
 #include "player.hpp"

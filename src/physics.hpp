@@ -1,12 +1,9 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
-#include <cmath>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
-#include "utils.hpp"
 
 namespace fr {
 	enum class Collision {

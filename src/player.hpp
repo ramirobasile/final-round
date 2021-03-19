@@ -1,14 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include <iomanip>
 #include <vector>
-#include <algorithm>
-#include <cmath>
 
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
-#include "utils.hpp"
 #include "input.hpp"
 #include "physics.hpp"
 #include "state.hpp"

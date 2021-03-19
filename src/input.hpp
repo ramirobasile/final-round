@@ -3,9 +3,6 @@
 #include <iostream>
 #include <vector>
 
-#include "SFML/System.hpp"
-#include "SFML/Window.hpp"
-
 namespace fr {
 	const float BUFFER_TTL = 0.15f;
 

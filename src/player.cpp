@@ -1,20 +1,17 @@
 #include "player.hpp"
 
 #include <iostream>
-#include <iomanip>
 #include <vector>
-#include <algorithm>
-#include <cmath>
 
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
 #include "main.hpp"
-#include "utils.hpp"
 #include "input.hpp"
 #include "physics.hpp"
 #include "state.hpp"
 #include "animation.hpp"
 #include "stats.hpp"
+#include "utils.hpp"
 
 fr::Player::Player(int index, int direction, fr::Device input_dev, 
 		std::vector<int> controls, sf::Vector2f position, 
