@@ -38,13 +38,13 @@ void fr::Player::update(std::vector<sf::IntRect> geometry) {
 	updatePosition(bounds, velocity, geometry);
 
 	// Debug
-	if (false && state != last_state) {
+	if (config["debug"]["log_state"].value_or(false) && state != last_state) {
 		printGlobalTime();
 		std::cout << "[P" << std::to_string(index) << "] ";
 		std::cout<< state << std::endl << std::endl;
 	}
 
-	if (false && !inputs.empty()) {
+	if (config["debug"]["log_inputs"].value_or(false) && !inputs.empty()) {
 		printGlobalTime();
 		std::cout << "[P" << std::to_string(index) << "] ";
 		std::cout << "Inputs:" << std::endl;
@@ -61,11 +61,13 @@ void fr::Player::draw(sf::RenderWindow &window) {
 	//		animation * animaton.height, animaton.width, animaton.height));
 
 	// Debug
-	sf::RectangleShape bounds_shape(size());
-	bounds_shape.setPosition(position());
-	bounds_shape.setFillColor(sf::Color::Cyan);
+	if (config["debug"]["draw_geometry"].value_or(false)) {
+		sf::RectangleShape bounds_shape(size());
+		bounds_shape.setPosition(position());
+		bounds_shape.setFillColor(sf::Color::Cyan);
 
-	window.draw(bounds_shape);
+		window.draw(bounds_shape);
+	}
 }
 
 sf::Vector2f fr::Player::position() {

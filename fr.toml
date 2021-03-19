@@ -38,7 +38,7 @@ start = -1
 
 [debug]
 log_inputs = false
-log_state = true
-draw_collisionboxes = true
+log_state = false
 draw_hitboxes = true
-draw_geometryboxes = true
+draw_hurtboxes = true
+draw_geometry = true
