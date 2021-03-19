@@ -42,14 +42,15 @@ void fr::Player::update(std::vector<sf::IntRect> geometry) {
 
 	// Debug
 	if (false && state != last_state) {
-		printTime(global_time);
-		std::cout << "[P" << std::to_string(index) << "] " 
-				<< state << std::endl << std::endl;
+		printGlobalTime();
+		std::cout << "[P" << std::to_string(index) << "] ";
+		std::cout<< state << std::endl << std::endl;
 	}
 
 	if (false && !inputs.empty()) {
-		printTime(global_time);
-		std::cout << "[P" << std::to_string(index) << "] Inputs:" << std::endl;
+		printGlobalTime();
+		std::cout << "[P" << std::to_string(index) << "] ";
+		std::cout << "Inputs:" << std::endl;
 		for (int i = 0; i < inputs.size(); ++i)
 			std::cout << "* " << inputs[i] << std::endl;
 		std::cout << std::endl;
