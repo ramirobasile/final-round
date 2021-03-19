@@ -31,7 +31,7 @@ namespace fr {
 				sf::Texture spritesheet, std::vector<Animation> animations, 
 				Stats stats);
 
-		void update(float dt, int time, std::vector<sf::IntRect> geometry);
+		void update(std::vector<sf::IntRect> geometry);
 		void draw(sf::RenderWindow &window);
 		sf::Vector2f position();
 		sf::Vector2f size();

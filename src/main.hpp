@@ -12,5 +12,4 @@ namespace fr {
 	extern int global_time; // In milliseconds
 	extern float dt;
 	extern toml::table config;
-	extern Match match;
 }

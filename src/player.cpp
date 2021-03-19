@@ -8,6 +8,7 @@
 
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
+#include "main.hpp"
 #include "utils.hpp"
 #include "input.hpp"
 #include "physics.hpp"
@@ -27,18 +28,17 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 	sprite.setTextureRect(bounds);
 }
 
-void fr::Player::update(float dt, int global_time, 
-		std::vector<sf::IntRect> geometry) {
-	updateBuffer(dt, buffer, buffer_ttl, inputs);
+void fr::Player::update(std::vector<sf::IntRect> geometry) {
+	updateBuffer(buffer, buffer_ttl, inputs);
 	if (input_dev == Device::keyboard)
-		updateInputs(dt, inputs, buffer, controls);
+		updateInputs(inputs, buffer, controls);
 	else if (input_dev == Device::joystick)
-		updateInputs(dt, index, inputs, buffer, controls);
+		updateInputs(index, inputs, buffer, controls);
 
-	state.update(dt, inputs, buffer);
+	state.update(inputs, buffer);
 
 	updateVelocity(velocity, state, last_state, stats);
-	updatePosition(dt, bounds, velocity, geometry);
+	updatePosition(bounds, velocity, geometry);
 
 	// Debug
 	if (false && state != last_state) {

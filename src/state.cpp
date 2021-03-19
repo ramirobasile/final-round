@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "main.hpp"
 #include "input.hpp"
 #include "punch.hpp"
 #include "physics.hpp"
@@ -37,7 +38,7 @@ bool fr::State::isBodyOpen() {
 	return false;
 }
 
-void fr::State::update(float dt, std::vector<fr::Input> inputs, 
+void fr::State::update(std::vector<fr::Input> inputs,
 		std::vector<fr::Input> buffer) {
 	punch_progress += dt;
 	

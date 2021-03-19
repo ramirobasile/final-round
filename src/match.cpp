@@ -8,6 +8,7 @@
 #include <toml++/toml.h>
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
+#include "main.hpp"
 #include "level.hpp"
 #include "player.hpp"
 #include "input.hpp"
@@ -52,7 +53,7 @@ fr::Match::Match() {
 	}
 }
 
-void fr::Match::update(float dt, int global_time) {
+void fr::Match::update() {
 	for (int i = 0; i < players.size(); ++i) {
 		std::vector geometry(level.geometry());
 		
@@ -61,7 +62,7 @@ void fr::Match::update(float dt, int global_time) {
 			geometry.push_back(players[other].bounds);
 		}
 		
-		players[i].update(dt, global_time, geometry);
+		players[i].update(geometry);
 	}
 }
 

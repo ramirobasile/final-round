@@ -5,6 +5,7 @@
 
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
+#include "main.hpp"
 
 // HACK Why not fr::Input::? I don't think I understand this fully
 std::ostream& fr::operator<<(std::ostream &out, const fr::Input &input) {
@@ -39,7 +40,7 @@ std::vector<fr::Input> findInputs(std::vector<fr::Input> inputs,
 	return matches;
 }
 
-void fr::updateInputs(float dt, std::vector<fr::Input> &inputs,
+void fr::updateInputs(std::vector<fr::Input> &inputs,
 		std::vector<fr::Input> buffer, std::vector<int> controls) {
 	std::vector<Input> new_inputs;
 
@@ -75,12 +76,12 @@ void fr::updateInputs(float dt, std::vector<fr::Input> &inputs,
 }
 
 // TODO Joystick
-void fr::updateInputs(float dt, int joytstick, std::vector<fr::Input> &inputs,
+void fr::updateInputs(int joytstick, std::vector<fr::Input> &inputs,
 		std::vector<fr::Input> buffer, std::vector<int> controls) {
 }
 
 // TODO Explain
-void fr::updateBuffer(float dt, std::vector<fr::Input> &buffer, 
+void fr::updateBuffer(std::vector<fr::Input> &buffer,
 		float &buffer_ttl, std::vector<fr::Input> inputs) {
 	buffer_ttl -= dt;
 

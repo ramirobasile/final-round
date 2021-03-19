@@ -12,15 +12,13 @@
 #include "player.hpp"
 #include "input.hpp"
 #include "stats.hpp"
-
-extern toml::table config; // TODO Put this somewhere else
 	
 namespace fr {
 	class Match {
 		public:
 		Match();
 
-		void update(float dt, int global_time);
+		void update();
 		void draw(sf::RenderWindow &window);
 
 		private:

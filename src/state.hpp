@@ -35,8 +35,7 @@ namespace fr {
     	bool isLeadFree() const;
     	bool isRearFree() const;
     	bool isBodyOpen() const;
-		void update(float dt, std::vector<Input> inputs, 
-				std::vector<Input> buffer);
+		void update(std::vector<Input> inputs, std::vector<Input> buffer);
     	
     	private:
 		void onHold(Input input, std::vector<Input> buffer);

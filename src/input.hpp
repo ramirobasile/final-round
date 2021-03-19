@@ -43,11 +43,11 @@ namespace fr {
 		friend std::ostream& operator<<(std::ostream &out, const Input &input);
 	};
 
-	void updateInputs(float dt, std::vector<Input> &inputs, 
+	void updateInputs(std::vector<Input> &inputs,
 			std::vector<Input> buffer, std::vector<int> controls);
-	void updateInputs(float dt, int joytstick, std::vector<Input> &inputs,
+	void updateInputs(int joytstick, std::vector<Input> &inputs,
 			std::vector<Input> buffer, std::vector<int> controls);
-	void updateBuffer(float dt, std::vector<Input> &buffer, float &clear_time,
+	void updateBuffer(std::vector<Input> &buffer, float &clear_time,
 			std::vector<Input> inputs);
 	bool isBuffered(Control control, std::vector<Input> buffer);
 }
