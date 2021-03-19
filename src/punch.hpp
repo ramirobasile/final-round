@@ -25,7 +25,7 @@ namespace fr {
 		float hitbox_end;
 		float recovery_end;
 		
-		bool isUnstoppable(float progress) const;
+		bool isUnstoppable(float progress);
 		
 		private:
 		const float UNSTOPPABLE_AFTER = 0.5f; // Startup time scalar

@@ -30,11 +30,11 @@ namespace fr {
 		friend std::ostream& operator<<(std::ostream &out, const State &state);
     	bool operator==(const State &state) const;
     	bool operator!=(const State &state) const { return !operator==(state); };
-    	Punch getPunch() const;
-    	bool isPunching() const;
-    	bool isLeadFree() const;
-    	bool isRearFree() const;
-    	bool isBodyOpen() const;
+    	Punch getPunch();
+    	bool isPunching();
+    	bool isLeadFree();
+    	bool isRearFree();
+    	bool isBodyOpen();
 		void update(std::vector<Input> inputs, std::vector<Input> buffer);
     	
     	private:
