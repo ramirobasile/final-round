@@ -1,4 +1,0 @@
-# TODO
-
-* It baffles me how the player moves faster while going backwards... I just
-  can't see what's causing it
