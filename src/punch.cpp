@@ -15,18 +15,30 @@ fr::Punch::Punch(fr::Control control, sf::IntRect hitbox, bool is_lead_handed,
 		recovery_end(recovery_end) {
 }
 
-sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to) {
-	int left = hitbox.left + relative_to.left;
-	int top = hitbox.top + relative_to.top;
-	return sf::IntRect(top, left, hitbox.width, hitbox.height);
-}
-
-bool fr::Punch::isActive(float progress) {
-	return progress > hitbox_begin;
+bool fr::Punch::isStartingUp(float progress) {
+	return progress < hitbox_begin;
 }
 
 bool fr::Punch::isUnstoppable(float progress) {
 	return progress > hitbox_begin * UNSTOPPABLE_AFTER;
+}
+
+bool fr::Punch::isActive(float progress) {
+	return progress > hitbox_begin && !isRecovering(progress);
+}
+
+bool fr::Punch::isRecovering(float progress) {
+	return progress > hitbox_end && !isDone(progress);
+}
+
+bool fr::Punch::isDone(float progress) {
+	return progress > recovery_end;
+}
+
+sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to) {
+	int left = relative_to.x + hitbox.left;
+	int top = relative_to.y + hitbox.top;
+	return sf::IntRect(top, left, hitbox.width, hitbox.height);
 }
 
 std::vector<fr::Punch> fr::default_punches = {

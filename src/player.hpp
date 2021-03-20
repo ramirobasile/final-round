@@ -16,10 +16,6 @@ namespace fr {
 		int index;
 		int direction;
 		sf::IntRect bounds;
-		std::vector<sf::IntRect> hurtboxes;
-		float body_health;
-		float head_health;
-		float guard_health;
 
 		Player(int index, int direction, Device input_dev, 
 				std::vector<int> controls, sf::Vector2f position,
@@ -28,8 +24,10 @@ namespace fr {
 
 		void update(std::vector<sf::IntRect> geometry);
 		void draw(sf::RenderWindow &window);
-		sf::Vector2f position();
-		sf::Vector2f size();
+		sf::Vector2f getPosition();
+		sf::Vector2f getSize();
+		sf::IntRect getHeadHurtbox();
+		sf::IntRect getBodyHurtbox();
 
 		private:
 		Device input_dev;
@@ -38,6 +36,11 @@ namespace fr {
 		std::vector<Input> buffer;
 		float buffer_ttl;
 		sf::Vector2f velocity;
+		sf::IntRect head_hurtbox;
+		sf::IntRect body_hurtbox;
+		float body_health;
+		float head_health;
+		float guard_health;
 		sf::Sprite sprite;
 		std::vector<Animation> animations;
 		int animation;
