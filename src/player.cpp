@@ -62,11 +62,20 @@ void fr::Player::draw(sf::RenderWindow &window) {
 
 	// Debug
 	if (config["debug"]["draw_geometry"].value_or(false)) {
-		sf::RectangleShape bounds_shape(size());
-		bounds_shape.setPosition(position());
-		bounds_shape.setFillColor(sf::Color::Cyan);
+		sf::RectangleShape shape(size());
+		shape.setPosition(position());
+		shape.setFillColor(sf::Color::Cyan);
 
-		window.draw(bounds_shape);
+		window.draw(shape);
+	}
+
+	if (config["debug"]["draw_hitboxes"].value_or(false) && state.isPunching()
+			&& state.punch.isActive(progress)) {
+		//sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
+		//shape.setPosition(sf::Vector2f(hitbox.left, hitbox.top));
+		//shape.setFillColor(sf::Color::Red);
+
+		//window.draw(shape);
 	}
 }
 

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "SFML/Graphics.hpp"
+#include "SFML/Window.hpp"
 #include "input.hpp"
 
 namespace fr {
@@ -16,7 +17,6 @@ namespace fr {
 		const float BODY_Y_OFFSET = 10;
 		
 		Control control;
-		sf::IntRect hitbox;
 		bool is_lead_handed;
 		bool is_body;
 		int damage;
@@ -25,10 +25,14 @@ namespace fr {
 		float hitbox_end;
 		float recovery_end;
 		
+		sf::IntRect getHitbox(sf::Vector2f relative_to);
+		bool isActive(float progress);
 		bool isUnstoppable(float progress);
 		
 		private:
 		const float UNSTOPPABLE_AFTER = 0.5f; // Startup time scalar
+
+		sf::IntRect hitbox;
 	};
 	
 	extern std::vector<Punch> default_punches;

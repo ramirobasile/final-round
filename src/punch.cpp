@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "SFML/Graphics.hpp"
+#include "SFML/Window.hpp"
 #include "input.hpp"
 
 fr::Punch::Punch(fr::Control control, sf::IntRect hitbox, bool is_lead_handed,
@@ -13,7 +14,17 @@ fr::Punch::Punch(fr::Control control, sf::IntRect hitbox, bool is_lead_handed,
 		hitbox_begin(hitbox_begin), hitbox_end(hitbox_end),
 		recovery_end(recovery_end) {
 }
-				
+
+sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to) {
+	int left = hitbox.left + relative_to.left;
+	int top = hitbox.top + relative_to.top;
+	return sf::IntRect(top, left, hitbox.width, hitbox.height);
+}
+
+bool fr::Punch::isActive(float progress) {
+	return progress > hitbox_begin;
+}
+
 bool fr::Punch::isUnstoppable(float progress) {
 	return progress > hitbox_begin * UNSTOPPABLE_AFTER;
 }
