@@ -16,7 +16,7 @@ toml::table fr::config;
 
 int main() {
     try {
-        fr::config = toml::parse_file("fr.toml");
+        fr::config = toml::parse_file("config.toml");
     }
     catch (const toml::parse_error& err) {
         std::cerr << "Parsing failed:\n" << err << "\n";

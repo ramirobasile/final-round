@@ -1,0 +1,47 @@
+# Lead jab
+[[punches]]
+control = 4 # Jab
+is_lead_handed = true
+is_body = false
+damage = 2
+body_hp_cost = 0
+hitbox_begin = 0.10
+hitbox_end = 0.15
+recovery_end = 0.20
+hitbox = [0, 0, 0, 0]
+
+# Rear cross
+[[punches]]
+control = 5 # Cross
+is_lead_handed = false
+is_body = false
+damage = 10
+body_hp_cost = 1
+hitbox_begin = 0.15
+hitbox_end = 0.20
+recovery_end = 0.30
+hitbox = [0, 0, 0, 0]
+
+# Lead hook
+[[punches]]
+control = 6 # Hook
+is_lead_handed = true
+is_body = false
+damage = 20
+body_hp_cost = 2
+hitbox_begin = 0.20
+hitbox_end = 0.25
+recovery_end = 0.35
+hitbox = [0, 0, 0, 0]
+
+# Rear hook
+[[punches]]
+control = 6 # Hook
+is_lead_handed = false
+is_body = false
+damage = 20
+body_hp_cost = 2
+hitbox_begin = 0.2125
+hitbox_end = 0.2625
+recovery_end = 0.3625
+hitbox = [0, 0, 0, 0]
