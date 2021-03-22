@@ -23,4 +23,5 @@ inline int sign(int n) {
 }
 
 std::vector<fr::Punch> getPunches(toml::table table);
+std::vector<fr::Punch> getPunches(toml::array unparsed);
 fr::Punch parsePunch(toml::table punch);

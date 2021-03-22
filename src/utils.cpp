@@ -6,11 +6,16 @@
 #include "input.hpp"
 #include "punch.hpp"
 
-std::vector<fr::Punch> getPunches(toml::table table) {
-	for (int i = 0; i < punches.size() ++i) {
-		fr::Punch punch = parsePunch(table["punches"][i]);
-		default_punches.push_back(punch);
+std::vector<fr::Punch> getPunches(toml::array unparsed) {
+	std::vector<fr::Punch> punches;
+
+	for (int i = 0; i < unparsed.size(); ++i) {
+		toml::table table = *unparsed.get_as<toml::table>(i);
+		fr::Punch punch = parsePunch(table);
+		punches.push_back(punch);
 	}
+
+	return punches;
 }
 
 fr::Punch parsePunch(toml::table punch) {
@@ -29,4 +34,3 @@ fr::Punch parsePunch(toml::table punch) {
 	return fr::Punch{control, is_lead_handed, is_body, damage, body_hp_cost,
 			hitbox_begin, hitbox_end, recovery_end, hitbox};
 }
-
