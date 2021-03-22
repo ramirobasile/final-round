@@ -11,6 +11,7 @@
 #include "player.hpp"
 #include "input.hpp"
 #include "stats.hpp"
+#include "utils.hpp"
 
 fr::Match::Match() {
 	// Level
@@ -25,7 +26,7 @@ fr::Match::Match() {
 	for (int i = 0; i < 2; ++i) {
 		int direction = ((i % 2) - 1) * - 1;
 		
-		// Controls
+		// Load controls from config.toml
 		std::string name = "player" + std::to_string(i + 1);
 		Device device = (Device)config["controls"][name]["device"].value_or(1);
 		std::vector<int> controls = {
@@ -44,10 +45,22 @@ fr::Match::Match() {
 		sf::Texture spritesheet;
 		spritesheet.loadFromFile("assets/placeholder.png");
 		std::vector<fr::Animation> animations;
+
+		// Load punches from default_punches.toml
+		toml::table table;
+		try {
+        	table = toml::parse_file("default_punches.toml");
+		}
+		catch (const toml::parse_error& err) {
+		    std::cerr << "Parsing failed:\n" << err << "\n";
+		}
+		toml::array arr = *table.get_as<toml::array>("punches");
+		std::vector<fr::Punch> punches = getPunches(arr);
+
 		fr::Stats stats(0, 0, 0);
 		
 		players.push_back(Player(i, direction, device, controls, 
-				spawn_points[i], spritesheet, animations, stats));
+				spawn_points[i], spritesheet, animations, punches, stats));
 	}
 }
 

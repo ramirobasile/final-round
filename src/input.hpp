@@ -38,7 +38,7 @@ namespace fr {
 	};
 
 	const float BUFFER_TTL = 0.15f;
-	const Control BODY_GUARD_CONTROL = Control::down;
+	const Control BODY_CONTROL = Control::down;
 
 	void updateInputs(std::vector<Input> &inputs,
 			std::vector<Input> buffer, std::vector<int> controls);

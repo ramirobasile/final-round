@@ -20,7 +20,7 @@ namespace fr {
 		Player(int index, int direction, Device input_dev, 
 				std::vector<int> controls, sf::Vector2f position,
 				sf::Texture spritesheet, std::vector<Animation> animations, 
-				Stats stats);
+				std::vector<Punch> punches, Stats stats);
 
 		void update(std::vector<sf::IntRect> geometry);
 		void draw(sf::RenderWindow &window);
@@ -44,6 +44,7 @@ namespace fr {
 		sf::Sprite sprite;
 		std::vector<Animation> animations;
 		int animation;
+		std::vector<Punch> punches;
 		State state;
 		State last_state;
 		Stats stats;

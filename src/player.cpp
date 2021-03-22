@@ -16,9 +16,10 @@
 fr::Player::Player(int index, int direction, fr::Device input_dev, 
 		std::vector<int> controls, sf::Vector2f position, 
 		sf::Texture spritesheet, std::vector<fr::Animation> animations, 
-		fr::Stats stats)
+		std::vector<fr::Punch> punches, fr::Stats stats)
 		: index(index), direction(direction), input_dev(input_dev), 
-		controls(controls), animations(animations), stats(stats) {
+		controls(controls), animations(animations), punches(punches),
+		stats(stats) {
 	bounds = sf::IntRect(position.x, position.y, 100, 100);
 	//hurtbox = sf::IntRect(position.x, position.y, 100, 100);
 	sprite.setTexture(spritesheet);
@@ -32,7 +33,7 @@ void fr::Player::update(std::vector<sf::IntRect> geometry) {
 	else if (input_dev == Device::joystick)
 		updateInputs(index, inputs, buffer, controls);
 
-	state.update(inputs, buffer);
+	state.update(inputs, buffer, punches);
 
 	updateVelocity(velocity, state, last_state, stats);
 	updatePosition(bounds, velocity, geometry);
@@ -70,7 +71,7 @@ void fr::Player::draw(sf::RenderWindow &window) {
 	}
 
 	if (config["debug"]["draw_hitboxes"].value_or(false) && state.isPunching()
-			&& state.getPunch().isActive(state.punch_progress)) {
+			&& state.punch.isActive(state.punch_progress)) {
 		//sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		//shape.setPosition(sf::Vector2f(hitbox.left, hitbox.top));
 		//shape.setFillColor(sf::Color::Red);

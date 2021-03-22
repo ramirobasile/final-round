@@ -22,21 +22,26 @@ namespace fr {
 	class State {
 		public:
 		Movement movement = Movement::idle;
-		int punch;
+		Punch punch;
 		float punch_progress;
 
 		friend std::ostream& operator<<(std::ostream &out, const State &state);
     	bool operator==(const State &state) const;
     	bool operator!=(const State &state) const { return !operator==(state); };
-		void update(std::vector<Input> inputs, std::vector<Input> buffer);
-    	Punch getPunch();
+		void update(std::vector<Input> inputs, std::vector<Input> buffer,
+				std::vector<Punch> punches);
     	bool isPunching();
+    	bool isLeadFree();
+    	bool isRearFree();
     	bool isHeadGuardUp(std::vector<Input> buffer);
     	bool isBodyGuardUp(std::vector<Input> buffer);
     	
     	private:
-		void onHold(Input input, std::vector<Input> buffer);
-		void onPress(Input input, std::vector<Input> buffer);
-		void onRelease(Input input, std::vector<Input> buffer);
+		void onHold(Input input, std::vector<Input> buffer,
+				std::vector<Punch> punches);
+		void onPress(Input input, std::vector<Input> buffer,
+				std::vector<Punch> punches);
+		void onRelease(Input input, std::vector<Input> buffer,
+				std::vector<Punch> punches);
 	};
 }

@@ -20,7 +20,7 @@ bool fr::State::operator==(const fr::State &state) const {
 }
 
 void fr::State::update(std::vector<fr::Input> inputs,
-		std::vector<fr::Input> buffer) {
+		std::vector<fr::Input> buffer, std::vector<fr::Punch> punches) {
 	punch_progress += dt;
 	
 	// TODO Something like this
@@ -30,22 +30,18 @@ void fr::State::update(std::vector<fr::Input> inputs,
 	for (int i = 0; i < inputs.size(); ++i) {
 		switch (inputs[i].action) {
 			case Action::press:
-				onPress(inputs[i], buffer);
+				onPress(inputs[i], buffer, punches);
 				break;
 				
 			case Action::release:
-				onRelease(inputs[i], buffer);
+				onRelease(inputs[i], buffer, punches);
 				break;
 				
 			case Action::hold:
-				onHold(inputs[i], buffer);
+				onHold(inputs[i], buffer, punches);
 				break;
 		}
 	}
-}
-
-fr::Punch fr::State::getPunch() {
-	return default_punches[punch];
 }
 
 bool fr::State::isPunching() {
@@ -53,24 +49,25 @@ bool fr::State::isPunching() {
 }
 
 bool fr::State::isLeadFree() {
-	return (punch.isRecovering(punch_progress) && !punch.lead_handed)
+	return (punch.isRecovering(punch_progress) && !punch.is_lead_handed)
 			|| !isPunching();
 }
 
 bool fr::State::isRearFree() {
-	return (punch.isRecovering(punch_progress) && punch.lead_handed)
+	return (punch.isRecovering(punch_progress) && punch.is_lead_handed)
 			|| !isPunching();
 }
 
 bool fr::State::isHeadGuardUp(std::vector<fr::Input> buffer) {
-	return !isPunching() && !isBuffered(BODY_GUARD_CONTROL, buffer);
+	return !isPunching() && !isBuffered(BODY_CONTROL, buffer);
 }
 
 bool fr::State::isBodyGuardUp(std::vector<fr::Input> buffer) {
-	return !isPunching() && isBuffered(BODY_GUARD_CONTROL, buffer);
+	return !isPunching() && isBuffered(BODY_CONTROL, buffer);
 }
 
-void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer) {
+void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer,
+		std::vector<fr::Punch> punches) {
 	switch (input.control) {
 		case Control::backwards:
 			movement = Movement::walk_b;
@@ -82,22 +79,23 @@ void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer) {
 	}
 }
 
-void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer) {
+void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer,
+		std::vector<fr::Punch> punches) {
 	switch (input.control) {
 		case Control::jab:
 		case Control::cross:
 		case Control::upper:
 		case Control::hook:
-			for (int i = 0; i < default_punches.size() && !isPunching(); ++i) {
-				Punch candidate = default_punches[i];
+			for (int i = 0; i < punches.size(); ++i) {
+				Punch candidate = punches[i];
 				bool control = input.control == candidate.control;
 				bool hand = (candidate.is_lead_handed && isLeadFree())
 						|| (!candidate.is_lead_handed && isRearFree());
 				bool body = candidate.is_body 
-						== isBuffered(candidate.BODY_CONTROL, buffer);
+						== isBuffered(BODY_CONTROL, buffer);
 						
 				if (control && hand && body) {
-					punch = i;
+					punch = candidate;
 					movement = Movement::punch;
 					punch_progress = 0;
 				}
@@ -105,14 +103,15 @@ void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer) {
 			break;
 		
 		case Control::dodge:
-			if (isPunching() && !getPunch().isUnstoppable(punch_progress)) {
-				punch_progress = getPunch().recovery_end;
+			if (isPunching() && !punch.isUnstoppable(punch_progress)) {
+				punch_progress = punch.recovery_end;
 			} else {
 			}
 	}
 }
 
-void fr::State::onRelease(fr::Input input, std::vector<fr::Input> buffer) {
+void fr::State::onRelease(fr::Input input, std::vector<fr::Input> buffer,
+		std::vector<fr::Punch> punches) {
 	switch (input.control) {
 		default:
 			movement = Movement::idle;
