@@ -68,9 +68,10 @@ void fr::Match::update() {
 	for (int i = 0; i < players.size(); ++i) {
 		std::vector geometry(level.geometry());
 		
-		if (players.size() > 1) {
-			int other = std::abs(i - 1);
-			geometry.push_back(players[other].bounds);
+		// Add every other player's collisions
+		for (int j = 0; j < players.size(); ++j) {
+			if (i != j)
+				geometry.push_back(players[j].bounds);
 		}
 		
 		players[i].update(geometry);
