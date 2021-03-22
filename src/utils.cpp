@@ -1,10 +1,26 @@
 #include "utils.hpp"
 
 #include <vector>
+#include <iostream>
+#include <iomanip>
 
 #include <toml++/toml.h>
+#include "main.hpp"
 #include "input.hpp"
 #include "punch.hpp"
+
+void printGlobalTime() {
+	std::cout << "[" << std::setw(8) << std::setfill('0') << fr::global_time
+			<< "] ";
+}
+
+int sign(int n) {
+	if (n > 0)
+		return 1;
+	if (n < 0)
+		return -1;
+	return 0;
+}
 
 std::vector<fr::Punch> getPunches(toml::array unparsed) {
 	std::vector<fr::Punch> punches;
