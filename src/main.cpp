@@ -8,7 +8,7 @@
 #include "SFML/Window.hpp"
 #include "match.hpp"
 
-sf::Clock global_clock; // This is mainly used to make logs more readable
+sf::Clock global_clock;
 sf::Clock dt_clock;
 int fr::global_time;
 float fr::dt;
