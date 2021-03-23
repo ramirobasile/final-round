@@ -49,13 +49,17 @@ bool fr::State::isPunching() const {
 }
 
 bool fr::State::isLeadFree() const {
-	return (punch.isRecovering(punch_progress) && !punch.is_lead_handed)
-			|| !isPunching();
+	// TODO Have seperate lead and rear punches
+	//return (punch.isRecovering(rear_punch_progress) && !punch.is_lead_handed)
+	//		|| !isPunching();
+	return !isPunching();
 }
 
 bool fr::State::isRearFree() const {
-	return (punch.isRecovering(punch_progress) && punch.is_lead_handed)
-			|| !isPunching();
+	// TODO Have seperate lead and rear punches
+	//return (punch.isRecovering(lead_punch_progress) && punch.is_lead_handed)
+	//		|| !isPunching();
+	return !isPunching();
 }
 
 bool fr::State::isHeadGuardUp(std::vector<fr::Input> buffer) const {
