@@ -30,5 +30,5 @@ bool fr::Punch::isDone(float progress) const {
 sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to) const {
 	int left = relative_to.x + hitbox.left;
 	int top = relative_to.y + hitbox.top;
-	return sf::IntRect(top, left, hitbox.width, hitbox.height);
+	return sf::IntRect(left, top, hitbox.width, hitbox.height);
 }
