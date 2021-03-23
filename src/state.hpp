@@ -30,11 +30,11 @@ namespace fr {
     	bool operator!=(const State &state) const { return !operator==(state); };
 		void update(std::vector<Input> inputs, std::vector<Input> buffer,
 				std::vector<Punch> punches);
-    	bool isPunching();
-    	bool isLeadFree();
-    	bool isRearFree();
-    	bool isHeadGuardUp(std::vector<Input> buffer);
-    	bool isBodyGuardUp(std::vector<Input> buffer);
+    	bool isPunching() const;
+    	bool isLeadFree() const;
+    	bool isRearFree() const;
+    	bool isHeadGuardUp(std::vector<Input> buffer) const;
+    	bool isBodyGuardUp(std::vector<Input> buffer) const;
     	
     	private:
 		void onHold(Input input, std::vector<Input> buffer,

@@ -21,11 +21,11 @@ namespace fr {
 		float recovery_end;
 		sf::IntRect hitbox;
 		
-		bool isStartingUp(float progress);
-		bool isUnstoppable(float progress);
-		bool isActive(float progress);
-		bool isRecovering(float progress);
-		bool isDone(float progress);
-		sf::IntRect getHitbox(sf::Vector2f relative_to);
+		bool isStartingUp(float progress) const;
+		bool isUnstoppable(float progress) const;
+		bool isActive(float progress) const;
+		bool isRecovering(float progress) const;
+		bool isDone(float progress) const;
+		sf::IntRect getHitbox(sf::Vector2f relative_to) const;
 	};
 }

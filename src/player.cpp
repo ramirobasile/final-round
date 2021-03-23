@@ -80,15 +80,15 @@ void fr::Player::draw(sf::RenderWindow &window) {
 	}
 }
 
-sf::Vector2f fr::Player::getPosition() {
+sf::Vector2f fr::Player::getPosition() const {
 	return sf::Vector2f(bounds.left, bounds.top);
 }
 
-sf::Vector2f fr::Player::getSize() {
+sf::Vector2f fr::Player::getSize() const {
 	return sf::Vector2f(bounds.width, bounds.height);
 }
 
-sf::IntRect fr::Player::getHeadHurtbox() {
+sf::IntRect fr::Player::getHeadHurtbox() const {
 	int left;
 	if (direction == 1)
 		left = bounds.left + head_hurtbox.left;
@@ -98,7 +98,7 @@ sf::IntRect fr::Player::getHeadHurtbox() {
 	return sf::IntRect(top, left, head_hurtbox.width, head_hurtbox.height);
 }
 
-sf::IntRect fr::Player::getBodyHurtbox() {
+sf::IntRect fr::Player::getBodyHurtbox() const {
 	int left;
 	if (direction == 1)
 		left = bounds.left + body_hurtbox.left;

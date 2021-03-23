@@ -24,10 +24,10 @@ namespace fr {
 
 		void update(std::vector<sf::IntRect> geometry);
 		void draw(sf::RenderWindow &window);
-		sf::Vector2f getPosition();
-		sf::Vector2f getSize();
-		sf::IntRect getHeadHurtbox();
-		sf::IntRect getBodyHurtbox();
+		sf::Vector2f getPosition() const;
+		sf::Vector2f getSize() const;
+		sf::IntRect getHeadHurtbox() const;
+		sf::IntRect getBodyHurtbox() const;
 
 		private:
 		Device input_dev;

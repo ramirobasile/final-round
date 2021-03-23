@@ -22,7 +22,7 @@ bool fr::State::operator==(const fr::State &state) const {
 void fr::State::update(std::vector<fr::Input> inputs,
 		std::vector<fr::Input> buffer, std::vector<fr::Punch> punches) {
 	punch_progress += dt;
-	
+
 	// TODO Something like this
 	//if (!isPunching(punch_progress))
 	//	movement = Movement::idle;
@@ -44,25 +44,25 @@ void fr::State::update(std::vector<fr::Input> inputs,
 	}
 }
 
-bool fr::State::isPunching() {
-	return punch.isDone(punch_progress);
+bool fr::State::isPunching() const {
+	return !punch.isDone(punch_progress);
 }
 
-bool fr::State::isLeadFree() {
+bool fr::State::isLeadFree() const {
 	return (punch.isRecovering(punch_progress) && !punch.is_lead_handed)
 			|| !isPunching();
 }
 
-bool fr::State::isRearFree() {
+bool fr::State::isRearFree() const {
 	return (punch.isRecovering(punch_progress) && punch.is_lead_handed)
 			|| !isPunching();
 }
 
-bool fr::State::isHeadGuardUp(std::vector<fr::Input> buffer) {
+bool fr::State::isHeadGuardUp(std::vector<fr::Input> buffer) const {
 	return !isPunching() && !isBuffered(BODY_CONTROL, buffer);
 }
 
-bool fr::State::isBodyGuardUp(std::vector<fr::Input> buffer) {
+bool fr::State::isBodyGuardUp(std::vector<fr::Input> buffer) const {
 	return !isPunching() && isBuffered(BODY_CONTROL, buffer);
 }
 
