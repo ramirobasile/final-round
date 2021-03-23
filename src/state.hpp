@@ -12,7 +12,6 @@ namespace fr {
 		walk_f,
 		dash_b,
 		dash_f,
-		punch,
 		weave,
 		pull,
 		duck,

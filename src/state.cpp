@@ -100,7 +100,6 @@ void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer,
 						
 				if (control && hand && body) {
 					punch = candidate;
-					movement = Movement::punch;
 					punch_progress = 0;
 				}
 			}
