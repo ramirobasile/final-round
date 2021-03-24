@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include <toml++/toml.h>
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "input.hpp"
@@ -28,4 +27,6 @@ namespace fr {
 		bool isDone(float progress) const;
 		sf::IntRect getHitbox(sf::Vector2f relative_to) const;
 	};
+
+	extern std::vector<Punch> default_punches;
 }

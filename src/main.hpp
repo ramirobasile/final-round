@@ -1,14 +1,11 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
-
-#include "inih/cpp/INIReader.h"
+#include "config.hpp"
 
 namespace fr {
 	extern int global_time; // In milliseconds
 	extern float dt;
-	extern INIReader config;
+	extern ConfigFile config;
 
 	const float FPS = 60;
 }

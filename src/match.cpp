@@ -5,7 +5,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
-#include "inih/cpp/INIReader.h"
+#include "config.hpp"
 #include "main.hpp"
 #include "level.hpp"
 #include "player.hpp"
@@ -26,20 +26,20 @@ fr::Match::Match() {
 	for (int i = 0; i < 2; ++i) {
 		int direction = ((i % 2) - 1) * - 1;
 		
-		// Load controls from config.toml
+		// Load controls from fr.conf
 		std::string map_name = "player" + std::to_string(i + 1) + "_controls";
-		Device device = (Device)config.GetInteger(map_name, "decive", 1);
+		Device device = (Device)config.getInt(map_name, "decive", 1);
 		std::vector<int> controls = {
-			config.GetInteger(map_name, "backwards", -1),
-			config.GetInteger(map_name, "forwards", -1),
-			config.GetInteger(map_name, "up", -1),
-			config.GetInteger(map_name, "down", -1),
-			config.GetInteger(map_name, "jab", -1),
-			config.GetInteger(map_name, "cross", -1),
-			config.GetInteger(map_name, "hook", -1),
-			config.GetInteger(map_name, "upper", -1),
-			config.GetInteger(map_name, "dodge", -1),
-			config.GetInteger(map_name, "start", -1),
+			config.getInt(map_name, "backwards", -1),
+			config.getInt(map_name, "forwards", -1),
+			config.getInt(map_name, "up", -1),
+			config.getInt(map_name, "down", -1),
+			config.getInt(map_name, "jab", -1),
+			config.getInt(map_name, "cross", -1),
+			config.getInt(map_name, "hook", -1),
+			config.getInt(map_name, "upper", -1),
+			config.getInt(map_name, "dodge", -1),
+			config.getInt(map_name, "start", -1),
 		};
 		
 		sf::Texture spritesheet;

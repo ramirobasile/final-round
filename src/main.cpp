@@ -1,27 +1,24 @@
 #include "main.hpp"
 
 #include <iostream>
+#include <fstream>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
-#include "inih/cpp/INIReader.h"
+#include "config.hpp"
 #include "match.hpp"
 
 int fr::global_time;
 float fr::dt;
-INIReader fr::config("fr.config");
+fr::ConfigFile fr::config;
 
 int main() {
-    if (fr::config.ParseError() < 0) {
-        std::cout << "Error loading 'fr.config'" << std::endl;
-        return 1;
-    }
+	fr::config.parse(std::ifstream("fr.cfg"));
 
-	int width = fr::config.GetInteger("video", "width", 640);
-	int height = fr::config.GetInteger("video", "height", 480);
+	int width = fr::config.getInt("video", "width", 640);
+	int height = fr::config.getInt("video", "height", 480);
     sf::RenderWindow window (sf::VideoMode(width, height), "Final Round");
 	window.setFramerateLimit(fr::FPS); // Otherwise SFML has stupid high CPU usage
-
 
 	sf::Clock global_clock;
 	sf::Clock dt_clock;
