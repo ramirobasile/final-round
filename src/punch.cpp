@@ -32,5 +32,5 @@ sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to) const {
 	return sf::IntRect(left, top, hitbox.width, hitbox.height);
 }
 
-std::vector<fr::Punch> default_punches = {
+std::vector<fr::Punch> fr::default_punches = {
 };
