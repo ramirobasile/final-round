@@ -20,7 +20,6 @@ void fr::ConfigFile::parse(std::ifstream file) {
 		} else {
 			std::string key = line.substr(0, line.find(DELIMIT));
 			std::string value = line.substr(line.find(DELIMIT) + 1);
-			std::cout << key + " <- " + value << std::endl;
 		}
 	}
 }
