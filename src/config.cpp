@@ -24,12 +24,13 @@ void fr::ConfigFile::parse(std::ifstream file) {
 	}
 }
 
-bool fr::ConfigFile::hasKey(std::string section, std::string key) {
+bool fr::ConfigFile::hasKey(std::string section, std::string key) const{
 	return cfg.find(section) != cfg.end()
 			&& cfg[section].find(key) != cfg[section].end();
 }
 
-int fr::ConfigFile::getInt(std::string section, std::string key, int fallback) {
+int fr::ConfigFile::getInt(std::string section, std::string key, int fallback)
+		const {
 	int value = fallback;
 
 	if (hasKey(section, key))
@@ -39,7 +40,7 @@ int fr::ConfigFile::getInt(std::string section, std::string key, int fallback) {
 }
 
 float fr::ConfigFile::getFloat(std::string section, std::string key,
-		float fallback) {
+		float fallback) const {
 	float value = fallback;
 
 	if (hasKey(section, key))
@@ -49,7 +50,7 @@ float fr::ConfigFile::getFloat(std::string section, std::string key,
 }
 
 std::string fr::ConfigFile::getStr(std::string section, std::string key,
-		std::string fallback) {
+		std::string fallback) const {
 	std::string value = fallback;
 
 	if (hasKey(section, key))
@@ -59,7 +60,7 @@ std::string fr::ConfigFile::getStr(std::string section, std::string key,
 }
 
 bool fr::ConfigFile::getBool(std::string section, std::string key,
-		bool fallback) {
+		bool fallback) const {
 	bool value = fallback;
 
 	if (hasKey(section, key))

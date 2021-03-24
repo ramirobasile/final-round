@@ -9,14 +9,14 @@ namespace fr {
 class ConfigFile {
 	public:
 	void parse(std::ifstream file);
-	bool hasKey(std::string section, std::string key);
-	int getInt(std::string section, std::string key, int fallback = -1);
+	bool hasKey(std::string section, std::string key) const;
+	int getInt(std::string section, std::string key, int fallback = -1) const;
 	float getFloat(std::string section, std::string key,
-			float fallback = -1.0f);
+			float fallback = -1.0f) const;
 	std::string getStr(std::string section, std::string key,
-			std::string fallback = "");
+			std::string fallback = "") const;
 	bool getBool(std::string section, std::string key,
-			bool fallback = false);
+			bool fallback = false) const;
 
 	private:
 	const char OPEN_SECTION = '[';
