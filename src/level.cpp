@@ -4,6 +4,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
+#include "inih/cpp/INIReader.h"
 #include "main.hpp"
 		
 std::vector<sf::IntRect> fr::Level::geometry() {
@@ -12,7 +13,7 @@ std::vector<sf::IntRect> fr::Level::geometry() {
 
 void fr::Level::draw(sf::RenderWindow &window) {
 	// Debug
-	if (config["debug"]["draw_geometry"].value_or(false)) {
+	if (config.GetBoolean("debug", "draw_geometry", false)) {
 		sf::RectangleShape left_shape(sf::Vector2f(left.width, left.height));
 		left_shape.setPosition(sf::Vector2f(left.left, left.top));
 		left_shape.setFillColor(sf::Color::Green);

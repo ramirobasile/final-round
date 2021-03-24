@@ -3,10 +3,12 @@
 #include <iostream>
 #include <fstream>
 
-#include <toml++/toml.h>
+#include "inih/cpp/INIReader.h"
 
 namespace fr {
 	extern int global_time; // In milliseconds
 	extern float dt;
-	extern toml::table config;
+	extern INIReader config;
+
+	const float FPS = 60;
 }

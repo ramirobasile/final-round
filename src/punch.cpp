@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include <toml++/toml.h>
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "input.hpp"
@@ -32,3 +31,6 @@ sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to) const {
 	int top = relative_to.y + hitbox.top;
 	return sf::IntRect(left, top, hitbox.width, hitbox.height);
 }
+
+std::vector<fr::Punch> default_punches = {
+};

@@ -1,33 +1,30 @@
 #include "main.hpp"
 
 #include <iostream>
-#include <fstream>
 
-#include <toml++/toml.h>
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
+#include "inih/cpp/INIReader.h"
 #include "match.hpp"
 
-sf::Clock global_clock;
-sf::Clock dt_clock;
 int fr::global_time;
 float fr::dt;
-toml::table fr::config;
+INIReader fr::config("fr.config");
 
 int main() {
-    try {
-        fr::config = toml::parse_file("config.toml");
-    }
-    catch (const toml::parse_error& err) {
-        std::cerr << "Parsing failed:\n" << err << "\n";
+    if (fr::config.ParseError() < 0) {
+        std::cout << "Error loading 'fr.config'" << std::endl;
+        return 1;
     }
 
-	int width = fr::config["video"]["width"].value_or(640);
-	int height = fr::config["video"]["height"].value_or(480);
-	int fps = fr::config["video"]["fps"].value_or(60);
+	int width = fr::config.GetInteger("video", "width", 640);
+	int height = fr::config.GetInteger("video", "height", 480);
     sf::RenderWindow window (sf::VideoMode(width, height), "Final Round");
-	window.setFramerateLimit(fps); // Otherwise SFML has stupid high CPU usage
+	window.setFramerateLimit(fr::FPS); // Otherwise SFML has stupid high CPU usage
 
+
+	sf::Clock global_clock;
+	sf::Clock dt_clock;
 	fr::Match match;
 
     while (window.isOpen()) {
