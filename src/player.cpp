@@ -76,10 +76,16 @@ void fr::Player::draw(sf::RenderWindow &window) {
 
 	if (config.getBool("debug", "draw_hitboxes", false)
 			&& state.isPunching()) {
+		sf::Color color;
+		if (state.punch.isStartingUp(state.punch_progress))
+			color = sf::Color::Yellow;
+		if (state.punch.isActive(state.punch_progress))
+			color = sf::Color::Red;
+
 		sf::IntRect hitbox = state.punch.getHitbox(getPosition());
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		shape.setPosition(sf::Vector2f(hitbox.left, hitbox.top));
-		shape.setFillColor(sf::Color::Red);
+		shape.setFillColor(color);
 
 		window.draw(shape);
 	}
