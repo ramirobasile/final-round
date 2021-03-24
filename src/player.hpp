@@ -11,47 +11,49 @@
 #include "stats.hpp"
 
 namespace fr {
-	class Player {
-		public:
-		int index;
-		int direction;
-		sf::IntRect bounds;
 
-		Player(int index, int direction, Device input_dev, 
-				std::vector<int> controls, sf::Vector2f position,
-				sf::Texture spritesheet, std::vector<Animation> animations, 
-				Stats stats);
+class Player {
+	public:
+	int index;
+	int direction;
+	sf::IntRect bounds;
 
-		void update(std::vector<sf::IntRect> geometry);
-		void draw(sf::RenderWindow &window);
-		sf::Vector2f getPosition() const;
-		sf::Vector2f getSize() const;
-		sf::IntRect getHeadHurtbox() const;
-		sf::IntRect getBodyHurtbox() const;
+	Player(int index, int direction, Device input_dev,
+			std::vector<int> controls, sf::Vector2f position,
+			sf::Texture spritesheet, std::vector<Animation> animations,
+			Stats stats);
 
-		private:
-		Device input_dev;
-		std::vector<int> controls;
-		std::vector<Input> inputs;
-		std::vector<Input> buffer;
-		float buffer_ttl;
-		sf::Vector2f velocity;
-		sf::IntRect head_hurtbox;
-		sf::IntRect body_hurtbox;
-		float body_health;
-		float head_health;
-		float guard_health;
-		sf::Sprite sprite;
-		std::vector<Animation> animations;
-		int animation;
-		std::vector<Punch> punches;
-		State state;
-		State last_state;
-		Stats stats;
+	void update(std::vector<sf::IntRect> geometry);
+	void draw(sf::RenderWindow &window);
+	void takeHeadHit(int damage) const;
+	void takeBodyHit(int damage) const;
+	sf::Vector2f getPosition() const;
+	sf::Vector2f getSize() const;
+	sf::IntRect getHeadHurtbox() const;
+	sf::IntRect getBodyHurtbox() const;
 
-		void updateVelocity(sf::Vector2f &velocity, State state,
-				State last_state, Stats stats);
-		std::vector<Collision> getCollisions(sf::IntRect rect1, 
-				std::vector<sf::IntRect> rects);
-	};
-}
+	private:
+	Device input_dev;
+	std::vector<int> controls;
+	std::vector<Input> inputs;
+	std::vector<Input> buffer;
+	float buffer_ttl;
+	sf::Vector2f velocity;
+	sf::IntRect head_hurtbox;
+	sf::IntRect body_hurtbox;
+	float stamina;
+	sf::Sprite sprite;
+	std::vector<Animation> animations;
+	int animation;
+	std::vector<Punch> punches;
+	State state;
+	State last_state;
+	Stats stats;
+
+	void updateVelocity(sf::Vector2f &velocity, State state, State last_state,
+			Stats stats);
+	std::vector<Collision> getCollisions(sf::IntRect rect1,
+			std::vector<sf::IntRect> rects);
+};
+
+} // namespace fr

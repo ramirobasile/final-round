@@ -7,15 +7,17 @@
 #include "player.hpp"
 	
 namespace fr {
-	class Match {
-		public:
-		Match();
 
-		void update();
-		void draw(sf::RenderWindow &window);
+class Match {
+	public:
+	Match();
 
-		private:
-		Level level;
-		std::vector<Player> players;
-	};
-}
+	void update();
+	void draw(sf::RenderWindow &window);
+
+	private:
+	Level level;
+	std::vector<Player> players;
+};
+
+} // namespace fr
