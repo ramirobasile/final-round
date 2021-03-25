@@ -28,7 +28,7 @@ fr::Match::Match() {
 		
 		// Load controls from fr.conf
 		std::string map_name = "player" + std::to_string(i + 1) + "_controls";
-		Device device = (Device)config.getInt(map_name, "decive", 1);
+		Device device = (Device)config.getInt(map_name, "device", 0);
 		std::vector<int> controls = {
 			config.getInt(map_name, "backwards", -1),
 			config.getInt(map_name, "forwards", -1),
