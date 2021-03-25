@@ -15,13 +15,13 @@
 
 fr::Match::Match() {
 	// Level
-	sf::IntRect left(0, 300, 40, 100);
-	sf::IntRect right(600, 300, 40, 100);
+	sf::IntRect left(0, 300, 20, 100);
+	sf::IntRect right(700, 300, 20, 100);
 	level = Level{left, right};
 	
 	// Players
 	std::vector<sf::Vector2f> spawn_points{sf::Vector2f(100, 300), 
-			sf::Vector2f(440, 300)};
+			sf::Vector2f(500, 300)};
 			
 	for (int i = 0; i < 2; ++i) {
 		int direction = ((i % 2) - 1) * - 1;

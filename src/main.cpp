@@ -15,7 +15,7 @@ fr::ConfigFile fr::config;
 int main() {
 	fr::config.parse(std::ifstream("fr.cfg"));
 
-	int width = fr::config.getInt("video", "width", 640);
+	int width = fr::config.getInt("video", "width", 720);
 	int height = fr::config.getInt("video", "height", 480);
     sf::RenderWindow window (sf::VideoMode(width, height), "Final Round");
 	window.setFramerateLimit(fr::FPS); // Otherwise SFML has stupid high CPU usage
