@@ -8,25 +8,40 @@
 
 namespace fr {
 
-const float UNSTOPPABLE_AFTER = 0.5f; // Startup time scalar
+class Punch {
+	public:
+	Punch();
+	Punch(Control control, bool lead_handed, bool body_shot, int hit_damage,
+			int perm_hit_damage, int block_damage, int self_damage,
+			float interrupt_end, float hitbox_begin, float hitbox_end,
+			float recovery_end, sf::IntRect hitbox, sf::IntRect clearbox);
 
-struct Punch {
+	float progress = -1;
 	Control control;
-	bool is_lead_handed;
-	bool is_body;
-	int damage;
-	int body_hp_cost;
+	bool lead_handed;
+	bool body_shot;
+	int hit_damage;
+	int perm_hit_damage;
+	int block_damage;
+	int self_damage;
+	float interrupt_end;
 	float hitbox_begin;
 	float hitbox_end;
 	float recovery_end;
-	sf::IntRect hitbox;
 
-	bool isStartingUp(float progress) const;
-	bool isUnstoppable(float progress) const;
-	bool isActive(float progress) const;
-	bool isRecovering(float progress) const;
-	bool isDone(float progress) const;
-	sf::IntRect getHitbox(sf::Vector2f relative_to) const;
+	void start();
+	void interrupt();
+	void end();
+	bool interruptible() const;
+	bool active() const;
+	bool recovering() const;
+	bool done() const;
+	sf::IntRect getHitbox(sf::Vector2f relative_to, int direction) const;
+	sf::IntRect getClearbox(sf::Vector2f relative_to, int direction) const;
+
+	private:
+	sf::IntRect hitbox;
+	sf::IntRect clearbox;
 };
 
 extern std::vector<Punch> default_punches;

@@ -7,6 +7,7 @@
 #include "input.hpp"
 #include "physics.hpp"
 #include "state.hpp"
+#include "punch.hpp"
 #include "animation.hpp"
 #include "stats.hpp"
 
@@ -23,14 +24,15 @@ class Player {
 			sf::Texture spritesheet, std::vector<Animation> animations,
 			Stats stats);
 
-	void update(std::vector<sf::IntRect> geometry);
+	void update(std::vector<sf::IntRect> geometry, fr::Player opponent);
 	void draw(sf::RenderWindow &window);
-	void takeHeadHit(int damage) const;
-	void takeBodyHit(int damage) const;
-	sf::Vector2f getPosition() const;
-	sf::Vector2f getSize() const;
-	sf::IntRect getHeadHurtbox() const;
-	sf::IntRect getBodyHurtbox() const;
+	void takeDamage(int damage);
+	void takeHeadHit(fr::Punch punch);
+	void takeBodyHit(fr::Punch punch);
+	sf::Vector2f position() const;
+	sf::Vector2f size() const;
+	sf::IntRect headHurtbox() const;
+	sf::IntRect bodyHurtbox() const;
 
 	private:
 	Device input_dev;
@@ -41,14 +43,14 @@ class Player {
 	sf::Vector2f velocity;
 	sf::IntRect head_hurtbox;
 	sf::IntRect body_hurtbox;
-	float stamina;
+	float health;
 	sf::Sprite sprite;
 	std::vector<Animation> animations;
 	int animation;
-	std::vector<Punch> punches;
 	State state;
 	State last_state;
 	Stats stats;
+	std::vector<fr::Punch> punches;
 
 	void updateVelocity(sf::Vector2f &velocity, State state, State last_state,
 			Stats stats);

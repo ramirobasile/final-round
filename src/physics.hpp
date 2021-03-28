@@ -15,8 +15,7 @@ enum class Collision {
 	bottom
 };
 
-void updatePosition(sf::IntRect &bounds, sf::Vector2f velocity,
-		std::vector<sf::IntRect> geometry);
+void updatePosition(sf::IntRect &bounds, sf::Vector2f velocity);
 Collision getCollision(sf::IntRect rect1, sf::IntRect rect2);
 void resolveCollision(sf::IntRect &rect1, sf::IntRect rect2);
 

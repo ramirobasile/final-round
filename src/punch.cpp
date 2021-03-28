@@ -4,32 +4,61 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
-#include "input.hpp"
 
-bool fr::Punch::isStartingUp(float progress) const {
-	return progress < hitbox_begin;
+// Empty constructor
+fr::Punch::Punch() {
 }
 
-bool fr::Punch::isUnstoppable(float progress) const {
-	return progress > hitbox_begin * UNSTOPPABLE_AFTER;
+fr::Punch::Punch(Control control, bool lead_handed, bool body_shot, int damage,
+		int perm_hit_damage, int block_damage, int self_damage,
+		float interrupt_end, float hitbox_begin, float hitbox_end,
+		float recovery_end, sf::IntRect hitbox, sf::IntRect clearbox)
+		: control(control), lead_handed(lead_handed), body_shot(body_shot),
+		hit_damage(hit_damage), perm_hit_damage(perm_hit_damage),
+		block_damage(block_damage), self_damage(self_damage),
+		interrupt_end(interrupt_end), hitbox_begin(hitbox_begin),
+		hitbox_end(hitbox_end), recovery_end(recovery_end), hitbox(hitbox),
+		clearbox(clearbox) {
 }
 
-bool fr::Punch::isActive(float progress) const {
-	return progress > hitbox_begin && !isRecovering(progress);
+void fr::Punch::start() {
+	progress = 0;
 }
 
-bool fr::Punch::isRecovering(float progress) const {
-	return progress > hitbox_end && !isDone(progress);
+void fr::Punch::interrupt() {
+	progress = hitbox_end;
 }
 
-bool fr::Punch::isDone(float progress) const {
-	return progress > recovery_end;
+void fr::Punch::end() {
+	progress = -1;
 }
 
-sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to) const {
+bool fr::Punch::interruptible() const {
+	return progress <= interrupt_end && !done();
+}
+
+bool fr::Punch::active() const {
+	return progress > hitbox_begin && !recovering() && !done();
+}
+
+bool fr::Punch::recovering() const {
+	return progress > hitbox_end && !done();
+}
+
+bool fr::Punch::done() const {
+	return progress > recovery_end || progress == -1;
+}
+
+sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to, int direction) const {
 	int left = relative_to.x + hitbox.left;
 	int top = relative_to.y + hitbox.top;
 	return sf::IntRect(left, top, hitbox.width, hitbox.height);
+}
+
+sf::IntRect fr::Punch::getClearbox(sf::Vector2f relative_to, int direction) const {
+	int left = relative_to.x + clearbox.left;
+	int top = relative_to.y + clearbox.top;
+	return sf::IntRect(left, top, clearbox.width, clearbox.height);
 }
 
 std::vector<fr::Punch> fr::default_punches = {

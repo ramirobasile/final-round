@@ -8,70 +8,44 @@
 #include "punch.hpp"
 #include "physics.hpp"
 
-// HACK Why not fr::State? I don't think I understand this fully
+// TODO Complete
 std::ostream& fr::operator<<(std::ostream &out, const fr::State &state) {
 	out << "State: "
 		<< "Movement " << std::to_string((int)state.movement);
     return out;
 }
 
+// TODO Punch operator==
 bool fr::State::operator==(const fr::State &state) const {
 	return this->movement == state.movement;
 }
 
 void fr::State::update(std::vector<fr::Input> inputs,
 		std::vector<fr::Input> buffer, std::vector<fr::Punch> punches) {
-	punch_progress += dt;
-
-	// TODO Something like this
-	//if (!isPunching(punch_progress))
-	//	movement = Movement::idle;
+	punch.progress += dt;
 
 	for (int i = 0; i < inputs.size(); ++i) {
 		switch (inputs[i].action) {
 			case Action::press:
-				onPress(inputs[i], buffer, punches);
+				onPress(inputs[i], buffer);
 				break;
 				
 			case Action::release:
-				onRelease(inputs[i], buffer, punches);
+				onRelease(inputs[i], buffer);
 				break;
 				
 			case Action::hold:
-				onHold(inputs[i], buffer, punches);
+				onHold(inputs[i], buffer);
 				break;
 		}
 	}
 }
 
-bool fr::State::isPunching() const {
-	return !punch.isDone(punch_progress);
+bool fr::State::punching() {
+	return !punch.done();
 }
 
-bool fr::State::isLeadFree() const {
-	// TODO Have seperate lead and rear punches
-	//return (punch.isRecovering(rear_punch_progress) && !punch.is_lead_handed)
-	//		|| !isPunching();
-	return !isPunching();
-}
-
-bool fr::State::isRearFree() const {
-	// TODO Have seperate lead and rear punches
-	//return (punch.isRecovering(lead_punch_progress) && punch.is_lead_handed)
-	//		|| !isPunching();
-	return !isPunching();
-}
-
-bool fr::State::isHeadGuardUp(std::vector<fr::Input> buffer) const {
-	return !isPunching() && !isBuffered(BODY_CONTROL, buffer);
-}
-
-bool fr::State::isBodyGuardUp(std::vector<fr::Input> buffer) const {
-	return !isPunching() && isBuffered(BODY_CONTROL, buffer);
-}
-
-void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer,
-		std::vector<fr::Punch> punches) {
+void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer) {
 	switch (input.control) {
 		case Control::backwards:
 			movement = Movement::walk_b;
@@ -84,7 +58,7 @@ void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer,
 }
 
 void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer,
-		std::vector<fr::Punch> punches) {
+			std::vector<fr::Punch> punches) {
 	switch (input.control) {
 		case Control::jab:
 		case Control::cross:
@@ -93,28 +67,29 @@ void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer,
 			for (int i = 0; i < punches.size(); ++i) {
 				Punch candidate = punches[i];
 				bool control = input.control == candidate.control;
-				bool hand = (candidate.is_lead_handed && isLeadFree())
-						|| (!candidate.is_lead_handed && isRearFree());
-				bool body = candidate.is_body 
-						== isBuffered(BODY_CONTROL, buffer);
+
+				bool same_hand = punching()
+						&& punch.lead_handed == candidate.lead_handed;
+				bool can_throw = punching()
+						|| (punch.interruptible() && !same_hand);
+
+				bool body = candidate.body_shot == buffered(BODY_CONTROL, buffer);
 						
-				if (control && hand && body) {
+				if (control && can_throw && body) {
+					punch.end();
 					punch = candidate;
-					punch_progress = 0;
+					punch.start();
 				}
 			}
 			break;
 		
 		case Control::dodge:
-			if (isPunching() && !punch.isUnstoppable(punch_progress)) {
-				punch_progress = punch.recovery_end;
-			} else {
-			}
+			// TODO Feint
+			break;
 	}
 }
 
-void fr::State::onRelease(fr::Input input, std::vector<fr::Input> buffer,
-		std::vector<fr::Punch> punches) {
+void fr::State::onRelease(fr::Input input, std::vector<fr::Input> buffer) {
 	switch (input.control) {
 		default:
 			movement = Movement::idle;

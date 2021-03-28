@@ -11,38 +11,31 @@ enum class Movement {
 	idle,
 	walk_b,
 	walk_f,
-	dash_b,
-	dash_f,
 	weave,
 	pull,
 	duck,
 	stun,
+	escape,
 };
 
 class State {
 	public:
 	Movement movement = Movement::idle;
-	Punch punch;
-	float punch_progress = -1;
+	Punch punch = Punch();
 
 	friend std::ostream& operator<<(std::ostream &out, const State &state);
 	bool operator==(const State &state) const;
 	bool operator!=(const State &state) const { return !operator==(state); };
+
 	void update(std::vector<Input> inputs, std::vector<Input> buffer,
 			std::vector<Punch> punches);
-	bool isPunching() const;
-	bool isLeadFree() const;
-	bool isRearFree() const;
-	bool isHeadGuardUp(std::vector<Input> buffer) const;
-	bool isBodyGuardUp(std::vector<Input> buffer) const;
+	bool punching();
 
 	private:
-	void onHold(Input input, std::vector<Input> buffer,
-			std::vector<Punch> punches);
+	void onHold(Input input, std::vector<Input> buffer);
 	void onPress(Input input, std::vector<Input> buffer,
 			std::vector<Punch> punches);
-	void onRelease(Input input, std::vector<Input> buffer,
-			std::vector<Punch> punches);
+	void onRelease(Input input, std::vector<Input> buffer);
 };
 
 } // namespace fr

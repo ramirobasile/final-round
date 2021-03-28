@@ -8,13 +8,9 @@
 #include "main.hpp"
 #include "utils.hpp"
 
-void fr::updatePosition(sf::IntRect &bounds, sf::Vector2f velocity,
-		std::vector<sf::IntRect> geometry) {
+void fr::updatePosition(sf::IntRect &bounds, sf::Vector2f velocity) {
 	// Random math necessary to avoid weird rounding errors
 	bounds.left += sign(velocity.x) * (int)std::abs(velocity.x * dt);
-	
-	for (int i = 0; i < geometry.size(); ++i)
-		resolveCollision(bounds, geometry[i]);
 }
 
 fr::Collision fr::getCollision(sf::IntRect rect1, sf::IntRect rect2) {

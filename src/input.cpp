@@ -98,11 +98,11 @@ void fr::updateBuffer(std::vector<fr::Input> &buffer,
 	}
 }
 
-bool fr::isBuffered(fr::Control control, std::vector<fr::Input> buffer) {
-	bool buffered = control == Control::none;
+bool fr::buffered(fr::Control control, std::vector<fr::Input> buffer) {
+	bool res = control == Control::none;
 	
-	for (int i = 0; i < buffer.size() && !buffered; ++i)
-		buffered = control == buffer[i].control;
+	for (int i = 0; i < buffer.size() && !res; ++i)
+		res = control == buffer[i].control;
 		
-	return buffered;
+	return res;
 }
