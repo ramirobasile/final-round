@@ -9,8 +9,8 @@ namespace fr {
 
 enum class Movement {
 	idle,
-	walk_b,
-	walk_f,
+	walk_l,
+	walk_r,
 	weave,
 	pull,
 	duck,

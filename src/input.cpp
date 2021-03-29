@@ -16,60 +16,42 @@ std::ostream& fr::operator<<(std::ostream &out, const fr::Input &input) {
 	return out;
 }
 
-std::vector<fr::Input> findInputs(std::vector<fr::Input> inputs,
-		fr::Control control) {
-	std::vector<fr::Input> matches;
-
-	for (int i = 0; i < inputs.size(); ++i) {
-		if (inputs[i].control == control)
-			matches.push_back(inputs[i]);
-	}
-
-	return matches;
-}
-
-std::vector<fr::Input> findInputs(std::vector<fr::Input> inputs,
-		fr::Control control, fr::Action action) {
-	std::vector<fr::Input> matches;
-
-	for (int i = 0; i < inputs.size(); ++i) {
-		if (inputs[i].control == control && inputs[i].action == action)
-			matches.push_back(inputs[i]);
-	}
-
-	return matches;
-}
-
-void fr::updateInputs(std::vector<fr::Input> &inputs,
-		std::vector<fr::Input> buffer, std::vector<int> controls) {
+void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buffer,
+		float buffer_ttl, std::vector<int> controls) {
 	std::vector<Input> new_inputs;
 
 	for (int i = 0; i < controls.size(); ++i) {
 		Control control = (Control)i;
 
-		std::vector<Input> prev_inputs = findInputs(inputs, control);
-
-		// inputs vector, unlike buffer, will never have two with the same
-		// action so either prev_inputs is empty or has an action at 0
-		bool was_down = !prev_inputs.empty()
-				&& (prev_inputs[0].action == Action::press
-				|| prev_inputs[0].action == Action::hold);
+		Input prev;
+		for (int i = 0; i < inputs.size() && prev.control != control; ++i) {
+			if (inputs[i].control == control)
+				prev = inputs[i];
+		}
 
 		bool is_down = sf::Keyboard::isKeyPressed((sf::Keyboard::Key)controls[i]);
+		bool was_down = prev.control == control
+				&& (prev.action == Action::press || prev.action == Action::hold);
 
-		if (is_down && was_down) {
-			float held_time = 0;
-			if (!prev_inputs.empty())
-				held_time = prev_inputs[0].held_time + dt;
+		bool press_buffered = !buffer.empty() && buffer.back().control == control
+				&& buffer.back().action == Action::release;
+		bool in_dp_window = BUFFER_TTL - buffer_ttl < DOUBLE_PRESS_T;
 
+		float held_time = prev.held_time + dt;
+
+		if (is_down && was_down)
 			new_inputs.push_back(Input{control, Action::hold, held_time});
-		}
 
 		if (!is_down && was_down)
 			new_inputs.push_back(Input{control, Action::release});
 
-		if (is_down && !was_down)
-			new_inputs.push_back(Input{control, Action::press});
+		if (is_down && !was_down) {
+			if (press_buffered && in_dp_window)
+				new_inputs.push_back(Input{control, Action::double_press});
+			else
+				new_inputs.push_back(Input{control, Action::press});
+		}
+
 	}
 
 	inputs = new_inputs;
@@ -77,7 +59,7 @@ void fr::updateInputs(std::vector<fr::Input> &inputs,
 
 // TODO Joystick
 void fr::updateInputs(int joytstick, std::vector<fr::Input> &inputs,
-		std::vector<fr::Input> buffer, std::vector<int> controls) {
+		std::vector<fr::Input> buffer, float buffer_ttl, std::vector<int> controls) {
 }
 
 // TODO Explain

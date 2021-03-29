@@ -34,9 +34,9 @@ void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) 
 	// Input
 	updateBuffer(buffer, buffer_ttl, inputs);
 	if (input_dev == Device::keyboard)
-		updateInputs(inputs, buffer, controls);
+		updateInputs(inputs, buffer, buffer_ttl, controls);
 	else if (input_dev == Device::joystick)
-		updateInputs(index, inputs, buffer, controls);
+		updateInputs(index, inputs, buffer, buffer_ttl, controls);
 
 	// State
 	last_state = state;
@@ -74,14 +74,14 @@ void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) 
 	if (config.getBool("debug", "log_state", false)
 			&& state != last_state) {
 		printGlobalTime();
-		std::cout << "[P" << std::to_string(index + 1) << "] ";
+		std::cout << "[P" << std::to_string(index) << "] ";
 		std::cout<< state << std::endl << std::endl;
 	}
 
 	if (config.getBool("debug", "log_inputs", false)
 			&& !inputs.empty()) {
 		printGlobalTime();
-		std::cout << "[P" << std::to_string(index + 1) << "] ";
+		std::cout << "[P" << std::to_string(index) << "] ";
 		std::cout << "Inputs:" << std::endl;
 		for (int i = 0; i < inputs.size(); ++i)
 			std::cout << "* " << inputs[i] << std::endl;
@@ -165,18 +165,18 @@ void fr::Player::updateVelocity(sf::Vector2f &velocity, fr::State state,
 
 	// TODO Don't walk when punch is between unstoppable and hitbox_end
 	switch (state.movement) {
-		case fr::Movement::walk_b:
+		case fr::Movement::walk_l:
 			if ((state.punching() && !state.punch.interruptible()))
 				break;
 
-			velocity.x = stats.walk_speed * -direction;
+			velocity.x = -stats.walk_speed;
 			break;
 
-		case fr::Movement::walk_f:
+		case fr::Movement::walk_r:
 			if ((state.punching() && !state.punch.interruptible()))
 				break;
 
-			velocity.x = stats.walk_speed * direction;
+			velocity.x = stats.walk_speed;
 			break;
 	}
 }

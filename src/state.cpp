@@ -22,12 +22,13 @@ bool fr::State::operator==(const fr::State &state) const {
 
 void fr::State::update(std::vector<fr::Input> inputs,
 		std::vector<fr::Input> buffer, std::vector<fr::Punch> punches) {
-	punch.progress += dt;
+	if (punching())
+		punch.progress += dt;
 
 	for (int i = 0; i < inputs.size(); ++i) {
 		switch (inputs[i].action) {
 			case Action::press:
-				onPress(inputs[i], buffer);
+				onPress(inputs[i], buffer, punches);
 				break;
 				
 			case Action::release:
@@ -47,12 +48,12 @@ bool fr::State::punching() {
 
 void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer) {
 	switch (input.control) {
-		case Control::backwards:
-			movement = Movement::walk_b;
+		case Control::left:
+			movement = Movement::walk_l;
 			break;
 
-		case Control::forwards:
-			movement = Movement::walk_f;
+		case Control::right:
+			movement = Movement::walk_r;
 			break;
 	}
 }
@@ -60,22 +61,17 @@ void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer) {
 void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer,
 			std::vector<fr::Punch> punches) {
 	switch (input.control) {
-		case Control::jab:
-		case Control::cross:
-		case Control::upper:
-		case Control::hook:
+		case Control::lead:
+		case Control::rear:
 			for (int i = 0; i < punches.size(); ++i) {
 				Punch candidate = punches[i];
-				bool control = input.control == candidate.control;
-
-				bool same_hand = punching()
-						&& punch.lead_handed == candidate.lead_handed;
-				bool can_throw = punching()
-						|| (punch.interruptible() && !same_hand);
-
-				bool body = candidate.body_shot == buffered(BODY_CONTROL, buffer);
+				bool same_control = input.control == candidate.control;
+				bool held_enough = input.held_time >= candidate.min_held_time;
+				bool same_hand = punching() && punch.lead_handed == candidate.lead_handed;
+				bool can_throw = !punching() || (punch.interruptible() && !same_hand);
+				bool mod_buffered = buffered(candidate.mod, buffer);
 						
-				if (control && can_throw && body) {
+				if (same_control && held_enough && can_throw && mod_buffered) {
 					punch.end();
 					punch = candidate;
 					punch.start();
