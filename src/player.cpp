@@ -104,21 +104,20 @@ void fr::Player::draw(sf::RenderWindow &window) {
 		window.draw(shape);
 	}
 
-	/*if (config.getBool("debug", "draw_hitboxes", false)
-			&& state.isPunching()) {
+	if (config.getBool("debug", "draw_hitboxes", false) && state.punching()) {
 		sf::Color color;
-		if (state.punch.isStartingUp(state.punch_progress))
-			color = sf::Color::Yellow;
-		if (state.punch.isActive(state.punch_progress))
+		if (state.punch.active())
 			color = sf::Color::Red;
+		else
+			color = sf::Color::Yellow;
 
-		sf::IntRect hitbox = state.punch.getHitbox(getPosition());
+		sf::IntRect hitbox = state.punch.getHitbox(position(), direction);
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		shape.setPosition(sf::Vector2f(hitbox.left, hitbox.top));
 		shape.setFillColor(color);
 
 		window.draw(shape);
-	}*/
+	}
 }
 
 void fr::Player::takeDamage(int damage) {
