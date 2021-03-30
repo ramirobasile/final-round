@@ -27,6 +27,7 @@ class Player {
 	void update(std::vector<sf::IntRect> geometry, fr::Player opponent);
 	void draw(sf::RenderWindow &window);
 	void takeDamage(int damage);
+	void takePermaDamage(int damage);
 	void takeHeadHit(fr::Punch punch);
 	void takeBodyHit(fr::Punch punch);
 	sf::Vector2f position() const;
@@ -43,7 +44,8 @@ class Player {
 	sf::Vector2f velocity;
 	sf::IntRect head_hurtbox;
 	sf::IntRect body_hurtbox;
-	float health;
+	int health;
+	int max_health;
 	sf::Sprite sprite;
 	std::vector<Animation> animations;
 	int animation;

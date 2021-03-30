@@ -22,6 +22,8 @@ class State {
 	public:
 	Movement movement = Movement::idle;
 	Punch punch = Punch();
+	bool guard_high = false;
+	bool guard_low = false;
 
 	friend std::ostream& operator<<(std::ostream &out, const State &state);
 	bool operator==(const State &state) const;

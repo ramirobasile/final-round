@@ -15,6 +15,7 @@ struct Stats {
 	int feet;
 
 	int max_body_hp = 100;
+	int max_health = 20;
 	float walk_speed = 100;
 	float tt_weave = 0.1f;
 	float tt_pull = 0.125f;

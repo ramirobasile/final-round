@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
@@ -121,11 +122,23 @@ void fr::Player::draw(sf::RenderWindow &window) {
 	}*/
 }
 
-// TODO Take damage and hits
 void fr::Player::takeDamage(int damage) {
+	health = std::clamp(health - damage, 0, max_health);
+}
+
+void fr::Player::takePermaDamage(int damage) {
+	max_health = std::clamp(max_health - damage, 0, stats.max_health);
 }
 
 void fr::Player::takeHeadHit(fr::Punch punch) {
+	if (state.guard_high == !punch.body && state.guard_low == punch.body) {
+		takeDamage(punch.block_damage);
+		// TODO Blockstun
+	} else {
+		takeDamage(punch.damage);
+		takePermaDamage(punch.perma_damage);
+		// TODO Hitstun
+	}
 }
 
 void fr::Player::takeBodyHit(fr::Punch punch) {
