@@ -75,15 +75,14 @@ void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) 
 	if (config.getBool("debug", "log_state", false)
 			&& state != last_state) {
 		printGlobalTime();
-		std::cout << "[P" << std::to_string(index) << "] ";
+		std::cout << "[P" << std::to_string(index) << "] State: ";
 		std::cout<< state << std::endl << std::endl;
 	}
 
 	if (config.getBool("debug", "log_inputs", false)
 			&& !inputs.empty()) {
 		printGlobalTime();
-		std::cout << "[P" << std::to_string(index) << "] ";
-		std::cout << "Inputs:" << std::endl;
+		std::cout << "[P" << std::to_string(index) << "] Inputs:" << std::endl;
 		for (int i = 0; i < inputs.size(); ++i)
 			std::cout << "* " << inputs[i] << std::endl;
 		std::cout << std::endl;

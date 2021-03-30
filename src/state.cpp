@@ -10,8 +10,7 @@
 
 // TODO Complete
 std::ostream& fr::operator<<(std::ostream &out, const fr::State &state) {
-	out << "State: "
-		<< "Movement " << std::to_string((int)state.movement);
+	out << "Movement " << std::to_string((int)state.movement);
     return out;
 }
 

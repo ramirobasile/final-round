@@ -9,8 +9,7 @@
 
 // HACK Why not fr::Input::? I don't think I understand this fully
 std::ostream& fr::operator<<(std::ostream &out, const fr::Input &input) {
-	out	<< "Input: "
-		<< "Action " << std::to_string((int)input.action)
+	out	<< "Action " << std::to_string((int)input.action)
 		<< ", control " << std::to_string((int)input.control)
 		<< ", held time " << std::to_string(input.held_time);
 	return out;
