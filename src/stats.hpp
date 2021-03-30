@@ -3,23 +3,31 @@
 namespace fr {
 
 struct Stats {
-	Stats(int punches, int body, int feet);
-
-	const float BODY_HEAD_HP_RATIO = 0.5f;
-	const float BODY_GUARD_HP_RATIO = 0.33f;
-	const float STAGGER_THRESHOLD = 0.1f;
-	const float CONCUSSION_THRESHOLD = 0.33f;
-
-	int punches;
-	int body;
-	int feet;
-
-	int max_body_hp = 100;
 	int max_health = 20;
+	float health_regen = 1;
+
 	float walk_speed = 100;
+
+	int pull_damage = 0;
+	float tt_pull = 0.1f;
+	float pull_active = 0.15f;
+	float pull_recovery = 0.2f;
+	int pull_distance = -50;
+
+	int weave_damage = 0;
 	float tt_weave = 0.1f;
-	float tt_pull = 0.125f;
+	float weave_active = 0.075f;
+	float weave_recovery = 0.1f;
+
+	int duck_damage = 1;
 	float tt_duck = 0.15f;
+	float duck_active = 0.2f;
+	float duck_recovery = 0.1f;
+
+	//int escape_damage = 1;
+	//float escape_range = 4;
+
+	float guard_recovery = 0.05f;
 };
 
 } // namespace fr
