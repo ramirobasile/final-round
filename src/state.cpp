@@ -61,26 +61,20 @@ void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer) {
 void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer,
 			std::vector<fr::Punch> punches) {
 	switch (input.control) {
-		case Control::lead:
-		case Control::rear:
+		case Control::jab:
+		case Control::power:
 			for (int i = 0; i < punches.size(); ++i) {
 				Punch candidate = punches[i];
 				bool same_control = input.control == candidate.control;
 				bool held_enough = input.held_time >= candidate.min_held_time;
-				bool same_hand = punching() && punch.lead_handed == candidate.lead_handed;
-				bool can_throw = !punching() || (punch.interruptible() && !same_hand);
 				bool mod_buffered = buffered(candidate.mod, buffer);
 						
-				if (same_control && held_enough && can_throw && mod_buffered) {
+				if (same_control && held_enough && !punching() && mod_buffered) {
 					punch.end();
 					punch = candidate;
 					punch.start();
 				}
 			}
-			break;
-		
-		case Control::dodge:
-			// TODO Feint
 			break;
 	}
 }

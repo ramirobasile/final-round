@@ -26,10 +26,9 @@ fr::Match::Match() {
 		config.getInt("player1_controls", "right", -1),
 		config.getInt("player1_controls", "up", -1),
 		config.getInt("player1_controls", "down", -1),
-		config.getInt("player1_controls", "lead", -1),
-		config.getInt("player1_controls", "rear", -1),
+		config.getInt("player1_controls", "jab", -1),
+		config.getInt("player1_controls", "power", -1),
 		config.getInt("player1_controls", "guard", -1),
-		config.getInt("player1_controls", "dodge", -1),
 		config.getInt("player1_controls", "pause", -1),
 	};
 	sf::Vector2f spawn_point = sf::Vector2f(100, 300);
@@ -48,10 +47,9 @@ fr::Match::Match() {
 		config.getInt("player2_controls", "right", -1),
 		config.getInt("player2_controls", "up", -1),
 		config.getInt("player2_controls", "down", -1),
-		config.getInt("player2_controls", "lead", -1),
-		config.getInt("player2_controls", "rear", -1),
+		config.getInt("player2_controls", "jab", -1),
+		config.getInt("player2_controls", "power", -1),
 		config.getInt("player2_controls", "guard", -1),
-		config.getInt("player2_controls", "dodge", -1),
 		config.getInt("player2_controls", "pause", -1),
 	};
 	spawn_point = sf::Vector2f(500, 300);

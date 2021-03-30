@@ -10,13 +10,13 @@ fr::Punch::Punch() {
 }
 
 fr::Punch::Punch(Control control, Control mod, float min_held_time,
-		bool lead_handed, bool body_shot, int damage, int perm_hit_damage,
+		bool body, int damage, int perma_damage,
 		int block_damage, int self_damage, float interrupt_end,
 		float hitbox_begin, float hitbox_end, float recovery_end,
 		sf::IntRect hitbox, sf::IntRect clearbox)
 		: control(control), mod(mod), min_held_time(min_held_time),
-		lead_handed(lead_handed), body_shot(body_shot), hit_damage(hit_damage),
-		perm_hit_damage(perm_hit_damage), block_damage(block_damage),
+		body(body), damage(damage),
+		perma_damage(perma_damage), block_damage(block_damage),
 		self_damage(self_damage), interrupt_end(interrupt_end),
 		hitbox_begin(hitbox_begin), hitbox_end(hitbox_end),
 		recovery_end(recovery_end), hitbox(hitbox), clearbox(clearbox) {
@@ -63,4 +63,6 @@ sf::IntRect fr::Punch::getClearbox(sf::Vector2f relative_to, int direction) cons
 }
 
 std::vector<fr::Punch> fr::default_punches = {
+	Punch(Control::jab, Control::none, -1, false, 2, 0, 0, 1, 0.2f, 0.3f,
+			0.35f, 0.4f, sf::IntRect(100, 0, 60, 30), sf::IntRect(100, 0, 10, 30)),
 };

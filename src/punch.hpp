@@ -11,8 +11,8 @@ namespace fr {
 class Punch {
 	public:
 	Punch();
-	Punch(Control control, Control mod, float min_held_time, bool lead_handed,
-			bool body_shot, int hit_damage, int perm_hit_damage,
+	Punch(Control control, Control mod, float min_held_time,
+			bool body, int damage, int perma_damage,
 			int block_damage, int self_damage, float interrupt_end,
 			float hitbox_begin, float hitbox_end, float recovery_end,
 			sf::IntRect hitbox, sf::IntRect clearbox);
@@ -21,10 +21,9 @@ class Punch {
 	Control control;
 	Control mod;
 	float min_held_time;
-	bool lead_handed;
-	bool body_shot;
-	int hit_damage;
-	int perm_hit_damage;
+	bool body;
+	int damage;
+	int perma_damage;
 	int block_damage;
 	int self_damage;
 	float interrupt_end;
