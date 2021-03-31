@@ -23,9 +23,9 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 		: index(index), direction(direction), input_dev(input_dev), 
 		controls(controls), animations(animations), stats(stats) {
 	health = stats.max_health;
-	bounds = sf::IntRect(position.x, position.y, 100, 100);
-	head_hurtbox = sf::IntRect(position.x, position.y, 100, 20);
-	body_hurtbox = sf::IntRect(position.x, position.y + 20, 100, 80);
+	bounds = sf::IntRect(position.x, position.y, 64, 64);
+	head_hurtbox = sf::IntRect(0, 0, 64, 24);
+	body_hurtbox = sf::IntRect(0, 24, 48, 40);
 	sprite.setTexture(spritesheet);
 	sprite.setTextureRect(bounds);
 	punches = default_punches;
@@ -100,22 +100,30 @@ void fr::Player::draw(sf::RenderWindow &window) {
 		sf::RectangleShape shape(size());
 		shape.setPosition(position());
 		shape.setFillColor(sf::Color::Cyan);
-
 		window.draw(shape);
 	}
 
+	if (config.getBool("debug", "draw_hurtboxes", false)) {
+		sf::RectangleShape head(sf::Vector2f(headHurtbox().width, headHurtbox().height));
+		head.setPosition(sf::Vector2f(headHurtbox().left, headHurtbox().top));
+		head.setFillColor(sf::Color::Yellow);
+		window.draw(head);
+
+		sf::RectangleShape body(sf::Vector2f(bodyHurtbox().width, bodyHurtbox().height));
+		body.setPosition(sf::Vector2f(bodyHurtbox().left, bodyHurtbox().top));
+		body.setFillColor(sf::Color::Yellow);
+		window.draw(body);
+	}
+
 	if (config.getBool("debug", "draw_hitboxes", false) && state.punching()) {
-		sf::Color color;
+		sf::Color color = sf::Color::Blue;
 		if (state.punch.active())
 			color = sf::Color::Red;
-		else
-			color = sf::Color::Yellow;
 
 		sf::IntRect hitbox = state.punch.getHitbox(position(), direction);
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		shape.setPosition(sf::Vector2f(hitbox.left, hitbox.top));
 		shape.setFillColor(color);
-
 		window.draw(shape);
 	}
 }
@@ -155,9 +163,9 @@ sf::IntRect fr::Player::headHurtbox() const {
 	if (direction == 1)
 		left = bounds.left + head_hurtbox.left;
 	else
-		left = bounds.width - head_hurtbox.left;
+		left = bounds.left - head_hurtbox.left + bounds.width - head_hurtbox.width;
 	int top = bounds.top + head_hurtbox.top;
-	return sf::IntRect(top, left, head_hurtbox.width, head_hurtbox.height);
+	return sf::IntRect(left, top, head_hurtbox.width, head_hurtbox.height);
 }
 
 sf::IntRect fr::Player::bodyHurtbox() const {
@@ -165,9 +173,9 @@ sf::IntRect fr::Player::bodyHurtbox() const {
 	if (direction == 1)
 		left = bounds.left + body_hurtbox.left;
 	else
-		left = bounds.width - body_hurtbox.left;
+		left = bounds.left - body_hurtbox.left + bounds.width - body_hurtbox.width;
 	int top = bounds.top + body_hurtbox.top;
-	return sf::IntRect(top, left, body_hurtbox.width, body_hurtbox.height);
+	return sf::IntRect(left, top, body_hurtbox.width, body_hurtbox.height);
 }
 
 void fr::Player::updateVelocity(sf::Vector2f &velocity, fr::State state,

@@ -15,8 +15,8 @@
 
 fr::Match::Match() {
 	// Level
-	sf::IntRect left(0, 300, 20, 100);
-	sf::IntRect right(700, 300, 20, 100);
+	sf::IntRect left(0, 128, 20, 64);
+	sf::IntRect right(300, 128, 20, 64);
 	level = Level{left, right};
 	
 	// Player 1
@@ -31,7 +31,7 @@ fr::Match::Match() {
 		config.getInt("player1_controls", "guard", -1),
 		config.getInt("player1_controls", "pause", -1),
 	};
-	sf::Vector2f spawn_point = sf::Vector2f(100, 300);
+	sf::Vector2f spawn_point = sf::Vector2f(20 + 64, 128);
 	sf::Texture spritesheet;
 	spritesheet.loadFromFile("assets/placeholder.png");
 	std::vector<fr::Animation> animations;
@@ -52,7 +52,7 @@ fr::Match::Match() {
 		config.getInt("player2_controls", "guard", -1),
 		config.getInt("player2_controls", "pause", -1),
 	};
-	spawn_point = sf::Vector2f(500, 300);
+	spawn_point = sf::Vector2f(320 - 20 - 64 * 2, 128);
 
 	players.push_back(Player(2, -1, device, controls, spawn_point, spritesheet,
 			animations, stats));
