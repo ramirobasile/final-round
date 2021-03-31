@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
@@ -33,7 +34,8 @@ fr::Match::Match() {
 	};
 	sf::Vector2f spawn_point = sf::Vector2f(20 + 64, 128);
 	sf::Texture spritesheet;
-	spritesheet.loadFromFile("assets/placeholder.png");
+	if (!spritesheet.loadFromFile("assets/placeholder.png"))
+		std::cout << "Error loading texture" << std::endl;
 	std::vector<fr::Animation> animations;
 	fr::Stats stats;
 
