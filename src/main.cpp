@@ -8,9 +8,11 @@
 #include "config.hpp"
 #include "match.hpp"
 
+// Externs
 int fr::global_time;
 float fr::dt;
 fr::ConfigFile fr::config;
+sf::Font font;
 
 int main() {
 	fr::config.parse(std::ifstream("fr.cfg"));
@@ -24,6 +26,9 @@ int main() {
 	view.setViewport(sf::FloatRect(0.f, 0.f, scale, scale));
     window.setView(view);
 	window.setFramerateLimit(fr::FPS); // Otherwise SFML has stupid high CPU usage
+
+	if (!font.loadFromFile("dejavu_sans.ttf"))
+		std::cout << "Error loading font file" << std::endl;
 
 	sf::Clock global_clock;
 	sf::Clock dt_clock;
