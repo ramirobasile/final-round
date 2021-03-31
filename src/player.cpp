@@ -22,13 +22,14 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 		fr::Stats stats)
 		: index(index), direction(direction), input_dev(input_dev), 
 		controls(controls), animations(animations), stats(stats) {
-	health = stats.max_health;
-	bounds = sf::IntRect(position.x, position.y, 64, 64);
-	head_hurtbox = sf::IntRect(0, 0, 64, 24);
-	body_hurtbox = sf::IntRect(0, 24, 48, 40);
+	bounds = sf::IntRect(position.x, position.y, 48, 48);
+	head_hurtbox = sf::IntRect(0, 0, 48, 16);
+	body_hurtbox = sf::IntRect(0, 16, 32, 32);
 	sprite.setTexture(spritesheet);
 	sprite.setTextureRect(bounds);
 	punches = default_punches;
+	max_health = stats.max_health;
+	health = max_health;
 }
 
 void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) {
@@ -105,12 +106,12 @@ void fr::Player::draw(sf::RenderWindow &window) {
 
 	if (config.getBool("debug", "draw_hurtboxes", false)) {
 		sf::RectangleShape head(sf::Vector2f(headHurtbox().width, headHurtbox().height));
-		head.setPosition(sf::Vector2f(headHurtbox().left, headHurtbox().top));
+		head.setPosition(headHurtbox().left, headHurtbox().top);
 		head.setFillColor(sf::Color::Yellow);
 		window.draw(head);
 
 		sf::RectangleShape body(sf::Vector2f(bodyHurtbox().width, bodyHurtbox().height));
-		body.setPosition(sf::Vector2f(bodyHurtbox().left, bodyHurtbox().top));
+		body.setPosition(bodyHurtbox().left, bodyHurtbox().top);
 		body.setFillColor(sf::Color::Yellow);
 		window.draw(body);
 	}
@@ -122,7 +123,7 @@ void fr::Player::draw(sf::RenderWindow &window) {
 
 		sf::IntRect hitbox = state.punch.getHitbox(position(), direction);
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
-		shape.setPosition(sf::Vector2f(hitbox.left, hitbox.top));
+		shape.setPosition(hitbox.left, hitbox.top);
 		shape.setFillColor(color);
 		window.draw(shape);
 	}

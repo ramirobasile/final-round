@@ -18,6 +18,8 @@ class Player {
 	int index;
 	int direction;
 	sf::IntRect bounds;
+	int health;
+	int max_health;
 
 	Player(int index, int direction, Device input_dev,
 			std::vector<int> controls, sf::Vector2f position,
@@ -44,8 +46,6 @@ class Player {
 	sf::Vector2f velocity;
 	sf::IntRect head_hurtbox;
 	sf::IntRect body_hurtbox;
-	int health;
-	int max_health;
 	sf::Sprite sprite;
 	std::vector<Animation> animations;
 	int animation;

@@ -12,7 +12,7 @@
 int fr::global_time;
 float fr::dt;
 fr::ConfigFile fr::config;
-sf::Font font;
+sf::Font fr::font;
 
 int main() {
 	fr::config.parse(std::ifstream("fr.cfg"));
@@ -27,7 +27,7 @@ int main() {
     window.setView(view);
 	window.setFramerateLimit(fr::FPS); // Otherwise SFML has stupid high CPU usage
 
-	if (!font.loadFromFile("dejavu_sans.ttf"))
+	if (!fr::font.loadFromFile("assets/opensans.ttf"))
 		std::cout << "Error loading font file" << std::endl;
 
 	sf::Clock global_clock;
