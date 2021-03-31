@@ -21,6 +21,7 @@ class Player {
 	int health;
 	int max_health;
 
+	Player();
 	Player(int index, int direction, Device input_dev,
 			std::vector<int> controls, sf::Vector2f position,
 			sf::Texture spritesheet, std::vector<Animation> animations,

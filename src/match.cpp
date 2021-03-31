@@ -42,8 +42,8 @@ fr::Match::Match() {
 	std::vector<fr::Animation> animations;
 	fr::Stats stats;
 
-	players.push_back(Player(1, 1, device, controls, spawn_point, spritesheet,
-			animations, stats));
+	player1 = Player(1, 1, device, controls, spawn_point, spritesheet,
+			animations, stats);
 			
 	// Player 2
 	device = (Device)config.getInt("player2_controls", "device", 0);
@@ -59,8 +59,8 @@ fr::Match::Match() {
 	};
 	spawn_point = sf::Vector2f(320 - 20 - 64 * 2, 128);
 
-	players.push_back(Player(2, -1, device, controls, spawn_point, spritesheet,
-			animations, stats));
+	player2 = Player(2, -1, device, controls, spawn_point, spritesheet,
+			animations, stats);
 
 	// Debug
 	p1_health_text.setFont(font);
@@ -78,24 +78,24 @@ void fr::Match::update() {
 	int seconds = (int)round_time % 60;
 	time_text.setString(std::to_string(minutes) + ":" + std::to_string(seconds));
 
-	players[0].update(level.geometry(), players[1]);
-	players[1].update(level.geometry(), players[0]);
+	player1.update(level.geometry(), player2);
+	player2.update(level.geometry(), player1);
 
 	// Debug
 	if (config.getBool("debug", "draw_info", false)) {
-		p1_health_text.setString("HP: " + std::to_string(players[0].health) + "/"
-				+ std::to_string(players[0].max_health));
+		p1_health_text.setString("HP: " + std::to_string(player2.health) + "/"
+				+ std::to_string(player1.max_health));
 
-		p2_health_text.setString("HP: " + std::to_string(players[1].health) + "/"
-				+ std::to_string(players[1].max_health));
+		p2_health_text.setString("HP: " + std::to_string(player2.health) + "/"
+				+ std::to_string(player2.max_health));
 	}
 }
 
 void fr::Match::draw(sf::RenderWindow &window) {
 	level.draw(window);
 
-	players[0].draw(window);
-	players[1].draw(window);
+	player1.draw(window);
+	player2.draw(window);
 
 	// TODO Un-hardcode
 	int middle = 160 - time_text.getLocalBounds().width / 2;

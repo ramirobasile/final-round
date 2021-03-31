@@ -17,7 +17,8 @@ class Match {
 
 	private:
 	Level level;
-	std::vector<Player> players;
+	Player player1;
+	Player player2;
 	float round_time = 180;
 	sf::Text time_text;
 	sf::Text p1_health_text;

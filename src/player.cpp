@@ -16,7 +16,11 @@
 #include "stats.hpp"
 #include "utils.hpp"
 
-fr::Player::Player(int index, int direction, fr::Device input_dev, 
+// Empty constructor
+fr::Player::Player() {
+}
+
+fr::Player::Player(int index, int direction, fr::Device input_dev,
 		std::vector<int> controls, sf::Vector2f position, 
 		sf::Texture spritesheet, std::vector<fr::Animation> animations,
 		fr::Stats stats)
