@@ -25,6 +25,7 @@ enum class Control {
 enum class Action {
 	press,
 	double_press,
+	long_press,
 	release,
 	hold,
 };

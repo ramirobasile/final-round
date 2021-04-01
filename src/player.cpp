@@ -142,7 +142,7 @@ void fr::Player::takePermaDamage(int damage) {
 }
 
 void fr::Player::takeHeadHit(fr::Punch punch) {
-	if (state.guard_high == !punch.body && state.guard_low == punch.body) {
+	if (state.guard_high) {
 		takeDamage(punch.block_damage);
 		// TODO Blockstun
 	} else {
@@ -153,6 +153,14 @@ void fr::Player::takeHeadHit(fr::Punch punch) {
 }
 
 void fr::Player::takeBodyHit(fr::Punch punch) {
+	if (state.guard_low) {
+		takeDamage(punch.block_damage);
+		// TODO Blockstun
+	} else {
+		takeDamage(punch.damage);
+		takePermaDamage(punch.perma_damage);
+		// TODO Hitstun
+	}
 }
 
 sf::Vector2f fr::Player::position() const {

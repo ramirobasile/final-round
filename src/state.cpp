@@ -39,6 +39,20 @@ void fr::State::update(std::vector<fr::Input> inputs,
 				break;
 		}
 	}
+
+	for (int i = 0; i < inputs.size(); ++i) {
+		for (int j = 0; j < punches.size(); ++j) {
+			bool same_control = inputs[i].control == punches[j].control;
+			bool same_action = inputs[i].action == punches[j].action;
+			bool mod_buffered = buffered(punches[j].mod, buffer);
+
+			if (!punching() && same_control && same_action && mod_buffered) {
+				punch.end();
+				punch = punches[j];
+				punch.start();
+			}
+		}
+	}
 }
 
 bool fr::State::punching() {
@@ -60,21 +74,6 @@ void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer) {
 void fr::State::onPress(fr::Input input, std::vector<fr::Input> buffer,
 			std::vector<fr::Punch> punches) {
 	switch (input.control) {
-		case Control::jab:
-		case Control::power:
-			for (int i = 0; i < punches.size(); ++i) {
-				Punch candidate = punches[i];
-				bool same_control = input.control == candidate.control;
-				bool held_enough = input.held_time >= candidate.min_held_time;
-				bool mod_buffered = buffered(candidate.mod, buffer);
-						
-				if (same_control && held_enough && !punching() && mod_buffered) {
-					punch.end();
-					punch = candidate;
-					punch.start();
-				}
-			}
-			break;
 	}
 }
 
