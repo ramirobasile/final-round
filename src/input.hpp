@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 namespace fr {
 
@@ -35,7 +36,7 @@ struct Input {
 	Action action;
 	float held_time = 0;
 
-	friend std::ostream& operator<<(std::ostream &out, const Input &input);
+	explicit operator std::string() const;
 };
 
 const float BUFFER_TTL = 0.15f;

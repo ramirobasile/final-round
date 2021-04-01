@@ -1,4 +1,6 @@
 #pragma once
 
-void printGlobalTime();
+#include <string>
+
+std::string getGlobalTime();
 int sign(int n);

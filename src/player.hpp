@@ -20,6 +20,7 @@ class Player {
 	sf::IntRect bounds;
 	int health;
 	int max_health;
+	State state;
 
 	Player();
 	Player(int index, int direction, Device input_dev,
@@ -50,7 +51,6 @@ class Player {
 	sf::Sprite sprite;
 	std::vector<Animation> animations;
 	int animation;
-	State state;
 	State last_state;
 	Stats stats;
 	std::vector<fr::Punch> punches;

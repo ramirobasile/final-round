@@ -2,17 +2,21 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <iomanip>
+#include <sstream>
 
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
 #include "main.hpp"
 
-// HACK Why not fr::Input::? I don't think I understand this fully
-std::ostream& fr::operator<<(std::ostream &out, const fr::Input &input) {
-	out	<< "Action " << std::to_string((int)input.action)
-		<< ", control " << std::to_string((int)input.control)
-		<< ", held time " << std::to_string(input.held_time);
-	return out;
+fr::Input::operator std::string() const {
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(2) << held_time;
+
+	return "Control " + std::to_string((int)control)
+			+ ", action " + std::to_string((int)action)
+			+ ", held for " + stream.str() + " seconds";
 }
 
 void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buffer,

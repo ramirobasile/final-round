@@ -77,20 +77,20 @@ void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) 
 		resolveCollision(bounds, geometry[i]);
 
 	// Debug
-	if (config.getBool("debug", "log_state", false)
-			&& state != last_state) {
-		printGlobalTime();
-		std::cout << "[P" << std::to_string(index) << "] State: ";
-		std::cout<< state << std::endl << std::endl;
+	std::string pre = "[" + getGlobalTime() + "] [P" +  std::to_string(index) + "] ";
+
+	if (config.getBool("debug", "log_state", false)) {
+		if (state.movement != last_state.movement)
+			std::cout << pre + "Movement: " + std::to_string((int)state.movement) << std::endl;
+
+		if (state.punching())
+			std::cout << pre + "Punch: " + std::to_string(state.punch.progress) << std::endl;
 	}
 
-	if (config.getBool("debug", "log_inputs", false)
-			&& !inputs.empty()) {
-		printGlobalTime();
-		std::cout << "[P" << std::to_string(index) << "] Inputs:" << std::endl;
+	if (config.getBool("debug", "log_inputs", false) && !inputs.empty()) {
+		std::cout << pre + "Inputs:" << std::endl;
 		for (int i = 0; i < inputs.size(); ++i)
-			std::cout << "* " << inputs[i] << std::endl;
-		std::cout << std::endl;
+			std::cout << "* " + (std::string)inputs[i] << std::endl;
 	}
 }
 

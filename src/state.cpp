@@ -8,17 +8,6 @@
 #include "punch.hpp"
 #include "physics.hpp"
 
-// TODO Complete
-std::ostream& fr::operator<<(std::ostream &out, const fr::State &state) {
-	out << "Movement " << std::to_string((int)state.movement);
-    return out;
-}
-
-// TODO Punch operator==
-bool fr::State::operator==(const fr::State &state) const {
-	return this->movement == state.movement;
-}
-
 void fr::State::update(std::vector<fr::Input> inputs,
 		std::vector<fr::Input> buffer, std::vector<fr::Punch> punches) {
 	if (punching())
