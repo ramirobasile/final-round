@@ -27,8 +27,8 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 		: index(index), direction(direction), input_dev(input_dev), 
 		controls(controls), animations(animations), stats(stats) {
 	bounds = sf::IntRect(position.x, position.y, 48, 48);
-	head_hurtbox = sf::IntRect(0, 0, 48, 16);
-	body_hurtbox = sf::IntRect(0, 16, 32, 32);
+	head_hurtbox = sf::IntRect(32, 0, 16, 16);
+	body_hurtbox = sf::IntRect(24, 16, 16, 16);
 
 	sprite.setTexture(spritesheet);
 	sprite.setTextureRect(bounds);
