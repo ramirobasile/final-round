@@ -29,6 +29,7 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 	bounds = sf::IntRect(position.x, position.y, 48, 48);
 	head_hurtbox = sf::IntRect(0, 0, 48, 16);
 	body_hurtbox = sf::IntRect(0, 16, 32, 32);
+
 	sprite.setTexture(spritesheet);
 	sprite.setTextureRect(bounds);
 	punches = default_punches;
@@ -48,7 +49,7 @@ void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) 
 	last_state = state;
 	state.update(inputs, buffer, punches);
 
-	sf::IntRect clearbox = state.punch.getClearbox(position(), direction);
+	sf::IntRect clearbox = state.punch.getClearbox(bounds, direction);
 	bool obstructed = clearbox.intersects(opponent.headHurtbox())
 			|| clearbox.intersects(opponent.bodyHurtbox());
 	if (state.punch.interruptible() && obstructed)
@@ -58,7 +59,7 @@ void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) 
 	if (was_int && !state.punch.interruptible())
 		takeDamage(state.punch.self_damage);
 
-	sf::IntRect hitbox = state.punch.getHitbox(position(), direction);
+	sf::IntRect hitbox = state.punch.getHitbox(bounds, direction);
 	if (state.punch.active() && hitbox.intersects(opponent.headHurtbox())) {
 		opponent.takeHeadHit(state.punch);
 		state.punch.interrupt();
@@ -125,7 +126,7 @@ void fr::Player::draw(sf::RenderWindow &window) {
 		if (state.punch.active())
 			color = sf::Color::Red;
 
-		sf::IntRect hitbox = state.punch.getHitbox(position(), direction);
+		sf::IntRect hitbox = state.punch.getHitbox(bounds, direction);
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		shape.setPosition(hitbox.left, hitbox.top);
 		shape.setFillColor(color);

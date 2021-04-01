@@ -23,8 +23,8 @@ class Punch {
 	bool active() const;
 	bool recovering() const;
 	bool done() const;
-	sf::IntRect getHitbox(sf::Vector2f relative_to, int direction) const;
-	sf::IntRect getClearbox(sf::Vector2f relative_to, int direction) const;
+	sf::IntRect getHitbox(sf::IntRect relative_to, int direction) const;
+	sf::IntRect getClearbox(sf::IntRect relative_to, int direction) const;
 
 	float progress = -1;
 	Control control;

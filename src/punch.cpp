@@ -48,15 +48,23 @@ bool fr::Punch::done() const {
 	return progress > recovery_end || progress == -1;
 }
 
-sf::IntRect fr::Punch::getHitbox(sf::Vector2f relative_to, int direction) const {
-	int left = relative_to.x + hitbox.left;
-	int top = relative_to.y + hitbox.top;
+sf::IntRect fr::Punch::getHitbox(sf::IntRect relative_to, int direction) const {
+	int left;
+	if (direction == 1)
+		left = relative_to.left + hitbox.left;
+	else
+		left = relative_to.left - hitbox.left + relative_to.width - hitbox.width;
+	int top = relative_to.top + hitbox.top;
 	return sf::IntRect(left, top, hitbox.width, hitbox.height);
 }
 
-sf::IntRect fr::Punch::getClearbox(sf::Vector2f relative_to, int direction) const {
-	int left = relative_to.x + clearbox.left;
-	int top = relative_to.y + clearbox.top;
+sf::IntRect fr::Punch::getClearbox(sf::IntRect relative_to, int direction) const {
+	int left;
+	if (direction == 1)
+		left = relative_to.left + clearbox.left;
+	else
+		left = relative_to.left - clearbox.left + relative_to.width - clearbox.width;
+	int top = relative_to.top + clearbox.top;
 	return sf::IntRect(left, top, clearbox.width, clearbox.height);
 }
 
