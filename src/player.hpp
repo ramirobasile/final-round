@@ -54,6 +54,7 @@ class Player {
 	State last_state;
 	Stats stats;
 	std::vector<fr::Punch> punches;
+	float regen_timer = 0;
 
 	void updateVelocity(sf::Vector2f &velocity, State state, State last_state,
 			Stats stats);

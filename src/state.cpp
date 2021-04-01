@@ -48,6 +48,10 @@ bool fr::State::punching() {
 	return !punch.done();
 }
 
+bool fr::State::guarding() {
+	return guard_high || guard_low;
+}
+
 void fr::State::onHold(fr::Input input, std::vector<fr::Input> buffer) {
 	switch (input.control) {
 		case Control::left:

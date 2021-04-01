@@ -32,23 +32,33 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 
 	sprite.setTexture(spritesheet);
 	sprite.setTextureRect(bounds);
+
 	punches = default_punches;
+
 	max_health = stats.max_health;
 	health = max_health;
 }
 
 void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) {
-	// Input
+	// INPUT
 	updateBuffer(buffer, buffer_ttl, inputs);
 	if (input_dev == Device::keyboard)
 		updateInputs(inputs, buffer, buffer_ttl, controls);
 	else if (input_dev == Device::joystick)
 		updateInputs(index, inputs, buffer, buffer_ttl, controls);
 
-	// State
+	// STATE
 	last_state = state;
 	state.update(inputs, buffer, punches);
 
+	// Regenerate
+	regen_timer += dt;
+	if (!state.punching() && !state.guarding() && regen_timer > stats.regen_rate) {
+		takeDamage(-stats.health_regen);
+		regen_timer = 0;
+	}
+
+	// Interrupt punches
 	sf::IntRect clearbox = state.punch.getClearbox(bounds, direction);
 	bool obstructed = clearbox.intersects(opponent.headHurtbox())
 			|| clearbox.intersects(opponent.bodyHurtbox());
@@ -59,6 +69,7 @@ void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) 
 	if (was_int && !state.punch.interruptible())
 		takeDamage(state.punch.self_damage);
 
+	// Hit
 	sf::IntRect hitbox = state.punch.getHitbox(bounds, direction);
 	if (state.punch.active() && hitbox.intersects(opponent.headHurtbox())) {
 		opponent.takeHeadHit(state.punch);
@@ -70,14 +81,14 @@ void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) 
 		state.punch.interrupt();
 	}
 
-	// Physics
+	// PHYSICS
 	updateVelocity(velocity, state, last_state, stats);
 	updatePosition(bounds, velocity);
 	resolveCollision(bounds, opponent.bounds);
 	for (int i = 0; i < geometry.size(); ++i)
 		resolveCollision(bounds, geometry[i]);
 
-	// Debug
+	// DEBUG
 	std::string pre = "[" + getGlobalTime() + "] [P" +  std::to_string(index) + "] ";
 
 	if (config.getBool("debug", "log_state", false)) {
@@ -101,7 +112,7 @@ void fr::Player::draw(sf::RenderWindow &window) {
 	//sprite.setTextureRect(sf::IntRect(animaton.frame * animaton.width,
 	//		animation * animaton.height, animaton.width, animaton.height));
 
-	// Debug
+	// DEBUG
 	if (config.getBool("debug", "draw_geometry", false)) {
 		sf::RectangleShape shape(size());
 		shape.setPosition(position());
@@ -196,20 +207,15 @@ void fr::Player::updateVelocity(sf::Vector2f &velocity, fr::State state,
 		fr::State last_state, fr::Stats stats) {
 	velocity.x = 0; // Linear velocity
 
-	// TODO Don't walk when punch is between unstoppable and hitbox_end
 	switch (state.movement) {
 		case fr::Movement::walk_l:
-			if ((state.punching() && !state.punch.interruptible()))
-				break;
-
-			velocity.x = -stats.walk_speed;
+			if (!state.punching() || state.punch.interruptible())
+				velocity.x = -stats.walk_speed;
 			break;
 
 		case fr::Movement::walk_r:
-			if ((state.punching() && !state.punch.interruptible()))
-				break;
-
-			velocity.x = stats.walk_speed;
+			if (!state.punching() || state.punch.interruptible())
+				velocity.x = stats.walk_speed;
 			break;
 	}
 }
