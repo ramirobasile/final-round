@@ -19,7 +19,6 @@ enum class Control {
 	down,
 	jab,
 	power,
-	guard,
 	pause,
 };
 

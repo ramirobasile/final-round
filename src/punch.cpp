@@ -63,6 +63,6 @@ sf::IntRect fr::Punch::getClearbox(sf::Vector2f relative_to, int direction) cons
 std::vector<fr::Punch> fr::default_punches = {
 	// Jab
 	Punch(Control::jab, Action::release, Control::none, 2, 0, 0, 1, 0.2f,
-			0.3f, 0.35f, 0.4f, sf::IntRect(100, 0, 60, 40),
-			sf::IntRect(100, 0, 10, 30)),
+			0.3f, 0.35f, 0.4f, sf::IntRect(48, 4, 32, 12),
+			sf::IntRect(48, 4, 6, 12)),
 };
