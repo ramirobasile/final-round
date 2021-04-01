@@ -4,16 +4,19 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
+#include "input.hpp"
 
 // Empty constructor
 fr::Punch::Punch() {
 }
 
 fr::Punch::Punch(Control control, Action action, Control mod,
-		int damage, int perma_damage, int block_damage, int self_damage,
-		float interrupt_end, float hitbox_begin, float hitbox_end,
-		float recovery_end, sf::IntRect hitbox, sf::IntRect clearbox)
-		: control(control), action(action), mod(mod), damage(damage),
+		float min_held, float max_held, int damage, int perma_damage,
+		int block_damage, int self_damage, float interrupt_end,
+		float hitbox_begin, float hitbox_end, float recovery_end,
+		sf::IntRect hitbox, sf::IntRect clearbox)
+		: control(control), action(action), mod(mod),
+		min_held(min_held), max_held(max_held), damage(damage),
 		perma_damage(perma_damage), block_damage(block_damage),
 		self_damage(self_damage), interrupt_end(interrupt_end),
 		hitbox_begin(hitbox_begin), hitbox_end(hitbox_end),
@@ -69,8 +72,22 @@ sf::IntRect fr::Punch::getClearbox(sf::IntRect relative_to, int direction) const
 }
 
 std::vector<fr::Punch> fr::default_punches = {
-	// Jab
-	Punch(Control::jab, Action::release, Control::none, 2, 0, 0, 1, 0.2f,
-			0.3f, 0.35f, 0.4f, sf::IntRect(48, 4, 32, 12),
-			sf::IntRect(48, 4, 6, 12)),
+	// Body jab
+	Punch(Control::jab, Action::press, Control::down, 0, -1,
+			1, 0, 0, 1, 0.15f, 0.25f, 0.3f, 0.35f,
+			sf::IntRect(48, 20, 36, 12), sf::IntRect(48, 20, 10, 12)),
+	// Head jab
+	Punch(Control::jab, Action::press, Control::none, 0, -1,
+			2, 0, 0, 1, 0.15f, 0.25f, 0.3f, 0.35f,
+			sf::IntRect(48, 4, 36, 12), sf::IntRect(48, 4, 10, 12)),
+
+	// Head cross
+	Punch(Control::power, Action::release, Control::none, 0, PRESS_END,
+			5, 0, 1, 1, 0.175f, 0.3f, 0.35f, 0.4f,
+			sf::IntRect(48, 4, 36, 12), sf::IntRect(48, 4, 10, 12)),
+
+	// Head hook
+	Punch(Control::power, Action::hold, Control::none, PRESS_END, PRESS_END + 0.1f,
+			6, 0, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.5125f,
+			sf::IntRect(60, 0, 16, 12), sf::IntRect(0, 0, 0, 0)),
 };

@@ -12,7 +12,7 @@
 
 fr::Input::operator std::string() const {
 	std::stringstream stream;
-	stream << std::fixed << std::setprecision(2) << held_time;
+	stream << std::fixed << std::setprecision(2) << held;
 
 	return "Control " + std::to_string((int)control)
 			+ ", action " + std::to_string((int)action)
@@ -31,30 +31,18 @@ void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buf
 			if (inputs[i].control == control)
 				prev = inputs[i];
 		}
-
+		bool was_down = prev.control == control && prev.action != Action::release;
 		bool is_down = sf::Keyboard::isKeyPressed((sf::Keyboard::Key)controls[i]);
-		bool was_down = prev.control == control
-				&& (prev.action == Action::press || prev.action == Action::hold);
-
-		bool press_buffered = !buffer.empty() && buffer.back().control == control
-				&& buffer.back().action == Action::release;
-		bool in_dp_window = BUFFER_TTL - buffer_ttl < DOUBLE_PRESS_T;
-
-		float held_time = prev.held_time + dt;
+		float held = prev.held + dt;
 
 		if (is_down && was_down)
-			new_inputs.push_back(Input{control, Action::hold, held_time});
+			new_inputs.push_back(Input{control, Action::hold, held});
 
 		if (!is_down && was_down)
-			new_inputs.push_back(Input{control, Action::release});
+			new_inputs.push_back(Input{control, Action::release, held});
 
-		if (is_down && !was_down) {
-			if (press_buffered && in_dp_window)
-				new_inputs.push_back(Input{control, Action::double_press});
-			else
-				new_inputs.push_back(Input{control, Action::press});
-		}
-
+		if (is_down && !was_down)
+			new_inputs.push_back(Input{control, Action::press, held});
 	}
 
 	inputs = new_inputs;

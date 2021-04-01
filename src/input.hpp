@@ -24,25 +24,23 @@ enum class Control {
 
 enum class Action {
 	press,
-	double_press,
-	long_press,
 	release,
 	hold,
 };
 
 struct Input {
+	explicit operator std::string() const;
+
 	Control control = Control::none;
 	Action action;
-	float held_time = 0;
-
-	explicit operator std::string() const;
+	float held = 0;
 };
 
 const float BUFFER_TTL = 0.15f;
-const float LONG_PRESS_T = 0.066f;
-const float DOUBLE_PRESS_T = 0.05f;
+const float PRESS_END = 0.15f;
+const float DOUBLE_PRESS_END = 0.1f;
 const Control BODY_CONTROL = Control::down;
-const std::vector<Control> KONAMI{Control::up, Control::up, Control::down,
+const std::vector<Control> KONAMI_CODE{Control::up, Control::up, Control::down,
 		Control::down, Control::down, Control::left, Control::right,
 		Control::left, Control::right, Control::power, Control::jab};
 
