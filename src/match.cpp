@@ -26,12 +26,12 @@ sf::Text p2_input_text;
 
 fr::Match::Match() {
 	time_text.setFont(font);
-	time_text.setCharacterSize(16);
+	time_text.setCharacterSize(32);
 
 	// Level
-	sf::IntRect left(0, 128, 8, 48);
-	sf::IntRect right(320 - 8, 128, 8, 48);
 	level = Level{left, right};
+	sf::IntRect left(0, 224, 16, 128);
+	sf::IntRect right(640 - 16, 224, 16, 128);
 	
 	// Player 1
 	Device device = (Device)config.getInt("player1_controls", "device", 0);
@@ -44,7 +44,7 @@ fr::Match::Match() {
 		config.getInt("player1_controls", "b", -1),
 		config.getInt("player1_controls", "pause", -1),
 	};
-	sf::Vector2f spawn_point = sf::Vector2f(20 + 64, 128);
+	sf::Vector2f spawn_point = sf::Vector2f(32 + 128, 224);
 	sf::Texture spritesheet;
 	if (!spritesheet.loadFromFile("assets/placeholder.png"))
 		std::cout << "Error loading texture" << std::endl;
@@ -65,28 +65,28 @@ fr::Match::Match() {
 		config.getInt("player2_controls", "b", -1),
 		config.getInt("player2_controls", "pause", -1),
 	};
-	spawn_point = sf::Vector2f(320 - 20 - 64 * 2, 128);
+	spawn_point = sf::Vector2f(640 - 32 - 128 * 2, 224);
 
 	player2 = Player(2, -1, device, controls, spawn_point, spritesheet,
 			animations, stats);
 
 	// Debug
 	p1_hp_text.setFont(font);
-	p1_hp_text.setCharacterSize(8);
+	p1_hp_text.setCharacterSize(16);
 	p2_hp_text.setFont(font);
-	p2_hp_text.setCharacterSize(8);
+	p2_hp_text.setCharacterSize(16);
 	p1_mov_text.setFont(font);
-	p1_mov_text.setCharacterSize(8);
+	p1_mov_text.setCharacterSize(16);
 	p2_mov_text.setFont(font);
-	p2_mov_text.setCharacterSize(8);
+	p2_mov_text.setCharacterSize(16);
 	p1_punch_text.setFont(font);
-	p1_punch_text.setCharacterSize(8);
+	p1_punch_text.setCharacterSize(16);
 	p2_punch_text.setFont(font);
-	p2_punch_text.setCharacterSize(8);
+	p2_punch_text.setCharacterSize(16);
 	p1_input_text.setFont(font);
-	p1_input_text.setCharacterSize(8);
+	p1_input_text.setCharacterSize(16);
 	p2_input_text.setFont(font);
-	p2_input_text.setCharacterSize(8);
+	p2_input_text.setCharacterSize(16);
 }
 
 void fr::Match::update() {
@@ -123,23 +123,23 @@ void fr::Match::draw(sf::RenderWindow &window) {
 	player2.draw(window);
 
 	// TODO Un-hardcode
-	int middle = 160 - time_text.getLocalBounds().width / 2;
-	time_text.setPosition(middle, 16);
+	int middle = 320 - time_text.getLocalBounds().width / 2;
+	time_text.setPosition(middle, 32);
 	window.draw(time_text);
 
 	// Debug
 	if (config.getBool("debug", "draw_info", false)) {
-		p1_hp_text.setPosition(8, 32);
+		p1_hp_text.setPosition(16, 64);
 		window.draw(p1_hp_text);
-		p2_hp_text.setPosition(320 - 8 - p2_hp_text.getLocalBounds().width, 32);
+		p2_hp_text.setPosition(640 - 16 - p2_hp_text.getLocalBounds().width, 64);
 		window.draw(p2_hp_text);
-		p1_mov_text.setPosition(8, 40);
+		p1_mov_text.setPosition(16, 80);
 		window.draw(p1_mov_text);
-		p2_mov_text.setPosition(320 - 8 - p2_mov_text.getLocalBounds().width, 40);
+		p2_mov_text.setPosition(640 - 16 - p2_mov_text.getLocalBounds().width, 80);
 		window.draw(p2_mov_text);
-		p1_punch_text.setPosition(8, 48);
+		p1_punch_text.setPosition(16, 96);
 		window.draw(p1_punch_text);
-		p2_punch_text.setPosition(320 - 8 - p2_punch_text.getLocalBounds().width, 48);
+		p2_punch_text.setPosition(640 - 16 - p2_punch_text.getLocalBounds().width, 96);
 		window.draw(p2_punch_text);
 	}
 }

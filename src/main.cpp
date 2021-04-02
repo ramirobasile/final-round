@@ -18,8 +18,8 @@ int main() {
 	fr::config.parse(std::ifstream("fr.cfg"));
 
 	int scale = fr::config.getFloat("video", "scale", 1.f);
-	int width = fr::config.getInt("video", "width", 320) * scale;
-	int height = fr::config.getInt("video", "height", 240) * scale;
+	int width = fr::config.getInt("video", "width", 640) * scale;
+	int height = fr::config.getInt("video", "height", 480) * scale;
     sf::RenderWindow window (sf::VideoMode(width, height), "Final Round");
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, width, height));
