@@ -81,13 +81,23 @@ std::vector<fr::Punch> fr::default_punches = {
 			2, 0, 0, 1, 0.15f, 0.25f, 0.3f, 0.35f,
 			sf::IntRect(48, 4, 36, 12), sf::IntRect(48, 4, 10, 12)),
 
+	// Body cross
+	Punch(Control::power, Action::release, Control::down, 0, PRESS_END,
+			2, 1, 1, 1, 0.175f, 0.3f, 0.35f, 0.4f,
+			sf::IntRect(48, 20, 36, 12), sf::IntRect(48, 20, 10, 12)),
+
 	// Head cross
 	Punch(Control::power, Action::release, Control::none, 0, PRESS_END,
-			5, 0, 1, 1, 0.175f, 0.3f, 0.35f, 0.4f,
+			4, 0, 1, 1, 0.175f, 0.3f, 0.35f, 0.4f,
 			sf::IntRect(48, 4, 36, 12), sf::IntRect(48, 4, 10, 12)),
 
-	// Head hook
+	// Body power punch
+	Punch(Control::power, Action::hold, Control::down, PRESS_END, PRESS_END + 0.1f,
+			2, 2, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.5125f,
+			sf::IntRect(48, 20, 24, 12), sf::IntRect(0, 0, 0, 0)),
+
+	// Head power punch
 	Punch(Control::power, Action::hold, Control::none, PRESS_END, PRESS_END + 0.1f,
-			6, 0, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.5125f,
-			sf::IntRect(60, 0, 16, 12), sf::IntRect(0, 0, 0, 0)),
+			5, 0, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.5125f,
+			sf::IntRect(48, 4, 24, 12), sf::IntRect(0, 0, 0, 0)),
 };
