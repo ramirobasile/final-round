@@ -39,7 +39,7 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 	health = max_health;
 }
 
-void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player opponent) {
+void fr::Player::update(std::vector<sf::IntRect> geometry, fr::Player &opponent) {
 	// INPUT
 	updateBuffer(buffer, buffer_ttl, inputs);
 	if (input_dev == Device::keyboard)

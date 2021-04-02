@@ -28,7 +28,7 @@ class Player {
 			sf::Texture spritesheet, std::vector<Animation> animations,
 			Stats stats);
 
-	void update(std::vector<sf::IntRect> geometry, fr::Player opponent);
+	void update(std::vector<sf::IntRect> geometry, fr::Player &opponent);
 	void draw(sf::RenderWindow &window);
 	void takeDamage(int damage);
 	void takePermaDamage(int damage);
