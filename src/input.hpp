@@ -17,8 +17,8 @@ enum class Control {
 	right,
 	up,
 	down,
-	jab,
-	power,
+	a,
+	b,
 	pause,
 };
 
@@ -42,7 +42,7 @@ const float DOUBLE_PRESS_END = 0.1f;
 const Control BODY_CONTROL = Control::down;
 const std::vector<Control> KONAMI_CODE{Control::up, Control::up, Control::down,
 		Control::down, Control::down, Control::left, Control::right,
-		Control::left, Control::right, Control::power, Control::jab};
+		Control::left, Control::right, Control::b, Control::a};
 
 void updateInputs(std::vector<Input> &inputs, std::vector<Input> buffer,
 		float buffer_ttl, std::vector<int> controls);
