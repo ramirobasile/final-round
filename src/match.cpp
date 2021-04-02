@@ -1,8 +1,10 @@
 #include "match.hpp"
 
 #include <vector>
-#include <string>
 #include <iostream>
+#include <iomanip>
+#include <string>
+#include <sstream>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
@@ -98,9 +100,10 @@ void fr::Match::update() {
 	if (round_time > 0)
 		round_time -= dt;
 
-	int minutes = (int)round_time / 60;
-	int seconds = (int)round_time % 60;
-	time_text.setString(std::to_string(minutes) + ":" + std::to_string(seconds));
+	std::string minutes = std::to_string((int)round_time / 60);
+	std::stringstream seconds;
+	seconds << std::setw(2) << std::setfill('0') << (int)round_time % 60;
+	time_text.setString(minutes + ":" + seconds.str());
 
 	player1.update(level.geometry(), player2);
 	player2.update(level.geometry(), player1);
