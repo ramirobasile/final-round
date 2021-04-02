@@ -50,6 +50,6 @@ void updateInputs(int joytstick, std::vector<Input> &inputs,
 		std::vector<Input> buffer, float buffer_ttl, std::vector<int> controls);
 void updateBuffer(std::vector<Input> &buffer, float &clear_time,
 		std::vector<Input> inputs);
-bool buffered(Control control, std::vector<Input> buffer);
+bool inputted(Control control, std::vector<Input> inputs);
 
 } // namespace fr

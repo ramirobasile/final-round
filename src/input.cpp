@@ -71,11 +71,11 @@ void fr::updateBuffer(std::vector<fr::Input> &buffer,
 	}
 }
 
-bool fr::buffered(fr::Control control, std::vector<fr::Input> buffer) {
+bool fr::inputted(fr::Control control, std::vector<fr::Input> inputs) {
 	bool res = control == Control::none;
 	
-	for (int i = 0; i < buffer.size() && !res; ++i)
-		res = control == buffer[i].control;
+	for (int i = 0; i < inputs.size() && !res; ++i)
+		res = control == inputs[i].control;
 		
 	return res;
 }

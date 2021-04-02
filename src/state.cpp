@@ -21,12 +21,12 @@ void fr::State::update(std::vector<fr::Input> inputs,
 			bool same_control = input.control == punches[j].control;
 			bool same_action = input.action == punches[j].action;
 			// TODO Change to has input rather than input buffered
-			bool mod_buffered = buffered(punches[j].mod, buffer);
+			bool mod_inputted = inputted(punches[j].mod, inputs);
 			bool held_margin = input.held >= punches[j].min_held
 					&& (input.held < punches[j].max_held
 					|| punches[j].max_held == -1);
 
-			if (same_control && same_action && mod_buffered && held_margin) {
+			if (same_control && same_action && mod_inputted && held_margin) {
 				punch.end();
 				punch = punches[j];
 				punch.start();
