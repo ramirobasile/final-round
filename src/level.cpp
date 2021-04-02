@@ -12,6 +12,8 @@ std::vector<sf::IntRect> fr::Level::geometry() {
 }
 
 void fr::Level::draw(sf::RenderWindow &window) {
+	window.draw(sf::Sprite(background));
+
 	// Debug
 	if (config.getBool("debug", "draw_geometry", false)) {
 		sf::RectangleShape left_shape(sf::Vector2f(left.width, left.height));

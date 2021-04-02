@@ -7,11 +7,12 @@
 namespace fr {
 
 struct Level {
-	sf::IntRect left;
-	sf::IntRect right;
-
 	std::vector<sf::IntRect> geometry();
 	void draw(sf::RenderWindow &window);
+
+	sf::IntRect left;
+	sf::IntRect right;
+	sf::Texture background;
 };
 
 } // namespace fr

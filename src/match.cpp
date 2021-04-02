@@ -29,9 +29,14 @@ fr::Match::Match() {
 	time_text.setCharacterSize(32);
 
 	// Level
-	level = Level{left, right};
+	sf::Texture ring;
+	if (!ring.loadFromFile("assets/ring.png"))
+		std::cout << "Error loading texture" << std::endl;
+
 	sf::IntRect left(0, 224, 16, 128);
 	sf::IntRect right(640 - 16, 224, 16, 128);
+
+	level = Level{left, right, ring};
 	
 	// Player 1
 	Device device = (Device)config.getInt("player1_controls", "device", 0);
