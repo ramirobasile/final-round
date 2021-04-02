@@ -17,14 +17,8 @@
 #include "utils.hpp"
 
 // Debug
-sf::Text p1_hp_text;
-sf::Text p2_hp_text;
-sf::Text p1_mov_text;
-sf::Text p2_mov_text;
-sf::Text p1_punch_text;
-sf::Text p2_punch_text;
-sf::Text p1_input_text;
-sf::Text p2_input_text;
+sf::Text p1_info;
+sf::Text p2_info;
 
 fr::Match::Match() {
 	time_text.setFont(font);
@@ -78,22 +72,10 @@ fr::Match::Match() {
 			animations, stats);
 
 	// Debug
-	p1_hp_text.setFont(font);
-	p1_hp_text.setCharacterSize(16);
-	p2_hp_text.setFont(font);
-	p2_hp_text.setCharacterSize(16);
-	p1_mov_text.setFont(font);
-	p1_mov_text.setCharacterSize(16);
-	p2_mov_text.setFont(font);
-	p2_mov_text.setCharacterSize(16);
-	p1_punch_text.setFont(font);
-	p1_punch_text.setCharacterSize(16);
-	p2_punch_text.setFont(font);
-	p2_punch_text.setCharacterSize(16);
-	p1_input_text.setFont(font);
-	p1_input_text.setCharacterSize(16);
-	p2_input_text.setFont(font);
-	p2_input_text.setCharacterSize(16);
+	p1_info.setFont(font);
+	p1_info.setCharacterSize(16);
+	p2_info.setFont(font);
+	p2_info.setCharacterSize(16);
 }
 
 void fr::Match::update() {
@@ -110,17 +92,25 @@ void fr::Match::update() {
 
 	// Debug
 	if (config.getBool("debug", "draw_info", false)) {
-		p1_hp_text.setString("HP: " + std::to_string(player1.health) + "/"
-				+ std::to_string(player1.max_health));
-		p2_hp_text.setString("HP: " + std::to_string(player2.health) + "/"
-				+ std::to_string(player2.max_health));
-		p1_mov_text.setString("Movement: " + std::to_string((int)player1.state.movement));
-		p2_mov_text.setString("Movement: " + std::to_string((int)player2.state.movement));
-		p1_punch_text.setString("Punch: " + std::to_string(player1.state.punch.progress));
-		p2_punch_text.setString("Punch: " + std::to_string(player2.state.punch.progress));
+		std::string p1_str;
+		p1_str += "HP: " + std::to_string(player1.health) + "/"
+				+ std::to_string(player1.max_health);
+		p1_str += "\nMovement: " + std::to_string((int)player1.state.movement);
+		p1_str += "\nPunch: " + std::to_string(player1.state.punch.progress);
+		p1_str += "\nInputs:";
+		for (int i = 0; i < player1.inputs.size(); ++i)
+			p1_str += "\n* " + (std::string)player1.inputs[i];
+		p1_info.setString(p1_str);
 
-		//for (int i = 0; i < player1.inputs.size(); ++i)
-
+		std::string p2_str;
+		p2_str += "HP: " + std::to_string(player2.health) + "/"
+				+ std::to_string(player2.max_health);
+		p2_str += "\nMovement: " + std::to_string((int)player2.state.movement);
+		p2_str += "\nPunch: " + std::to_string(player2.state.punch.progress);
+		p2_str += "\nInputs:";
+		for (int i = 0; i < player2.inputs.size(); ++i)
+			p2_str += "\n* " + (std::string)player2.inputs[i];
+		p2_info.setString(p2_str);
 	}
 }
 
@@ -137,17 +127,9 @@ void fr::Match::draw(sf::RenderWindow &window) {
 
 	// Debug
 	if (config.getBool("debug", "draw_info", false)) {
-		p1_hp_text.setPosition(16, 64);
-		window.draw(p1_hp_text);
-		p2_hp_text.setPosition(640 - 16 - p2_hp_text.getLocalBounds().width, 64);
-		window.draw(p2_hp_text);
-		p1_mov_text.setPosition(16, 80);
-		window.draw(p1_mov_text);
-		p2_mov_text.setPosition(640 - 16 - p2_mov_text.getLocalBounds().width, 80);
-		window.draw(p2_mov_text);
-		p1_punch_text.setPosition(16, 96);
-		window.draw(p1_punch_text);
-		p2_punch_text.setPosition(640 - 16 - p2_punch_text.getLocalBounds().width, 96);
-		window.draw(p2_punch_text);
+		p1_info.setPosition(16, 64);
+		window.draw(p1_info);
+		p2_info.setPosition(640 - 16 - p2_info.getLocalBounds().width, 64);
+		window.draw(p2_info);
 	}
 }

@@ -16,7 +16,7 @@ fr::Input::operator std::string() const {
 
 	return "Control " + std::to_string((int)control)
 			+ ", action " + std::to_string((int)action)
-			+ ", held for " + stream.str() + " seconds";
+			+ ", held " + stream.str();
 }
 
 void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buffer,

@@ -21,6 +21,8 @@ class Player {
 	int health;
 	int max_health;
 	State state;
+	std::vector<Input> inputs;
+	std::vector<Input> buffer;
 
 	Player();
 	Player(int index, int direction, Device input_dev,
@@ -42,8 +44,6 @@ class Player {
 	private:
 	Device input_dev;
 	std::vector<int> controls;
-	std::vector<Input> inputs;
-	std::vector<Input> buffer;
 	float buffer_ttl;
 	sf::Vector2f velocity;
 	sf::IntRect head_hurtbox;
