@@ -26,7 +26,7 @@ class State {
 	bool guard_low = false;
 
 	void update(std::vector<Input> inputs, std::vector<Input> buffer,
-			std::vector<Punch> punches);
+			std::vector<Punch> punches, float dt);
 	bool punching();
 	bool guarding();
 

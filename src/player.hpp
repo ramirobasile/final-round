@@ -30,16 +30,21 @@ class Player {
 			sf::Texture spritesheet, std::vector<Animation> animations,
 			Stats stats);
 
-	void update(std::vector<sf::IntRect> geometry, fr::Player &opponent);
+	void update(float dt, int global_time, std::vector<sf::IntRect> geometry,
+			fr::Player &opponent);
 	void draw(sf::RenderWindow &window);
 	void takeDamage(int damage);
 	void takePermaDamage(int damage);
-	void takeHeadHit(fr::Punch punch);
-	void takeBodyHit(fr::Punch punch);
+	void takeHit(fr::Punch punch, bool head);
 	sf::Vector2f position() const;
 	sf::Vector2f size() const;
 	sf::IntRect headHurtbox() const;
 	sf::IntRect bodyHurtbox() const;
+	void logState(int global_time);
+	void logInputs(int global_time);
+	void drawDebugGeometry(sf::RenderWindow &window);
+	void drawDebugHurtboxes(sf::RenderWindow &window);
+	void drawDebugHitboxes(sf::RenderWindow &window);
 
 	private:
 	Device input_dev;
@@ -54,7 +59,6 @@ class Player {
 	State last_state;
 	Stats stats;
 	std::vector<fr::Punch> punches;
-	float regen_timer = 0;
 
 	void updateVelocity(sf::Vector2f &velocity, State state, State last_state,
 			Stats stats);

@@ -5,10 +5,9 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
-#include "main.hpp"
 #include "utils.hpp"
 
-void fr::updatePosition(sf::IntRect &bounds, sf::Vector2f velocity) {
+void fr::updatePosition(sf::IntRect &bounds, sf::Vector2f velocity, float dt) {
 	// Random math necessary to avoid weird rounding errors
 	bounds.left += sign(velocity.x) * (int)std::abs(velocity.x * dt);
 }

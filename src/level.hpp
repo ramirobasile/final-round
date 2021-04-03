@@ -9,6 +9,7 @@ namespace fr {
 struct Level {
 	std::vector<sf::IntRect> geometry();
 	void draw(sf::RenderWindow &window);
+	void drawDebugGeometry(sf::RenderWindow &window);
 
 	sf::IntRect left;
 	sf::IntRect right;

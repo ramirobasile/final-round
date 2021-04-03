@@ -8,7 +8,6 @@
 
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
-#include "main.hpp"
 
 fr::Input::operator std::string() const {
 	std::stringstream stream;
@@ -20,7 +19,7 @@ fr::Input::operator std::string() const {
 }
 
 void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buffer,
-		float buffer_ttl, std::vector<int> controls) {
+		float buffer_ttl, std::vector<int> controls, float dt) {
 	std::vector<Input> new_inputs;
 
 	for (int i = 0; i < controls.size(); ++i) {
@@ -50,12 +49,13 @@ void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buf
 
 // TODO Joystick
 void fr::updateInputs(int joytstick, std::vector<fr::Input> &inputs,
-		std::vector<fr::Input> buffer, float buffer_ttl, std::vector<int> controls) {
+		std::vector<fr::Input> buffer, float buffer_ttl,
+		std::vector<int> controls, float dt) {
 }
 
 // TODO Explain
 void fr::updateBuffer(std::vector<fr::Input> &buffer,
-		float &buffer_ttl, std::vector<fr::Input> inputs) {
+		float &buffer_ttl, std::vector<fr::Input> inputs, float dt) {
 	buffer_ttl -= dt;
 
 	if (buffer_ttl < 0) {

@@ -3,15 +3,17 @@
 #include <iostream>
 #include <vector>
 
-#include "main.hpp"
 #include "input.hpp"
 #include "punch.hpp"
 #include "physics.hpp"
 
-void fr::State::update(std::vector<fr::Input> inputs,
-		std::vector<fr::Input> buffer, std::vector<fr::Punch> punches) {
+void fr::State::update(std::vector<fr::Input> inputs, std::vector<fr::Input> buffer,
+		std::vector<fr::Punch> punches, float dt) {
 	if (punching())
 		punch.progress += dt;
+
+	guard_high = false;
+	guard_low = false;
 
 	for (int i = 0; i < inputs.size(); ++i) {
 		Input input = inputs[i];
@@ -39,6 +41,13 @@ void fr::State::update(std::vector<fr::Input> inputs,
 
 		if (input.control == Control::right)
 			movement = Movement::walk_r;
+
+		// Guard
+		if (input.control == Control::up && input.action == Action::hold)
+			guard_high = true;
+
+		if (input.control == Control::down && input.action == Action::hold)
+			guard_low = true;
 
 		// Idle
 		if (input.action == Action::release)

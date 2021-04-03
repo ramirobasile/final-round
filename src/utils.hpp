@@ -1,6 +1,22 @@
 #pragma once
 
+#include <vector>
+#include <iostream>
+#include <iomanip>
 #include <string>
+#include <sstream>
 
-std::string getGlobalTime();
-int sign(int n);
+inline std::string fillString(std::string str, int w, char fill) {
+	std::stringstream stream;
+	stream << std::setw(w) << std::setfill(fill) << str;
+	return stream.str();
+}
+
+// Why cmath doesn't have this is beyond me
+inline int sign(int n) {
+	if (n > 0)
+		return 1;
+	if (n < 0)
+		return -1;
+	return 0;
+}
