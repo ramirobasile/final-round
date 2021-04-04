@@ -9,7 +9,7 @@
 
 void fr::State::update(std::vector<fr::Input> inputs, std::vector<fr::Input> buffer,
 		std::vector<fr::Punch> punches, float dt) {
-	if (punching())
+	if (isPunching())
 		punch.progress += dt;
 
 	guard_high = false;
@@ -19,7 +19,7 @@ void fr::State::update(std::vector<fr::Input> inputs, std::vector<fr::Input> buf
 		Input input = inputs[i];
 
 		// Punch
-		for (int j = 0; j < punches.size() && !punching(); ++j) {
+		for (int j = 0; j < punches.size() && !isPunching(); ++j) {
 			bool same_control = input.control == punches[j].control;
 			bool same_action = input.action == punches[j].action;
 			// TODO Change to has input rather than input buffered
@@ -55,10 +55,10 @@ void fr::State::update(std::vector<fr::Input> inputs, std::vector<fr::Input> buf
 	}
 }
 
-bool fr::State::punching() {
-	return !punch.done();
+bool fr::State::isPunching() {
+	return !punch.isDone();
 }
 
-bool fr::State::guarding() {
+bool fr::State::isGuarding() {
 	return guard_high || guard_low;
 }

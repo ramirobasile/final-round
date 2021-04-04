@@ -36,10 +36,10 @@ class Player {
 	void takeDamage(int damage);
 	void takePermaDamage(int damage);
 	void takeHit(fr::Punch punch, bool head);
-	sf::Vector2f position() const;
-	sf::Vector2f size() const;
-	sf::IntRect headHurtbox() const;
-	sf::IntRect bodyHurtbox() const;
+	sf::Vector2f getPosition() const;
+	sf::Vector2f getSize() const;
+	sf::IntRect getHeadHurtbox() const;
+	sf::IntRect getBodyHurtbox() const;
 	void logState(int global_time);
 	void logInputs(int global_time);
 	void drawDebugGeometry(sf::RenderWindow &window);
@@ -59,6 +59,7 @@ class Player {
 	State last_state;
 	Stats stats;
 	std::vector<fr::Punch> punches;
+	float tt_regen;
 
 	void updateVelocity(sf::Vector2f &velocity, State state, State last_state,
 			Stats stats);

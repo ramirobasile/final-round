@@ -27,8 +27,8 @@ class State {
 
 	void update(std::vector<Input> inputs, std::vector<Input> buffer,
 			std::vector<Punch> punches, float dt);
-	bool punching();
-	bool guarding();
+	bool isPunching();
+	bool isGuarding();
 
 	private:
 	void onHold(Input input, std::vector<Input> buffer);

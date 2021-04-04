@@ -52,28 +52,29 @@ void fr::Player::update(float dt, int global_time,
 	last_state = state;
 	state.update(inputs, buffer, punches, dt);
 
-	regen_timer += dt;
-	if (!state.punching() && !state.guarding() && regen_timer > stats.regen_rate) {
+	tt_regen += dt;
+	if (!state.isPunching() && !state.isGuarding() 
+			&& tt_regen > stats.regen_rate) {
 		takeDamage(-stats.health_regen);
-		regen_timer = 0;
+		tt_regen = 0;
 	}
 
 	// Interrupt punches when obstructed
 	sf::IntRect clearbox = state.punch.getClearbox(bounds, direction);
-	bool obstructed = clearbox.intersects(opponent.headHurtbox())
-			|| clearbox.intersects(opponent.bodyHurtbox());
-	if (state.punch.interruptible() && obstructed)
+	bool obstructed = clearbox.intersects(opponent.getHeadHurtbox())
+			|| clearbox.intersects(opponent.getBodyHurtbox());
+	if (state.punch.canInterrupt() && obstructed)
 		state.punch.interrupt();
 
-	if (last_state.punch.interruptible() && !state.punch.interruptible())
+	if (last_state.punch.canInterrupt() && !state.punch.canInterrupt())
 		takeDamage(state.punch.self_damage);
 
 	// Hit opponent
 	sf::IntRect hitbox = state.punch.getHitbox(bounds, direction);
-	if (state.punch.active()) {
-		if (hitbox.intersects(opponent.bodyHurtbox()))
+	if (state.punch.isActive()) {
+		if (hitbox.intersects(opponent.getBodyHurtbox()))
 			opponent.takeHit(state.punch, false);
-		else if (hitbox.intersects(opponent.headHurtbox()))
+		else if (hitbox.intersects(opponent.getHeadHurtbox()))
 			opponent.takeHit(state.punch, true);
 	}
 
@@ -109,15 +110,15 @@ void fr::Player::takeHit(fr::Punch punch, bool head) {
 	}
 }
 
-sf::Vector2f fr::Player::position() const {
+sf::Vector2f fr::Player::getPosition() const {
 	return sf::Vector2f(bounds.left, bounds.top);
 }
 
-sf::Vector2f fr::Player::size() const {
+sf::Vector2f fr::Player::getSize() const {
 	return sf::Vector2f(bounds.width, bounds.height);
 }
 
-sf::IntRect fr::Player::headHurtbox() const {
+sf::IntRect fr::Player::getHeadHurtbox() const {
 	int left;
 	if (direction == 1)
 		left = bounds.left + head_hurtbox.left;
@@ -127,7 +128,7 @@ sf::IntRect fr::Player::headHurtbox() const {
 	return sf::IntRect(left, top, head_hurtbox.width, head_hurtbox.height);
 }
 
-sf::IntRect fr::Player::bodyHurtbox() const {
+sf::IntRect fr::Player::getBodyHurtbox() const {
 	int left;
 	if (direction == 1)
 		left = bounds.left + body_hurtbox.left;
@@ -143,12 +144,12 @@ void fr::Player::updateVelocity(sf::Vector2f &velocity, fr::State state,
 
 	switch (state.movement) {
 		case fr::Movement::walk_l:
-			if (!state.punching() || state.punch.interruptible())
+			if (!state.isPunching() || state.punch.canInterrupt())
 				velocity.x = -stats.walk_speed;
 			break;
 
 		case fr::Movement::walk_r:
-			if (!state.punching() || state.punch.interruptible())
+			if (!state.isPunching() || state.punch.canInterrupt())
 				velocity.x = stats.walk_speed;
 			break;
 	}
@@ -161,10 +162,14 @@ void fr::Player::logState(int global_time) {
 	std::string pre = "[" + fillString(std::to_string(global_time), 8, '0')
 			+ "] [P" +  std::to_string(index) + "] ";
 
-	if (state.movement != last_state.movement)
-		std::cout << pre + "Movement: " + std::to_string((int)state.movement) << std::endl;
-	if (state.punching())
-		std::cout << pre + "Punch: " + std::to_string(state.punch.progress) << std::endl;
+	if (state.movement != last_state.movement) {
+		std::cout << pre + "Movement: " + std::to_string((int)state.movement)
+				<< std::endl;
+	}
+	if (state.isPunching()) {
+		std::cout << pre + "Punch: " + std::to_string(state.punch.progress)
+				<< std::endl;
+	}
 }
 
 void fr::Player::logInputs(int global_time) {
@@ -179,28 +184,30 @@ void fr::Player::logInputs(int global_time) {
 }
 
 void fr::Player::drawDebugGeometry(sf::RenderWindow &window) {
-	sf::RectangleShape shape(size());
-	shape.setPosition(position());
+	sf::RectangleShape shape(getSize());
+	shape.setPosition(getPosition());
 	shape.setFillColor(sf::Color::Cyan);
 	window.draw(shape);
 }
 
 void fr::Player::drawDebugHurtboxes(sf::RenderWindow &window) {
-	sf::RectangleShape head(sf::Vector2f(headHurtbox().width, headHurtbox().height));
-	head.setPosition(headHurtbox().left, headHurtbox().top);
+	sf::RectangleShape head(sf::Vector2f(getHeadHurtbox().width, 
+			getHeadHurtbox().height));
+	head.setPosition(getHeadHurtbox().left, getHeadHurtbox().top);
 	head.setFillColor(sf::Color::Yellow);
 	window.draw(head);
 
-	sf::RectangleShape body(sf::Vector2f(bodyHurtbox().width, bodyHurtbox().height));
-	body.setPosition(bodyHurtbox().left, bodyHurtbox().top);
+	sf::RectangleShape body(sf::Vector2f(getBodyHurtbox().width, 
+			getBodyHurtbox().height));
+	body.setPosition(getBodyHurtbox().left, getBodyHurtbox().top);
 	body.setFillColor(sf::Color::Yellow);
 	window.draw(body);
 }
 
 void fr::Player::drawDebugHitboxes(sf::RenderWindow &window) {
-	if (state.punching()) {
+	if (state.isPunching()) {
 		sf::Color color = sf::Color::Blue;
-		if (state.punch.active())
+		if (state.punch.isActive())
 			color = sf::Color::Red;
 
 		sf::IntRect hitbox = state.punch.getHitbox(bounds, direction);

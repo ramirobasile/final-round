@@ -35,19 +35,19 @@ void fr::Punch::end() {
 	progress = -1;
 }
 
-bool fr::Punch::interruptible() const {
-	return progress <= interrupt_end && !done();
+bool fr::Punch::canInterrupt() const {
+	return progress <= interrupt_end && !isDone();
 }
 
-bool fr::Punch::active() const {
-	return progress > hitbox_begin && !recovering() && !done();
+bool fr::Punch::isActive() const {
+	return progress > hitbox_begin && !isRecovering() && !isDone();
 }
 
-bool fr::Punch::recovering() const {
-	return progress > hitbox_end && !done();
+bool fr::Punch::isRecovering() const {
+	return progress > hitbox_end && !isDone();
 }
 
-bool fr::Punch::done() const {
+bool fr::Punch::isDone() const {
 	return progress > recovery_end || progress == -1;
 }
 

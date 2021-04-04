@@ -6,11 +6,16 @@
 
 namespace fr {
 
-struct Level {
-	std::vector<sf::IntRect> geometry();
+class Level {
+	public:
+	Level();
+	Level(sf::IntRect left, sf::IntRect right, sf::Texture background);
+
 	void draw(sf::RenderWindow &window);
 	void drawDebugGeometry(sf::RenderWindow &window);
+	std::vector<sf::IntRect> getGeometry();
 
+	private:
 	sf::IntRect left;
 	sf::IntRect right;
 	sf::Texture background;

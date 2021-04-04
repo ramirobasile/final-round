@@ -5,7 +5,13 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 		
-std::vector<sf::IntRect> fr::Level::geometry() {
+fr::Level::Level() {} // Empty constructor
+
+fr::Level::Level(sf::IntRect left, sf::IntRect right, sf::Texture background)
+		: left(left), right(right), background(background) {
+}
+
+std::vector<sf::IntRect> fr::Level::getGeometry() {
 	return std::vector<sf::IntRect> {left, right};
 }
 

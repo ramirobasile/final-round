@@ -20,10 +20,10 @@ class Punch {
 	void start();
 	void interrupt();
 	void end();
-	bool interruptible() const;
-	bool active() const;
-	bool recovering() const;
-	bool done() const;
+	bool canInterrupt() const;
+	bool isActive() const;
+	bool isRecovering() const;
+	bool isDone() const;
 	sf::IntRect getHitbox(sf::IntRect relative_to, int direction) const;
 	sf::IntRect getClearbox(sf::IntRect relative_to, int direction) const;
 

@@ -13,6 +13,7 @@
 #include "player.hpp"
 #include "input.hpp"
 #include "stats.hpp"
+#include "sprite.hpp"
 #include "utils.hpp"
 
 sf::Font font;
@@ -34,7 +35,7 @@ fr::Match::Match(fr::ConfigFile config) {
 	sf::IntRect left(0, 224, 16, 128);
 	sf::IntRect right(640 - 16, 224, 16, 128);
 
-	level = Level{left, right, ring};
+	level = Level(left, right, ring);
 	
 	// Player 1
 	Device device = (Device)config.getInt("player1_controls", "device", 0);
@@ -87,8 +88,8 @@ void fr::Match::update(float dt, int global_time) {
 	std::string seconds = fillString(std::to_string((int)round_time % 60), 2, '0');
 	time_text.setString(minutes + ":" + seconds);
 
-	player1.update(dt, global_time, level.geometry(), player2);
-	player2.update(dt, global_time, level.geometry(), player1);
+	player1.update(dt, global_time, level.getGeometry(), player2);
+	player2.update(dt, global_time, level.getGeometry(), player1);
 }
 
 void fr::Match::draw(sf::RenderWindow &window) {
