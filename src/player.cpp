@@ -14,8 +14,6 @@
 #include "sprite.hpp"
 #include "utils.hpp"
 
-float regen_timer = 0;
-
 fr::Player::Player() {} // Empty constructor
 
 fr::Player::Player(int index, int direction, fr::Device input_dev,
@@ -98,13 +96,14 @@ void fr::Player::takePermaDamage(int damage) {
 	max_health = std::clamp(max_health - damage, 0, stats.max_health);
 }
 
-void fr::Player::takeHit(fr::Punch punch, bool head) {
+void fr::Player::takeHit(fr::Punch &punch, bool head) {
 	if (state.guard_high && head || state.guard_low) {
 		takeDamage(punch.block_damage);
 	} else {
 		takeDamage(punch.damage);
 		takePermaDamage(punch.perma_damage);
 	}
+	punch.interrupt();
 }
 
 sf::Vector2f fr::Player::getPosition() const {

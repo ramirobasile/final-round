@@ -6,9 +6,7 @@
 #include "SFML/Window.hpp"
 #include "input.hpp"
 
-// Empty constructor
-fr::Punch::Punch() {
-}
+fr::Punch::Punch() {} // Empty constructor
 
 fr::Punch::Punch(Control control, Action action, Control mod,
 		float min_held, float max_held, int damage, int perma_damage,
