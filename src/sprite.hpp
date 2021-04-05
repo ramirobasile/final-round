@@ -36,16 +36,13 @@ enum class Animations {
 
 class Animation {
 	public:
-	Animation(sf::Vector2i size, int top, int frames, bool loops);
+	Animation(int frames, bool loops);
 	
-	sf::IntRect getSubrect() const;
 	void nextFrame();
 	
-	sf::Vector2i size;
+	int frame = 0;
 	
 	private:
-	int frame = 0;
-	int top;
 	int frames;
 	bool loops;
 };
@@ -53,17 +50,19 @@ class Animation {
 class Sprite {
 	public:
 	Sprite();
-	Sprite(sf::Texture spritesheet, std::vector<Animation> animations, float fps);
+	Sprite(sf::Texture spritesheet, std::vector<Animation> animations, 
+			sf::Vector2i size, float fps);
 
 	void update(State state, State last_state, float dt);
 	void draw(sf::RenderWindow &window, sf::IntRect relative_to);
 	Animation &getAnimation();
 	
 	private:
-	Animations animation = Animations::idle;
 	sf::Texture spritesheet;
-	float fps;
 	std::vector<Animation> animations;
+	sf::Vector2i size;
+	float fps;
+	Animations animation = Animations::idle;
 	float progress = 0;
 };
 

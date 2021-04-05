@@ -52,16 +52,16 @@ fr::Match::Match(fr::ConfigFile config) {
 	sf::Texture spritesheet;
 	if (!spritesheet.loadFromFile("assets/red_spritesheet.png"));
 	std::vector<fr::Animation> animations {
-		Animation(sf::Vector2i(256, 256), 256 * 0, 1, true),
-		Animation(sf::Vector2i(256, 256), 256 * 1, 1, true),
-		Animation(sf::Vector2i(256, 256), 256 * 2, 1, true),
-		Animation(sf::Vector2i(256, 256), 256 * 3, 4, true),
-		Animation(sf::Vector2i(256, 256), 256 * 5, 4, true),
-		Animation(sf::Vector2i(256, 256), 256 * 6, 4, true),
-		Animation(sf::Vector2i(256, 256), 256 * 7, 4, true),
-		Animation(sf::Vector2i(256, 256), 256 * 8, 4, true),
-		Animation(sf::Vector2i(256, 256), 256 * 9, 4, true),
-		Animation(sf::Vector2i(256, 256), 256 * 10, 4, true),
+		Animation(1, true),
+		Animation(1, true),
+		Animation(1, true),
+		Animation(4, true),
+		Animation(4, true),
+		Animation(4, true),
+		Animation(4, true),
+		Animation(4, true),
+		Animation(4, true),
+		Animation(4, false),
 	};
 	fr::Stats stats;
 

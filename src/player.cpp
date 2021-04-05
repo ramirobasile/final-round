@@ -26,7 +26,7 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 	head_hurtbox = sf::IntRect(58, 6, 32, 32);
 	body_hurtbox = sf::IntRect(46, 38, 32, 32);
 
-	sprite = Sprite(spritesheet, animations, 8);
+	sprite = Sprite(spritesheet, animations, sf::Vector2i(256, 256), 8);
 
 	punches = default_punches;
 
