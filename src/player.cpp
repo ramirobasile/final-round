@@ -9,29 +9,26 @@
 #include "input.hpp"
 #include "physics.hpp"
 #include "state.hpp"
-#include "animation.hpp"
 #include "punch.hpp"
 #include "stats.hpp"
+#include "sprite.hpp"
 #include "utils.hpp"
 
 float regen_timer = 0;
 
-// Empty constructor
-fr::Player::Player() {
-}
+fr::Player::Player() {} // Empty constructor
 
 fr::Player::Player(int index, int direction, fr::Device input_dev,
 		std::vector<int> controls, sf::Vector2f position, 
 		sf::Texture spritesheet, std::vector<fr::Animation> animations,
 		fr::Stats stats)
 		: index(index), direction(direction), input_dev(input_dev), 
-		controls(controls), animations(animations), stats(stats) {
+		controls(controls), stats(stats) {
 	bounds = sf::IntRect(position.x, position.y, 104, 128);
-	head_hurtbox = sf::IntRect(64, 0, 32, 32);
-	body_hurtbox = sf::IntRect(48, 32, 32, 32);
+	head_hurtbox = sf::IntRect(58, 6, 32, 32);
+	body_hurtbox = sf::IntRect(46, 38, 32, 32);
 
-	sprite.setTexture(spritesheet);
-	sprite.setTextureRect(bounds);
+	sprite = Sprite(spritesheet, animations, 8);
 
 	punches = default_punches;
 
@@ -78,6 +75,9 @@ void fr::Player::update(float dt, int global_time,
 			opponent.takeHit(state.punch, true);
 	}
 
+	// Sprite
+	sprite.update(state, last_state, dt);
+
 	// Physics
 	updateVelocity(velocity, state, last_state, stats);
 	updatePosition(bounds, velocity, dt);
@@ -87,10 +87,7 @@ void fr::Player::update(float dt, int global_time,
 }
 
 void fr::Player::draw(sf::RenderWindow &window) {
-	//Animation animaton = animations[animation];
-
-	//sprite.setTextureRect(sf::IntRect(animaton.frame * animaton.width,
-	//		animation * animaton.height, animaton.width, animaton.height));
+	sprite.draw(window, bounds);
 }
 
 void fr::Player::takeDamage(int damage) {

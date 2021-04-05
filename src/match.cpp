@@ -32,8 +32,8 @@ fr::Match::Match(fr::ConfigFile config) {
 	sf::Texture ring;
 	if (!ring.loadFromFile("assets/ring.png"));
 
-	sf::IntRect left(0, 224, 16, 128);
-	sf::IntRect right(640 - 16, 224, 16, 128);
+	sf::IntRect left(16, 224, 16, 128);
+	sf::IntRect right(640 - 32, 224, 16, 128);
 
 	level = Level(left, right, ring);
 	
@@ -50,8 +50,19 @@ fr::Match::Match(fr::ConfigFile config) {
 	};
 	sf::Vector2f spawn_point = sf::Vector2f(32 + 128, 224);
 	sf::Texture spritesheet;
-	if (!spritesheet.loadFromFile("assets/placeholder.png"));
-	std::vector<fr::Animation> animations;
+	if (!spritesheet.loadFromFile("assets/red_spritesheet.png"));
+	std::vector<fr::Animation> animations {
+		Animation(sf::Vector2i(256, 256), 256 * 0, 1, true),
+		Animation(sf::Vector2i(256, 256), 256 * 1, 1, true),
+		Animation(sf::Vector2i(256, 256), 256 * 2, 1, true),
+		Animation(sf::Vector2i(256, 256), 256 * 3, 4, true),
+		Animation(sf::Vector2i(256, 256), 256 * 5, 4, true),
+		Animation(sf::Vector2i(256, 256), 256 * 6, 4, true),
+		Animation(sf::Vector2i(256, 256), 256 * 7, 4, true),
+		Animation(sf::Vector2i(256, 256), 256 * 8, 4, true),
+		Animation(sf::Vector2i(256, 256), 256 * 9, 4, true),
+		Animation(sf::Vector2i(256, 256), 256 * 10, 4, true),
+	};
 	fr::Stats stats;
 
 	player1 = Player(1, 1, device, controls, spawn_point, spritesheet,

@@ -8,7 +8,7 @@
 #include "physics.hpp"
 #include "state.hpp"
 #include "punch.hpp"
-#include "animation.hpp"
+#include "sprite.hpp"
 #include "stats.hpp"
 
 namespace fr {
@@ -53,8 +53,7 @@ class Player {
 	sf::Vector2f velocity;
 	sf::IntRect head_hurtbox;
 	sf::IntRect body_hurtbox;
-	sf::Sprite sprite;
-	std::vector<Animation> animations;
+	fr::Sprite sprite;
 	int animation;
 	State last_state;
 	Stats stats;
