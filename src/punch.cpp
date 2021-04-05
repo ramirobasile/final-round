@@ -81,31 +81,31 @@ std::vector<fr::Punch> fr::default_punches = {
 
 	// Body cross
 	Punch(Control::a, Action::hold, Control::down, PRESS_END, PRESS_END + 0.1f,
-			2, 1, 1, 1, 0.175f, 0.3f, 0.35f, 0.4f,
+			2, 1, 1, 1, 0.175f, 0.3f, 0.35f, 0.55f,
 			sf::IntRect(96, 40, 72, 24), sf::IntRect(96, 40, 20, 24)),
 
 	// Head cross
 	Punch(Control::a, Action::hold, Control::none, PRESS_END, PRESS_END + 0.1f,
-			4, 0, 1, 1, 0.175f, 0.3f, 0.35f, 0.4f,
+			4, 0, 1, 1, 0.175f, 0.3f, 0.35f, 0.5f,
 			sf::IntRect(96, 8, 72, 24), sf::IntRect(96, 8, 20, 24)),
 
 	// Body upper
 	Punch(Control::b, Action::release, Control::down, 0, PRESS_END,
-			3, 2, 1, 1, 0.15f, 0.325f, 0.375f, 0.525f,
+			3, 2, 1, 1, 0.15f, 0.325f, 0.375f, 0.625f,
 			sf::IntRect(96, 40, 48, 24), sf::IntRect(0, 0, 0, 0)),
 
 	// Head upper
 	Punch(Control::b, Action::release, Control::none, 0, PRESS_END,
-			4, 0, 1, 1, 0.15f, 0.325f, 0.375f, 0.525f,
+			4, 0, 1, 1, 0.15f, 0.325f, 0.375f, 0.625f,
 			sf::IntRect(96, 8, 48, 24), sf::IntRect(0, 0, 0, 0)),
 
 	// Body hook
 	Punch(Control::b, Action::hold, Control::down, PRESS_END, PRESS_END + 0.1f,
-			2, 2, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.5125f,
+			2, 2, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.75f,
 			sf::IntRect(128, 40, 32, 24), sf::IntRect(0, 0, 0, 0)),
 
 	// Head hook
 	Punch(Control::b, Action::hold, Control::none, PRESS_END, PRESS_END + 0.1f,
-			6, 0, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.5125f,
+			6, 0, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.75f,
 			sf::IntRect(128, 8, 32, 24), sf::IntRect(0, 0, 0, 0)),
 };
