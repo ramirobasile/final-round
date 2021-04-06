@@ -16,17 +16,19 @@
 #include "sprite.hpp"
 #include "utils.hpp"
 
-sf::Font font;
+sf::Font regular;
+sf::Font thin;
 
 // Debug
 sf::Text p1_info;
 sf::Text p2_info;
 
 fr::Match::Match(fr::ConfigFile config) {
-	if (!font.loadFromFile("assets/opensans.ttf"));
+	if (!regular.loadFromFile("assets/unscii-8.pcf"));
+	if (!thin.loadFromFile("assets/unscii-8-thin.pcf"));
 
-	time_text.setFont(font);
-	time_text.setCharacterSize(32);
+	time_text.setFont(regular);
+	time_text.setCharacterSize(8);
 
 	// Level
 	sf::Texture ring;
@@ -85,10 +87,10 @@ fr::Match::Match(fr::ConfigFile config) {
 			animations, stats);
 
 	// Debug
-	p1_info.setFont(font);
-	p1_info.setCharacterSize(16);
-	p2_info.setFont(font);
-	p2_info.setCharacterSize(16);
+	p1_info.setFont(thin);
+	p1_info.setCharacterSize(8);
+	p2_info.setFont(thin);
+	p2_info.setCharacterSize(8);
 }
 
 void fr::Match::update(float dt, int global_time) {
