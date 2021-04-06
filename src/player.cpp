@@ -47,9 +47,10 @@ void fr::Player::update(float dt, int global_time,
 	last_state = state;
 	state.update(inputs, buffer, punches, dt);
 
-	tt_regen += dt;
-	if (!state.isPunching() && !state.isGuarding() 
-			&& tt_regen > stats.regen_rate) {
+	if (!state.isPunching() && !state.isGuarding())
+		tt_regen += dt;
+	
+	if (tt_regen > stats.regen_rate) {
 		takeDamage(-stats.health_regen);
 		tt_regen = 0;
 	}
