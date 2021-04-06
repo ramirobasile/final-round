@@ -22,11 +22,11 @@ fr::Player::Player(int index, int direction, fr::Device input_dev,
 		fr::Stats stats)
 		: index(index), direction(direction), input_dev(input_dev), 
 		controls(controls), stats(stats) {
-	bounds = sf::IntRect(position.x, position.y, 104, 128);
-	head_hurtbox = sf::IntRect(58, 6, 32, 32);
-	body_hurtbox = sf::IntRect(46, 38, 32, 32);
+	bounds = sf::IntRect(position.x, position.y, 52, 64);
+	head_hurtbox = sf::IntRect(29, 3, 16, 16);
+	body_hurtbox = sf::IntRect(23, 19, 16, 16);
 
-	sprite = Sprite(spritesheet, animations, sf::Vector2i(256, 256), 8);
+	sprite = Sprite(spritesheet, animations, sf::Vector2i(128, 128), 8);
 
 	punches = default_punches;
 

@@ -73,39 +73,39 @@ std::vector<fr::Punch> fr::default_punches = {
 	// Body jab
 	Punch(Control::a, Action::release, Control::down, 0, PRESS_END,
 			1, 0, 0, 1, 0.15f, 0.25f, 0.3f, 0.35f,
-			sf::IntRect(96, 40, 72, 24), sf::IntRect(96, 40, 20, 24)),
+			sf::IntRect(48, 20, 36, 12), sf::IntRect(48, 20, 10, 12)),
 	// Head jab
 	Punch(Control::a, Action::release, Control::none, 0, PRESS_END,
 			2, 0, 0, 1, 0.15f, 0.25f, 0.3f, 0.35f,
-			sf::IntRect(96, 8, 72, 24), sf::IntRect(96, 8, 20, 24)),
+			sf::IntRect(48, 4, 36, 12), sf::IntRect(48, 8, 10, 12)),
 
 	// Body cross
 	Punch(Control::a, Action::hold, Control::down, PRESS_END, PRESS_END + 0.1f,
 			2, 1, 1, 1, 0.175f, 0.3f, 0.35f, 0.55f,
-			sf::IntRect(96, 40, 72, 24), sf::IntRect(96, 40, 20, 24)),
+			sf::IntRect(48, 20, 36, 12), sf::IntRect(48, 20, 10, 12)),
 
 	// Head cross
 	Punch(Control::a, Action::hold, Control::none, PRESS_END, PRESS_END + 0.1f,
 			4, 0, 1, 1, 0.175f, 0.3f, 0.35f, 0.5f,
-			sf::IntRect(96, 8, 72, 24), sf::IntRect(96, 8, 20, 24)),
+			sf::IntRect(48, 4, 36, 12), sf::IntRect(48, 8, 10, 12)),
 
 	// Body upper
 	Punch(Control::b, Action::release, Control::down, 0, PRESS_END,
 			3, 2, 1, 1, 0.15f, 0.325f, 0.375f, 0.625f,
-			sf::IntRect(96, 40, 48, 24), sf::IntRect(0, 0, 0, 0)),
+			sf::IntRect(48, 20, 24, 12), sf::IntRect(0, 0, 0, 0)),
 
 	// Head upper
 	Punch(Control::b, Action::release, Control::none, 0, PRESS_END,
 			4, 0, 1, 1, 0.15f, 0.325f, 0.375f, 0.625f,
-			sf::IntRect(96, 8, 48, 24), sf::IntRect(0, 0, 0, 0)),
+			sf::IntRect(48, 4, 24, 12), sf::IntRect(0, 0, 0, 0)),
 
 	// Body hook
 	Punch(Control::b, Action::hold, Control::down, PRESS_END, PRESS_END + 0.1f,
 			2, 2, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.75f,
-			sf::IntRect(128, 40, 32, 24), sf::IntRect(0, 0, 0, 0)),
+			sf::IntRect(64, 20, 16, 12), sf::IntRect(0, 0, 0, 0)),
 
 	// Head hook
 	Punch(Control::b, Action::hold, Control::none, PRESS_END, PRESS_END + 0.1f,
 			6, 0, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.75f,
-			sf::IntRect(128, 8, 32, 24), sf::IntRect(0, 0, 0, 0)),
+			sf::IntRect(64, 4, 16, 12), sf::IntRect(0, 0, 0, 0)),
 };

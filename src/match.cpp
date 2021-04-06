@@ -32,8 +32,8 @@ fr::Match::Match(fr::ConfigFile config) {
 	sf::Texture ring;
 	if (!ring.loadFromFile("assets/ring.png"));
 
-	sf::IntRect left(16, 224, 16, 128);
-	sf::IntRect right(640 - 32, 224, 16, 128);
+	sf::IntRect left(8, 112, 8, 64);
+	sf::IntRect right(320 - 16, 112, 8, 64);
 
 	level = Level(left, right, ring);
 	
@@ -48,7 +48,7 @@ fr::Match::Match(fr::ConfigFile config) {
 		config.getInt("player1_controls", "b", -1),
 		config.getInt("player1_controls", "pause", -1),
 	};
-	sf::Vector2f spawn_point = sf::Vector2f(32 + 128, 224);
+	sf::Vector2f spawn_point = sf::Vector2f(16 + 64, 112);
 	sf::Texture spritesheet;
 	if (!spritesheet.loadFromFile("assets/red_spritesheet.png"));
 	std::vector<fr::Animation> animations {
@@ -79,7 +79,7 @@ fr::Match::Match(fr::ConfigFile config) {
 		config.getInt("player2_controls", "b", -1),
 		config.getInt("player2_controls", "pause", -1),
 	};
-	spawn_point = sf::Vector2f(640 - 32 - 128 * 2, 224);
+	spawn_point = sf::Vector2f(320 - 16 - 64 * 2, 112);
 
 	player2 = Player(2, -1, device, controls, spawn_point, spritesheet,
 			animations, stats);
@@ -110,8 +110,8 @@ void fr::Match::draw(sf::RenderWindow &window) {
 	player2.draw(window);
 
 	// TODO Un-hardcode
-	int middle = 320 - time_text.getLocalBounds().width / 2;
-	time_text.setPosition(middle, 32);
+	int middle = 160 - time_text.getLocalBounds().width / 2;
+	time_text.setPosition(middle, 16);
 	window.draw(time_text);
 }
 
@@ -165,8 +165,8 @@ void fr::Match::drawDebugInfo(sf::RenderWindow &window) {
 		p2_str += "\n* " + (std::string)player2.inputs[i];
 	p2_info.setString(p2_str);
 
-	p1_info.setPosition(16, 64);
+	p1_info.setPosition(8, 48);
 	window.draw(p1_info);
-	p2_info.setPosition(640 - 16 - p2_info.getLocalBounds().width, 64);
+	p2_info.setPosition(176, 48);
 	window.draw(p2_info);
 }
