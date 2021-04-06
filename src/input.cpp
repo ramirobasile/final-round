@@ -13,9 +13,8 @@ fr::Input::operator std::string() const {
 	std::stringstream stream;
 	stream << std::fixed << std::setprecision(2) << held;
 
-	return "Control " + std::to_string((int)control)
-			+ ", action " + std::to_string((int)action)
-			+ ", held " + stream.str();
+	return std::to_string((int)control) + " " + std::to_string((int)action)
+			+ " " + stream.str();
 }
 
 void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buffer,

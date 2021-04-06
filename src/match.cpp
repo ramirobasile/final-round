@@ -148,23 +148,21 @@ void fr::Match::drawDebugHitboxes(sf::RenderWindow &window) {
 
 void fr::Match::drawDebugInfo(sf::RenderWindow &window) {
 	std::string p1_str;
-	p1_str += "HP: " + std::to_string(player1.health) + "/"
+	p1_str += "HP:" + std::to_string(player1.health) + "/"
 			+ std::to_string(player1.max_health);
-	p1_str += "\nMovement: " + std::to_string((int)player1.state.movement);
-	p1_str += "\nPunch: " + std::to_string(player1.state.punch.progress);
-	p1_str += "\nInputs:";
+	p1_str += "\nMOV:" + std::to_string((int)player1.state.movement);
+	//p1_str += "\nPCH:" + std::to_string((int)player1.state.punch.progress);
 	for (int i = 0; i < player1.inputs.size(); ++i)
-		p1_str += "\n* " + (std::string)player1.inputs[i];
+		p1_str += "\n>" + (std::string)player1.inputs[i];
 	p1_info.setString(p1_str);
 
 	std::string p2_str;
-	p2_str += "HP: " + std::to_string(player2.health) + "/"
+	p2_str += "HP:" + std::to_string(player2.health) + "/"
 			+ std::to_string(player2.max_health);
-	p2_str += "\nMovement: " + std::to_string((int)player2.state.movement);
-	p2_str += "\nPunch: " + std::to_string(player2.state.punch.progress);
-	p2_str += "\nInputs:";
+	p2_str += "\nMOV:" + std::to_string((int)player2.state.movement);
+	//p2_str += "\nPCH:" + std::to_string((int)player2.state.punch.progress);
 	for (int i = 0; i < player2.inputs.size(); ++i)
-		p2_str += "\n* " + (std::string)player2.inputs[i];
+		p2_str += "\n>" + (std::string)player2.inputs[i];
 	p2_info.setString(p2_str);
 
 	p1_info.setPosition(8, 48);
