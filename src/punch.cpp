@@ -42,7 +42,7 @@ bool fr::Punch::isActive() const {
 }
 
 bool fr::Punch::isRecovering() const {
-	return progress > hitbox_end && !isDone();
+	return progress >= hitbox_end && !isDone();
 }
 
 bool fr::Punch::isDone() const {
