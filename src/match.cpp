@@ -52,23 +52,23 @@ fr::Match::Match(fr::ConfigFile config) {
 	};
 
 	sf::Vector2f spawn_point = sf::Vector2f(16 + 64, 112);
-	sf::Texture spritesheet;
-	if (!spritesheet.loadFromFile("assets/red_spritesheet.png"));
-	std::vector<fr::Animation> animations {
 
 	sf::Texture l_spritesheet;
 	l_spritesheet.loadFromFile("assets/red_l_spritesheet.png");
 	sf::Texture r_spritesheet;
 	r_spritesheet.loadFromFile("assets/red_r_spritesheet.png");
+	std::vector<Animation> animations {
 		Animation(1, true),
 		Animation(1, true),
 		Animation(1, true),
+
 		Animation(4, true),
 		Animation(4, true),
 		Animation(4, true),
 		Animation(4, true),
 		Animation(4, true),
 		Animation(4, true),
+
 		Animation(4, false),
 	};
 	Sprite sprite(l_spritesheet, r_spritesheet, animations,
