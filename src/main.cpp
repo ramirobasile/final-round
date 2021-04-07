@@ -13,8 +13,8 @@ int main() {
 	config.parse(std::ifstream("fr.cfg"));
 
 	int scale = config.getFloat("video", "scale", 1.f);
-	int width = config.getInt("video", "width", 320) * scale;
-	int height = config.getInt("video", "height", 240) * scale;
+	int width = 320 * scale;
+	int height = 240 * scale;
     sf::RenderWindow window (sf::VideoMode(width, height), "Final Round");
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, width, height));
