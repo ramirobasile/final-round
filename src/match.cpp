@@ -24,8 +24,12 @@ fr::Match::Match(fr::ConfigFile config) {
 	if (!regular.loadFromFile("assets/unscii-8.pcf"));
 	if (!thin.loadFromFile("assets/unscii-8-thin.pcf"));
 
-	time_text.setFont(regular);
-	time_text.setCharacterSize(8);
+	star.loadFromFile("assets/star.png");
+	left_star.loadFromFile("assets/left_star.png");
+	right_star.loadFromFile("assets/right_star.png");
+	nostar.loadFromFile("assets/nostar.png");
+	left_nostar.loadFromFile("assets/left_nostar.png");
+	right_nostar.loadFromFile("assets/right_nostar.png");
 
 	// Level
 	sf::Texture ring;
@@ -96,6 +100,10 @@ fr::Match::Match(fr::ConfigFile config) {
 
 	player2 = Player(2, -1, device, controls, spawn_point, sprite, stats);
 
+	// UI
+	time_text.setFont(regular);
+	time_text.setCharacterSize(8);
+
 	// Debug
 	p1_info.setFont(thin);
 	p1_info.setCharacterSize(8);
@@ -123,8 +131,39 @@ void fr::Match::draw(sf::RenderWindow &window) {
 
 	// TODO Un-hardcode
 	int middle = 160 - time_text.getLocalBounds().width / 2;
-	time_text.setPosition(middle, 16);
+	time_text.setPosition(middle, 12);
 	window.draw(time_text);
+	// Player 1 health
+	for (int i = 0; i < player1.max_health; i+=2) {
+		sf::Sprite sprite(nostar);
+		if (i ==  player1.max_health - 1)
+			sprite = sf::Sprite(right_nostar);
+		sprite.setPosition(136 - sprite.getTextureRect().width * (i / 2) - i, 24);
+		window.draw(sprite);
+	}
+	for (int i = 0; i < player1.health; i+=2) {
+		sf::Sprite sprite(star);
+		if (i ==  player1.health - 1)
+			sprite = sf::Sprite(right_star);
+		sprite.setPosition(136 - sprite.getTextureRect().width * (i / 2) - i, 24);
+		window.draw(sprite);
+	}
+
+	// Player 2 health
+	for (int i = 0; i < player2.max_health; i+=2) {
+		sf::Sprite sprite(nostar);
+		if (i ==  player2.max_health - 1)
+			sprite = sf::Sprite(left_nostar);
+		sprite.setPosition(172 + sprite.getTextureRect().width * (i / 2) + i, 24);
+		window.draw(sprite);
+	}
+	for (int i = 0; i < player2.health; i+=2) {
+		sf::Sprite sprite(star);
+		if (i ==  player2.health - 1)
+			sprite = sf::Sprite(left_star);
+		sprite.setPosition(172 + sprite.getTextureRect().width * (i / 2) + i, 24);
+		window.draw(sprite);
+	}
 }
 
 

@@ -30,6 +30,12 @@ class Match {
 	sf::Font regular;
 	sf::Font thin;
 	sf::Text time_text;
+	sf::Texture star;
+	sf::Texture left_star;
+	sf::Texture right_star;
+	sf::Texture nostar;
+	sf::Texture left_nostar;
+	sf::Texture right_nostar;
 };
 
 } // namespace fr
