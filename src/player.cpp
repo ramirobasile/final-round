@@ -199,15 +199,19 @@ void fr::Player::drawDebugHurtboxes(sf::RenderWindow &window) {
 }
 
 void fr::Player::drawDebugHitboxes(sf::RenderWindow &window) {
-	if (state.isPunching()) {
-		sf::Color color = sf::Color::Blue;
-		if (state.punch.isActive())
-			color = sf::Color::Red;
-
+	if (state.isPunching() && state.punch.isActive()) {
 		sf::IntRect hitbox = state.punch.getHitbox(bounds, direction);
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		shape.setPosition(hitbox.left, hitbox.top);
-		shape.setFillColor(color);
+		shape.setFillColor(sf::Color::Red);
+		window.draw(shape);
+	}
+
+	if (state.isPunching() && state.punch.canInterrupt()) {
+		sf::IntRect clearbox = state.punch.getClearbox(bounds, direction);
+		sf::RectangleShape shape(sf::Vector2f(clearbox.width, clearbox.height));
+		shape.setPosition(clearbox.left, clearbox.top);
+		shape.setFillColor(sf::Color::Blue);
 		window.draw(shape);
 	}
 }
