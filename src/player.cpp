@@ -100,7 +100,11 @@ void fr::Player::takeHit(fr::Punch &punch, bool head) {
 	} else {
 		takeDamage(punch.damage);
 		takePermaDamage(punch.perma_damage);
+
+		if (state.punch.canInterrupt())
+			state.punch.interrupt();
 	}
+
 	punch.interrupt();
 }
 
