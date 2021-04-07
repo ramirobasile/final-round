@@ -77,7 +77,7 @@ fr::Match::Match(fr::ConfigFile config) {
 
 	Stats stats;
 
-	player1 = Player(1, 1, device, controls, spawn_point, sprite, stats);
+	player1 = Player(1, "MKEY", 1, device, controls, spawn_point, sprite, stats);
 			
 	// Player 2
 	device = (Device)config.getInt("player2_controls", "device", 0);
@@ -98,11 +98,19 @@ fr::Match::Match(fr::ConfigFile config) {
 	sprite = Sprite(l_spritesheet, r_spritesheet, animations, 
 			sf::Vector2i(128, 128), 12);
 
-	player2 = Player(2, -1, device, controls, spawn_point, sprite, stats);
+	player2 = Player(2, "FLIP", -1, device, controls, spawn_point, sprite, stats);
 
 	// UI
 	time_text.setFont(regular);
 	time_text.setCharacterSize(8);
+	p1_alias_text.setFont(regular);
+	p1_alias_text.setCharacterSize(8);
+	p1_alias_text.setPosition(8, 12);
+	p1_alias_text.setString(player1.alias);
+	p2_alias_text.setFont(regular);
+	p2_alias_text.setCharacterSize(8);
+	p2_alias_text.setString(player2.alias);
+	p2_alias_text.setPosition(312 - p2_alias_text.getLocalBounds().width , 12);
 
 	// Debug
 	p1_info.setFont(thin);
@@ -133,6 +141,10 @@ void fr::Match::draw(sf::RenderWindow &window) {
 	int middle = 160 - time_text.getLocalBounds().width / 2;
 	time_text.setPosition(middle, 12);
 	window.draw(time_text);
+
+	window.draw(p1_alias_text);
+	window.draw(p2_alias_text);
+
 	// Player 1 health
 	for (int i = 0; i < player1.max_health; i+=2) {
 		sf::Sprite sprite(nostar);

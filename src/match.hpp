@@ -29,6 +29,8 @@ class Match {
 	float round_time = 180;
 	sf::Font regular;
 	sf::Font thin;
+	sf::Text p1_alias_text;
+	sf::Text p2_alias_text;
 	sf::Text time_text;
 	sf::Texture star;
 	sf::Texture left_star;

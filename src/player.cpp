@@ -1,6 +1,7 @@
 #include "player.hpp"
 
 #include <iostream>
+#include <string>
 #include <vector>
 #include <algorithm>
 
@@ -16,11 +17,11 @@
 
 fr::Player::Player() {} // Empty constructor
 
-fr::Player::Player(int index, int direction, fr::Device input_dev,
-		std::vector<int> controls, sf::Vector2f position, 
+fr::Player::Player(int index, std::string alias, int direction, 
+		fr::Device input_dev, std::vector<int> controls, sf::Vector2f position, 
 		fr::Sprite sprite, fr::Stats stats)
-		: index(index), direction(direction), input_dev(input_dev), 
-		controls(controls), sprite(sprite), stats(stats) {
+		: index(index), alias(alias), direction(direction), 
+		input_dev(input_dev), controls(controls), sprite(sprite), stats(stats) {
 	bounds = sf::IntRect(position.x, position.y, 48, 64);
 	head_hurtbox = sf::IntRect(29, 3, 16, 16);
 	body_hurtbox = sf::IntRect(23, 19, 16, 16);

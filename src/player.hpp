@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
@@ -16,6 +17,7 @@ namespace fr {
 class Player {
 	public:
 	int index;
+	std::string alias;
 	int direction;
 	sf::IntRect bounds;
 	int health;
@@ -25,9 +27,9 @@ class Player {
 	std::vector<Input> buffer;
 
 	Player();
-	Player(int index, int direction, Device input_dev,
-			std::vector<int> controls, sf::Vector2f position,
-			fr::Sprite sprite, Stats stats);
+	Player(int index, std::string alias, int direction, Device input_dev,
+			std::vector<int> controls, sf::Vector2f position, fr::Sprite sprite, 
+			Stats stats);
 
 	void update(float dt, int global_time, std::vector<sf::IntRect> geometry,
 			fr::Player &opponent);
