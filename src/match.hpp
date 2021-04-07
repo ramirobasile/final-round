@@ -27,6 +27,8 @@ class Match {
 	Player player1;
 	Player player2;
 	float round_time = 180;
+	sf::Font regular;
+	sf::Font thin;
 	sf::Text time_text;
 };
 

@@ -16,9 +16,6 @@
 #include "sprite.hpp"
 #include "utils.hpp"
 
-sf::Font regular;
-sf::Font thin;
-
 // Debug
 sf::Text p1_info;
 sf::Text p2_info;
