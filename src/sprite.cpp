@@ -19,9 +19,10 @@ void fr::Animation::nextFrame() {
 
 fr::Sprite::Sprite() {} // Empty constructor
 
-fr::Sprite::Sprite(sf::Texture spritesheet, std::vector<Animation> animations, 
-		sf::Vector2i size, float fps) 
-		: spritesheet(spritesheet), animations(animations), size(size), fps(fps) {
+fr::Sprite::Sprite(sf::Texture l_spritesheet, sf::Texture r_spritesheet, 
+		std::vector<Animation> animations, sf::Vector2i size, float fps) 
+		: l_spritesheet(l_spritesheet), r_spritesheet(r_spritesheet), 
+		animations(animations), size(size), fps(fps) {
 }
 
 void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
@@ -56,10 +57,16 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 		animation = Animations::jab; // Temp
 }
 
-void fr::Sprite::draw(sf::RenderWindow &window, sf::IntRect relative_to) {
+void fr::Sprite::draw(sf::RenderWindow &window, sf::IntRect relative_to, 
+		int direction) {
 	sf::IntRect subrect = sf::IntRect(size.x * getAnimation().frame, 
 			size.y * (int)animation, size.x, size.y);
-	sf::Sprite sprite(spritesheet, subrect);
+
+	sf::Sprite sprite;
+	if (direction == 1)
+		sprite = sf::Sprite(l_spritesheet, subrect);
+	else
+		sprite = sf::Sprite(r_spritesheet, subrect);
 
 	int left = relative_to.left + (relative_to.width - size.x) / 2;
 	int top = relative_to.top + (relative_to.height - size.y)/ 2;

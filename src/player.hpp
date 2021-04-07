@@ -27,8 +27,7 @@ class Player {
 	Player();
 	Player(int index, int direction, Device input_dev,
 			std::vector<int> controls, sf::Vector2f position,
-			sf::Texture spritesheet, std::vector<Animation> animations,
-			Stats stats);
+			fr::Sprite sprite, Stats stats);
 
 	void update(float dt, int global_time, std::vector<sf::IntRect> geometry,
 			fr::Player &opponent);

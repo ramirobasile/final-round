@@ -50,10 +50,16 @@ fr::Match::Match(fr::ConfigFile config) {
 		config.getInt("player1_controls", "b", -1),
 		config.getInt("player1_controls", "pause", -1),
 	};
+
 	sf::Vector2f spawn_point = sf::Vector2f(16 + 64, 112);
 	sf::Texture spritesheet;
 	if (!spritesheet.loadFromFile("assets/red_spritesheet.png"));
 	std::vector<fr::Animation> animations {
+
+	sf::Texture l_spritesheet;
+	l_spritesheet.loadFromFile("assets/red_l_spritesheet.png");
+	sf::Texture r_spritesheet;
+	r_spritesheet.loadFromFile("assets/red_r_spritesheet.png");
 		Animation(1, true),
 		Animation(1, true),
 		Animation(1, true),
@@ -65,10 +71,12 @@ fr::Match::Match(fr::ConfigFile config) {
 		Animation(4, true),
 		Animation(4, false),
 	};
-	fr::Stats stats;
+	Sprite sprite(l_spritesheet, r_spritesheet, animations,
+			sf::Vector2i(128, 128), 12);
 
-	player1 = Player(1, 1, device, controls, spawn_point, spritesheet,
-			animations, stats);
+	Stats stats;
+
+	player1 = Player(1, 1, device, controls, spawn_point, sprite, stats);
 			
 	// Player 2
 	device = (Device)config.getInt("player2_controls", "device", 0);
@@ -81,10 +89,15 @@ fr::Match::Match(fr::ConfigFile config) {
 		config.getInt("player2_controls", "b", -1),
 		config.getInt("player2_controls", "pause", -1),
 	};
+
 	spawn_point = sf::Vector2f(320 - 16 - 64 * 2, 112);
 
-	player2 = Player(2, -1, device, controls, spawn_point, spritesheet,
-			animations, stats);
+	l_spritesheet.loadFromFile("assets/blue_l_spritesheet.png");
+	r_spritesheet.loadFromFile("assets/blue_l_spritesheet.png");
+	sprite = Sprite(l_spritesheet, r_spritesheet, animations, 
+			sf::Vector2i(128, 128), 12);
+
+	player2 = Player(2, -1, device, controls, spawn_point, sprite, stats);
 
 	// Debug
 	p1_info.setFont(thin);

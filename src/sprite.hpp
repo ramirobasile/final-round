@@ -50,15 +50,16 @@ class Animation {
 class Sprite {
 	public:
 	Sprite();
-	Sprite(sf::Texture spritesheet, std::vector<Animation> animations, 
-			sf::Vector2i size, float fps);
+	Sprite(sf::Texture l_spritesheet, sf::Texture r_spritesheet, 
+			std::vector<Animation> animations, sf::Vector2i size, float fps);
 
 	void update(State state, State last_state, float dt);
-	void draw(sf::RenderWindow &window, sf::IntRect relative_to);
+	void draw(sf::RenderWindow &window, sf::IntRect relative_to, int direction);
 	Animation &getAnimation();
 	
 	private:
-	sf::Texture spritesheet;
+	sf::Texture l_spritesheet;
+	sf::Texture r_spritesheet;
 	std::vector<Animation> animations;
 	sf::Vector2i size;
 	float fps;

@@ -18,15 +18,12 @@ fr::Player::Player() {} // Empty constructor
 
 fr::Player::Player(int index, int direction, fr::Device input_dev,
 		std::vector<int> controls, sf::Vector2f position, 
-		sf::Texture spritesheet, std::vector<fr::Animation> animations,
-		fr::Stats stats)
+		fr::Sprite sprite, fr::Stats stats)
 		: index(index), direction(direction), input_dev(input_dev), 
-		controls(controls), stats(stats) {
-	bounds = sf::IntRect(position.x, position.y, 52, 64);
+		controls(controls), sprite(sprite), stats(stats) {
+	bounds = sf::IntRect(position.x, position.y, 48, 64);
 	head_hurtbox = sf::IntRect(29, 3, 16, 16);
 	body_hurtbox = sf::IntRect(23, 19, 16, 16);
-
-	sprite = Sprite(spritesheet, animations, sf::Vector2i(128, 128), 8);
 
 	punches = default_punches;
 
@@ -86,7 +83,7 @@ void fr::Player::update(float dt, int global_time,
 }
 
 void fr::Player::draw(sf::RenderWindow &window) {
-	sprite.draw(window, bounds);
+	sprite.draw(window, bounds, direction);
 }
 
 void fr::Player::takeDamage(int damage) {
