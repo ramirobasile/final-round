@@ -22,9 +22,9 @@ fr::Player::Player(int index, std::string alias, int direction,
 		fr::Sprite sprite, fr::Stats stats)
 		: index(index), alias(alias), direction(direction), 
 		input_dev(input_dev), controls(controls), sprite(sprite), stats(stats) {
-	bounds = sf::IntRect(position.x, position.y, 48, 64);
-	head_hurtbox = sf::IntRect(29, 3, 16, 16);
-	body_hurtbox = sf::IntRect(23, 19, 16, 16);
+	bounds = sf::IntRect(position.x, position.y, 32, 64);
+	head_hurtbox = sf::IntRect(20, 3, 16, 16);
+	body_hurtbox = sf::IntRect(16, 19, 16, 16);
 
 	punches = default_punches;
 
@@ -53,11 +53,10 @@ void fr::Player::update(float dt, int global_time,
 		tt_regen = 0;
 	}
 
-	// Interrupt punches when obstructed
-	sf::IntRect clearbox = state.punch.getClearbox(bounds, direction);
-	bool obstructed = clearbox.intersects(opponent.getHeadHurtbox())
-			|| clearbox.intersects(opponent.getBodyHurtbox());
-	if (state.punch.canInterrupt() && obstructed)
+	// Interrupt punches when hurtbox obstructed
+	bool clear = !getHeadHurtbox().intersects(opponent.getHeadHurtbox())
+			&& !getBodyHurtbox().intersects(opponent.getBodyHurtbox());
+	if (state.punch.canInterrupt() && state.punch.needs_clear && !clear)
 		state.punch.interrupt();
 
 	if (last_state.punch.canInterrupt() && !state.punch.canInterrupt())
@@ -205,14 +204,6 @@ void fr::Player::drawDebugHitboxes(sf::RenderWindow &window) {
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		shape.setPosition(hitbox.left, hitbox.top);
 		shape.setFillColor(sf::Color::Red);
-		window.draw(shape);
-	}
-
-	if (state.isPunching() && state.punch.canInterrupt()) {
-		sf::IntRect clearbox = state.punch.getClearbox(bounds, direction);
-		sf::RectangleShape shape(sf::Vector2f(clearbox.width, clearbox.height));
-		shape.setPosition(clearbox.left, clearbox.top);
-		shape.setFillColor(sf::Color::Blue);
 		window.draw(shape);
 	}
 }
