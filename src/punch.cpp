@@ -73,11 +73,11 @@ std::vector<fr::Punch> fr::default_punches = {
 	// Body jab
 	Punch(Control::a, Action::release, Control::down, 0, PRESS_END,
 			1, 0, 0, 1, 0.15f, 0.25f, 0.3f, 0.35f,
-			sf::IntRect(48, 20, 36, 12), sf::IntRect(48, 20, 10, 12)),
+			sf::IntRect(48, 20, 36, 12), sf::IntRect(48, 20, 12, 12)),
 	// Head jab
 	Punch(Control::a, Action::release, Control::none, 0, PRESS_END,
 			2, 0, 0, 1, 0.15f, 0.25f, 0.3f, 0.35f,
-			sf::IntRect(48, 4, 36, 12), sf::IntRect(48, 8, 10, 12)),
+			sf::IntRect(48, 4, 36, 12), sf::IntRect(48, 8, 12, 12)),
 
 	// Body cross
 	Punch(Control::a, Action::hold, Control::down, PRESS_END, PRESS_END + 0.1f,
