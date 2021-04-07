@@ -6,14 +6,19 @@
 #include "SFML/Graphics.hpp"
 #include "state.hpp"
 
-fr::Animation::Animation(int frames, bool loops) 
-		: frames(frames), loops(loops) {
+fr::Animation::Animation(int frames, bool loops, bool reusmes) 
+		: frames(frames), loops(loops), resumes(resumes) {
 }
 
 void fr::Animation::nextFrame() {
 	if (frame < frames - 1)
 		frame++;
 	else if (loops)
+		frame = 0;
+}
+
+void fr::Animation::reset() {
+	if (!resumes)
 		frame = 0;
 }
 
@@ -33,28 +38,45 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 		progress = 0;
 	}
 
-	// TODO Figure out which animation
+	// TODO
+	Animations new_animation;
 	switch (state.movement) {
 		case Movement::idle:
 			if (state.guard_high)
-				animation = Animations::idle_head;
+				new_animation = Animations::idle_head;
 			else if (state.guard_low)
-				animation = Animations::idle_body;
+				new_animation = Animations::idle_body;
 			else
-				animation = Animations::idle;
+				new_animation = Animations::idle;
 			break;
 
 		case Movement::walk_l:
-			animation = Animations::walk_l;
+			if (state.guard_high)
+				new_animation = Animations::walk_l_head;
+			else if (state.guard_low)
+				new_animation = Animations::walk_l_body;
+			else
+				new_animation = Animations::walk_l;
 			break;
 
 		case Movement::walk_r:
-			animation = Animations::walk_l; // Temp
+			if (state.guard_high)
+				new_animation = Animations::walk_r_head;
+			else if (state.guard_low)
+				new_animation = Animations::walk_r_body;
+			else
+				new_animation = Animations::walk_r;
 			break;
 	}
 
 	if (state.isPunching())
-		animation = Animations::jab; // Temp
+		new_animation = Animations::jab; // Temp
+
+	if (animation != new_animation) {
+		progress = 0;
+		getAnimation().reset();
+		animation = new_animation;
+	}
 }
 
 void fr::Sprite::draw(sf::RenderWindow &window, sf::IntRect relative_to, 

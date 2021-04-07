@@ -36,15 +36,17 @@ enum class Animations {
 
 class Animation {
 	public:
-	Animation(int frames, bool loops);
+	Animation(int frames, bool loops, bool resumes);
 	
 	void nextFrame();
+	void reset();
 	
 	int frame = 0;
 	
 	private:
 	int frames;
 	bool loops;
+	bool resumes;
 };
 
 class Sprite {
