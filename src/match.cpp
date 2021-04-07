@@ -59,21 +59,21 @@ fr::Match::Match(fr::ConfigFile config) {
 	sf::Texture r_spritesheet;
 	r_spritesheet.loadFromFile("assets/red_r_spritesheet.png");
 	std::vector<Animation> animations {
-		Animation(1, true),
-		Animation(1, true),
-		Animation(1, true),
+		Animation(1, true, false),
+		Animation(1, true, false),
+		Animation(1, true, false),
 
-		Animation(4, true),
-		Animation(4, true),
-		Animation(4, true),
-		Animation(4, true),
-		Animation(4, true),
-		Animation(4, true),
+		Animation(10, true, false),
+		Animation(10, true, false),
+		Animation(10, true, false),
+		Animation(10, true, false),
+		Animation(10, true, false),
+		Animation(10, true, false),
 
-		Animation(4, false),
+		Animation(5, false, false),
 	};
 	Sprite sprite(l_spritesheet, r_spritesheet, animations,
-			sf::Vector2i(128, 128), 12);
+			sf::Vector2i(128, 128), 16);
 
 	Stats stats;
 
@@ -96,7 +96,7 @@ fr::Match::Match(fr::ConfigFile config) {
 	l_spritesheet.loadFromFile("assets/blue_l_spritesheet.png");
 	r_spritesheet.loadFromFile("assets/blue_l_spritesheet.png");
 	sprite = Sprite(l_spritesheet, r_spritesheet, animations, 
-			sf::Vector2i(128, 128), 12);
+			sf::Vector2i(128, 128), 16);
 
 	player2 = Player(2, "FLIP", -1, device, controls, spawn_point, sprite, stats);
 
