@@ -32,7 +32,7 @@ class Player {
 			std::vector<int> controls, sf::Vector2f position, fr::Sprite sprite, 
 			Stats stats);
 
-	void update(float dt, int global_time, std::vector<sf::FloatRect> geometry,
+	void update(float dt, std::vector<sf::FloatRect> geometry, 
 			fr::Player &opponent);
 	void draw(sf::RenderWindow &window);
 	void takeDamage(int damage);
@@ -42,8 +42,6 @@ class Player {
 	sf::Vector2f getSize() const;
 	sf::FloatRect getHeadHurtbox() const;
 	sf::FloatRect getBodyHurtbox() const;
-	void logState(int global_time);
-	void logInputs(int global_time);
 	void drawDebugGeometry(sf::RenderWindow &window);
 	void drawDebugHurtboxes(sf::RenderWindow &window);
 	void drawDebugHitboxes(sf::RenderWindow &window);

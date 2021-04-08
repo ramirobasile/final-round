@@ -13,10 +13,8 @@ class Match {
 	public:
 	Match(fr::ConfigFile config);
 
-	void update(float dt, int global_time);
+	void update(float dt);
 	void draw(sf::RenderWindow &window);
-	void logState(int global_time);
-	void logInputs(int global_time);
 	void drawDebugGeometry(sf::RenderWindow &window);
 	void drawDebugHurtboxes(sf::RenderWindow &window);
 	void drawDebugHitboxes(sf::RenderWindow &window);

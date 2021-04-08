@@ -22,14 +22,11 @@ int main() {
     window.setView(view);
 	window.setFramerateLimit(FPS); // Otherwise SFML has stupid high CPU usage
 
-	sf::Clock global_clock;
-	int global_time;
 	sf::Clock dt_clock;
 	float dt;
 	fr::Match match(config);
 
     while (window.isOpen()) {
-    	global_time = global_clock.getElapsedTime().asMilliseconds();
 		dt = dt_clock.restart().asSeconds();
 
 		// Events
@@ -40,13 +37,7 @@ int main() {
         }
 
 		// Update calls
-        match.update(dt, global_time);
-
-        if (config.getBool("debug", "log_state", false))
-        	match.logState(global_time);
-
-        if (config.getBool("debug", "log_inputs", false))
-        	match.logInputs(global_time);
+        match.update(dt);
 
 		// Draw calls
         window.clear();

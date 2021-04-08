@@ -32,8 +32,8 @@ fr::Player::Player(int index, std::string alias, int direction,
 	health = max_health;
 }
 
-void fr::Player::update(float dt, int global_time,
-		std::vector<sf::FloatRect> geometry, fr::Player &opponent) {
+void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry, 
+		fr::Player &opponent) {
 	// Input
 	updateBuffer(buffer, buffer_ttl, inputs, dt);
 	if (input_dev == Device::keyboard)
@@ -159,31 +159,6 @@ void fr::Player::updateVelocity(sf::Vector2f &velocity, fr::State state,
 ///////////////////////////////////////////////////////////
 // Debug methods
 ///////////////////////////////////////////////////////////
-void fr::Player::logState(int global_time) {
-	std::string pre = "[" + fillString(std::to_string(global_time), 8, '0')
-			+ "] [P" +  std::to_string(index) + "] ";
-
-	if (state.movement != last_state.movement) {
-		std::cout << pre + "Movement: " + std::to_string((int)state.movement)
-				<< std::endl;
-	}
-	if (state.isPunching()) {
-		std::cout << pre + "Punch: " + std::to_string(state.punch.progress)
-				<< std::endl;
-	}
-}
-
-void fr::Player::logInputs(int global_time) {
-	std::string pre = "[" + fillString(std::to_string(global_time), 8, '0')
-			+ "] [P" +  std::to_string(index) + "] ";
-
-	if (!inputs.empty()) {
-		std::cout << pre + "Inputs:" << std::endl;
-		for (int i = 0; i < inputs.size(); ++i)
-			std::cout << "* " + (std::string)inputs[i] << std::endl;
-	}
-}
-
 void fr::Player::drawDebugGeometry(sf::RenderWindow &window) {
 	sf::RectangleShape shape(getSize());
 	shape.setPosition(getPosition());

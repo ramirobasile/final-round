@@ -119,7 +119,7 @@ fr::Match::Match(fr::ConfigFile config) {
 	p2_info.setCharacterSize(8);
 }
 
-void fr::Match::update(float dt, int global_time) {
+void fr::Match::update(float dt) {
 	if (round_time > 0)
 		round_time -= dt;
 
@@ -127,8 +127,8 @@ void fr::Match::update(float dt, int global_time) {
 	std::string seconds = fillString(std::to_string((int)round_time % 60), 2, '0');
 	time_text.setString(minutes + ":" + seconds);
 
-	player1.update(dt, global_time, level.getGeometry(), player2);
-	player2.update(dt, global_time, level.getGeometry(), player1);
+	player1.update(dt, level.getGeometry(), player2);
+	player2.update(dt, level.getGeometry(), player1);
 }
 
 void fr::Match::draw(sf::RenderWindow &window) {
@@ -182,15 +182,6 @@ void fr::Match::draw(sf::RenderWindow &window) {
 ///////////////////////////////////////////////////////////
 // Debug methods
 ///////////////////////////////////////////////////////////
-void fr::Match::logState(int global_time) {
-	player1.logState(global_time);
-	player2.logState(global_time);
-}
-void fr::Match::logInputs(int global_time) {
-	player1.logInputs(global_time);
-	player2.logInputs(global_time);
-}
-
 void fr::Match::drawDebugGeometry(sf::RenderWindow &window) {
 	level.drawDebugGeometry(window);
 	player1.drawDebugGeometry(window);

@@ -12,6 +12,12 @@ inline std::string fillString(std::string str, int w, char fill) {
 	return stream.str();
 }
 
+inline std::string changePresicion(float number, int presicion) {
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(presicion) << number;
+	return stream.str();
+}
+
 // Why cmath doesn't have this is beyond me
 inline int sign(int n) {
 	if (n > 0)
