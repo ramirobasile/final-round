@@ -7,14 +7,16 @@
 #include "punch.hpp"
 #include "physics.hpp"
 
-void fr::State::update(std::vector<fr::Input> inputs, std::vector<fr::Input> buffer,
-		std::vector<fr::Punch> punches, float dt) {
+fr::State::State() {} // Empty constructor
+
+fr::State::State(std::vector<Punch> punches) : punches(punches) {
+}
+
+void fr::State::update(std::vector<fr::Input> inputs, 
+		std::vector<fr::Input> buffer, float dt) {
 	if (isPunching())
-		punch.progress += dt;
-
-	guard_high = false;
-	guard_low = false;
-
+		getPunch().progress += dt;
+		
 	for (int i = 0; i < inputs.size(); ++i) {
 		Input input = inputs[i];
 
@@ -29,9 +31,9 @@ void fr::State::update(std::vector<fr::Input> inputs, std::vector<fr::Input> buf
 					|| punches[j].max_held == -1);
 
 			if (same_control && same_action && mod_inputted && held_margin) {
-				punch.end();
-				punch = punches[j];
-				punch.start();
+				getPunch().end();
+				punch = (Punches)j;
+				getPunch().start();
 			}
 		}
 
@@ -43,10 +45,11 @@ void fr::State::update(std::vector<fr::Input> inputs, std::vector<fr::Input> buf
 			movement = Movement::walk_r;
 
 		// Guard
+		guard_high = false;
+		guard_low = false;
 		if (input.control == Control::up && input.action == Action::hold)
 			guard_high = true;
-
-		if (input.control == Control::down && input.action == Action::hold)
+		else if (input.control == Control::down && input.action == Action::hold)
 			guard_low = true;
 
 		// Idle
@@ -55,10 +58,14 @@ void fr::State::update(std::vector<fr::Input> inputs, std::vector<fr::Input> buf
 	}
 }
 
-bool fr::State::isPunching() {
-	return !punch.isDone();
+fr::Punch &fr::State::getPunch() {
+	return punches[(int)punch];
 }
 
-bool fr::State::isGuarding() {
+bool fr::State::isPunching() {
+	return !getPunch().isDone();
+}
+
+bool fr::State::isGuarding() const {
 	return guard_high || guard_low;
 }

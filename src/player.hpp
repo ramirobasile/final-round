@@ -30,7 +30,7 @@ class Player {
 	Player();
 	Player(int index, std::string alias, int direction, Device input_dev,
 			std::vector<int> controls, sf::Vector2f position, fr::Sprite sprite, 
-			Stats stats);
+			Stats stats, std::vector<Punch> punches);
 
 	void update(float dt, std::vector<sf::FloatRect> geometry, 
 			fr::Player &opponent);

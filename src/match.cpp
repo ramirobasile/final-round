@@ -71,13 +71,30 @@ fr::Match::Match(fr::ConfigFile config) {
 		Animation(9, true, false),
 
 		Animation(5, false, false),
+		Animation(5, false, false),
+		Animation(5, false, false),
+		Animation(5, false, false),
+		Animation(5, false, false),
+		Animation(5, false, false),
+		Animation(5, false, false),
+		Animation(5, false, false),
+		
+		Animation(1, true, false),
+		Animation(1, true, false),
+		Animation(1, true, false),
+		
+		Animation(1, true, false),
+		Animation(1, true, false),
+		
+		Animation(1, true, false),
 	};
 	Sprite sprite(l_spritesheet, r_spritesheet, animations,
 			sf::Vector2i(128, 128), 16);
 
 	Stats stats;
 
-	player1 = Player(1, "MKEY", 1, device, controls, spawn_point, sprite, stats);
+	player1 = Player(1, "MKEY", 1, device, controls, spawn_point, sprite, 
+			stats, default_punches);
 			
 	// Player 2
 	device = (Device)config.getInt("player2_controls", "device", 0);
@@ -98,7 +115,8 @@ fr::Match::Match(fr::ConfigFile config) {
 	sprite = Sprite(l_spritesheet, r_spritesheet, animations, 
 			sf::Vector2i(128, 128), 16);
 
-	player2 = Player(2, "FLIP", -1, device, controls, spawn_point, sprite, stats);
+	player2 = Player(2, "FLIP", -1, device, controls, spawn_point, sprite, 
+			stats, default_punches);
 
 	// UI
 	time_text.setFont(regular);
@@ -203,7 +221,9 @@ void fr::Match::drawDebugInfo(sf::RenderWindow &window) {
 	p1_str += "HP:" + std::to_string(player1.health) + "/"
 			+ std::to_string(player1.max_health);
 	p1_str += "\nMOV:" + std::to_string((int)player1.state.movement);
-	//p1_str += "\nPCH:" + std::to_string((int)player1.state.punch.progress);
+	p1_str += "\nHI:" + std::to_string((int)player1.state.guard_high);
+	p1_str += "\nLO:" + std::to_string((int)player1.state.guard_low);
+	p1_str += "\nPCH:" + changePresicion(player1.state.getPunch().progress, 2);
 	for (int i = 0; i < player1.inputs.size(); ++i)
 		p1_str += "\n>" + (std::string)player1.inputs[i];
 	p1_info.setString(p1_str);
@@ -212,13 +232,15 @@ void fr::Match::drawDebugInfo(sf::RenderWindow &window) {
 	p2_str += "HP:" + std::to_string(player2.health) + "/"
 			+ std::to_string(player2.max_health);
 	p2_str += "\nMOV:" + std::to_string((int)player2.state.movement);
-	//p2_str += "\nPCH:" + std::to_string((int)player2.state.punch.progress);
+	p2_str += "\nHI:" + std::to_string((int)player2.state.guard_high);
+	p2_str += "\nLO:" + std::to_string((int)player2.state.guard_low);
+	p2_str += "\nPCH:" + changePresicion(player2.state.getPunch().progress, 2);
 	for (int i = 0; i < player2.inputs.size(); ++i)
 		p2_str += "\n>" + (std::string)player2.inputs[i];
 	p2_info.setString(p2_str);
 
 	p1_info.setPosition(8, 48);
 	window.draw(p1_info);
-	p2_info.setPosition(176, 48);
+	p2_info.setPosition(170, 48);
 	window.draw(p2_info);
 }

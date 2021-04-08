@@ -49,7 +49,6 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 			else
 				new_animation = Animations::idle;
 			break;
-
 		case Movement::walk_l:
 			if (state.guard_high)
 				new_animation = Animations::walk_l_head;
@@ -58,7 +57,6 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 			else
 				new_animation = Animations::walk_l;
 			break;
-
 		case Movement::walk_r:
 			if (state.guard_high)
 				new_animation = Animations::walk_r_head;
@@ -69,8 +67,34 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 			break;
 	}
 
-	if (state.isPunching())
-		new_animation = Animations::jab; // Temp
+	if (state.isPunching()) {
+		switch (state.punch) {
+			case Punches::jab_body:
+				new_animation = Animations::jab_body;
+				break;
+			case Punches::jab_head:
+				new_animation = Animations::jab_head;
+				break;
+			case Punches::cross_body:
+				new_animation = Animations::cross_body;
+				break;
+			case Punches::cross_head:
+				new_animation = Animations::cross_head;
+				break;
+			case Punches::hook_body:
+				new_animation = Animations::hook_body;
+				break;
+			case Punches::hook_head:
+				new_animation = Animations::hook_head;
+				break;
+			case Punches::upper_body:
+				new_animation = Animations::upper_body;
+				break;
+			case Punches::upper_head:
+				new_animation = Animations::upper_head;
+				break;
+		}
+	}
 
 	if (animation != new_animation) {
 		progress = 0;

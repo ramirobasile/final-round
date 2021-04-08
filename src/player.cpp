@@ -19,14 +19,14 @@ fr::Player::Player() {} // Empty constructor
 
 fr::Player::Player(int index, std::string alias, int direction, 
 		fr::Device input_dev, std::vector<int> controls, sf::Vector2f position, 
-		fr::Sprite sprite, fr::Stats stats)
+		fr::Sprite sprite, fr::Stats stats, std::vector<fr::Punch> punches)
 		: index(index), alias(alias), direction(direction), 
 		input_dev(input_dev), controls(controls), sprite(sprite), stats(stats) {
 	bounds = sf::FloatRect(position.x, position.y, 32, 64);
 	head_hurtbox = sf::FloatRect(20, 3, 16, 16);
 	body_hurtbox = sf::FloatRect(16, 19, 16, 16);
 
-	punches = default_punches;
+	state = State(punches);
 
 	max_health = stats.max_health;
 	health = max_health;
@@ -43,7 +43,7 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 
 	// State
 	last_state = state;
-	state.update(inputs, buffer, punches, dt);
+	state.update(inputs, buffer, dt);
 
 	if (!state.isPunching() && !state.isGuarding())
 		tt_regen += dt;
@@ -56,19 +56,19 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 	// Interrupt punches when hurtbox obstructed
 	bool clear = !getHeadHurtbox().intersects(opponent.getHeadHurtbox())
 			&& !getBodyHurtbox().intersects(opponent.getBodyHurtbox());
-	if (state.punch.canInterrupt() && state.punch.needs_clear && !clear)
-		state.punch.interrupt();
+	if (state.getPunch().canInterrupt() && state.getPunch().needs_clear && !clear)
+		state.getPunch().interrupt();
 
-	if (last_state.punch.canInterrupt() && !state.punch.canInterrupt())
-		takeDamage(state.punch.self_damage);
+	if (last_state.getPunch().canInterrupt() && !state.getPunch().canInterrupt())
+		takeDamage(state.getPunch().self_damage);
 
 	// Hit opponent
-	sf::FloatRect hitbox = state.punch.getHitbox(bounds, direction);
-	if (state.punch.isActive()) {
+	sf::FloatRect hitbox = state.getPunch().getHitbox(bounds, direction);
+	if (state.getPunch().isActive()) {
 		if (hitbox.intersects(opponent.getBodyHurtbox()))
-			opponent.takeHit(state.punch, false);
+			opponent.takeHit(state.getPunch(), false);
 		else if (hitbox.intersects(opponent.getHeadHurtbox()))
-			opponent.takeHit(state.punch, true);
+			opponent.takeHit(state.getPunch(), true);
 	}
 
 	// Sprite
@@ -104,8 +104,8 @@ void fr::Player::takeHit(fr::Punch &punch, bool head) {
 		takeDamage(punch.damage);
 		takePermaDamage(punch.perma_damage);
 
-		if (state.punch.canInterrupt())
-			state.punch.interrupt();
+		if (state.getPunch().canInterrupt())
+			state.getPunch().interrupt();
 	}
 
 	punch.interrupt();
@@ -145,12 +145,12 @@ void fr::Player::updateVelocity(sf::Vector2f &velocity, fr::State state,
 
 	switch (state.movement) {
 		case fr::Movement::walk_l:
-			if (!state.isPunching() || state.punch.canInterrupt())
+			if (!state.isPunching() || state.getPunch().canInterrupt())
 				velocity.x = -stats.walk_speed;
 			break;
 
 		case fr::Movement::walk_r:
-			if (!state.isPunching() || state.punch.canInterrupt())
+			if (!state.isPunching() || state.getPunch().canInterrupt())
 				velocity.x = stats.walk_speed;
 			break;
 	}
@@ -181,8 +181,8 @@ void fr::Player::drawDebugHurtboxes(sf::RenderWindow &window) {
 }
 
 void fr::Player::drawDebugHitboxes(sf::RenderWindow &window) {
-	if (state.isPunching() && state.punch.isActive()) {
-		sf::FloatRect hitbox = state.punch.getHitbox(bounds, direction);
+	if (state.isPunching() && state.getPunch().isActive()) {
+		sf::FloatRect hitbox = state.getPunch().getHitbox(bounds, direction);
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		shape.setPosition(hitbox.left, hitbox.top);
 		shape.setFillColor(sf::Color::Red);
