@@ -66,9 +66,6 @@ fr::Match::Match(fr::ConfigFile config) {
 		Animation(9, true, false),
 		Animation(9, true, false),
 		Animation(9, true, false),
-		Animation(9, true, false),
-		Animation(9, true, false),
-		Animation(9, true, false),
 
 		Animation(5, false, false),
 		Animation(5, false, false),

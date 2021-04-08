@@ -50,20 +50,13 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 				new_animation = Animations::idle;
 			break;
 		case Movement::walk_l:
-			if (state.guard_high)
-				new_animation = Animations::walk_l_head;
-			else if (state.guard_low)
-				new_animation = Animations::walk_l_body;
-			else
-				new_animation = Animations::walk_l;
-			break;
 		case Movement::walk_r:
 			if (state.guard_high)
-				new_animation = Animations::walk_r_head;
+				new_animation = Animations::walk_head;
 			else if (state.guard_low)
-				new_animation = Animations::walk_r_body;
+				new_animation = Animations::walk_body;
 			else
-				new_animation = Animations::walk_r;
+				new_animation = Animations::walk;
 			break;
 	}
 
