@@ -7,12 +7,12 @@
 		
 fr::Level::Level() {} // Empty constructor
 
-fr::Level::Level(sf::IntRect left, sf::IntRect right, sf::Texture background)
+fr::Level::Level(sf::FloatRect left, sf::FloatRect right, sf::Texture background)
 		: left(left), right(right), background(background) {
 }
 
-std::vector<sf::IntRect> fr::Level::getGeometry() {
-	return std::vector<sf::IntRect> {left, right};
+std::vector<sf::FloatRect> fr::Level::getGeometry() {
+	return std::vector<sf::FloatRect> {left, right};
 }
 
 void fr::Level::draw(sf::RenderWindow &window) {

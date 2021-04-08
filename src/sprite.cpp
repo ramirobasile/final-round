@@ -79,10 +79,10 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 	}
 }
 
-void fr::Sprite::draw(sf::RenderWindow &window, sf::IntRect relative_to, 
+void fr::Sprite::draw(sf::RenderWindow &window, sf::FloatRect relative_to,
 		int direction) {
-	sf::IntRect subrect = sf::IntRect(size.x * getAnimation().frame, 
-			size.y * (int)animation, size.x, size.y);
+	sf::IntRect subrect(size.x * getAnimation().frame, size.y * (int)animation,
+			size.x, size.y);
 
 	sf::Sprite sprite;
 	if (direction == 1)

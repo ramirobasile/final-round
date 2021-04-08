@@ -7,14 +7,13 @@
 #include "SFML/System.hpp"
 #include "utils.hpp"
 
-void fr::updatePosition(sf::IntRect &bounds, sf::Vector2f velocity, float dt) {
-	// Random math necessary to avoid weird rounding errors
-	bounds.left += sign(velocity.x) * (int)std::abs(velocity.x * dt);
+void fr::updatePosition(sf::FloatRect &bounds, sf::Vector2f velocity, float dt) {
+	bounds.left += velocity.x * dt;
 }
 
-fr::Collision fr::getCollision(sf::IntRect rect1, sf::IntRect rect2) {
+fr::Collision fr::getCollision(sf::FloatRect rect1, sf::FloatRect rect2) {
 	Collision collision = Collision::none;
-	sf::IntRect overlap;
+	sf::FloatRect overlap;
 
 	if (rect1.intersects(rect2, overlap)) {
 		if (rect1.left >= overlap.left)
@@ -33,8 +32,8 @@ fr::Collision fr::getCollision(sf::IntRect rect1, sf::IntRect rect2) {
 	return collision;
 }
 
-void fr::resolveCollision(sf::IntRect &rect1, sf::IntRect rect2) {
-	sf::IntRect overlap;
+void fr::resolveCollision(sf::FloatRect &rect1, sf::FloatRect rect2) {
+	sf::FloatRect overlap;
 
 	if(rect1.intersects(rect2, overlap)) {
 		// Always attempt to resolve by correcting the smallest overlap

@@ -35,8 +35,8 @@ fr::Match::Match(fr::ConfigFile config) {
 	sf::Texture ring;
 	if (!ring.loadFromFile("assets/ring.png"));
 
-	sf::IntRect left(8, 112, 8, 64);
-	sf::IntRect right(320 - 16, 112, 8, 64);
+	sf::FloatRect left(8, 112, 8, 64);
+	sf::FloatRect right(320 - 16, 112, 8, 64);
 
 	level = Level(left, right, ring);
 	
@@ -63,12 +63,12 @@ fr::Match::Match(fr::ConfigFile config) {
 		Animation(1, true, false),
 		Animation(1, true, false),
 
-		Animation(10, true, false),
-		Animation(10, true, false),
-		Animation(10, true, false),
-		Animation(10, true, false),
-		Animation(10, true, false),
-		Animation(10, true, false),
+		Animation(9, true, false),
+		Animation(9, true, false),
+		Animation(9, true, false),
+		Animation(9, true, false),
+		Animation(9, true, false),
+		Animation(9, true, false),
 
 		Animation(5, false, false),
 	};

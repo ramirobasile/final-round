@@ -56,7 +56,7 @@ class Sprite {
 			std::vector<Animation> animations, sf::Vector2i size, float fps);
 
 	void update(State state, State last_state, float dt);
-	void draw(sf::RenderWindow &window, sf::IntRect relative_to, int direction);
+	void draw(sf::RenderWindow &window, sf::FloatRect relative_to, int direction);
 	Animation &getAnimation();
 	
 	private:

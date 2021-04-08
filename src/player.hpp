@@ -19,19 +19,20 @@ class Player {
 	int index;
 	std::string alias;
 	int direction;
-	sf::IntRect bounds;
+	sf::FloatRect bounds;
 	int health;
 	int max_health;
 	State state;
 	std::vector<Input> inputs;
 	std::vector<Input> buffer;
+	bool dead = false;
 
 	Player();
 	Player(int index, std::string alias, int direction, Device input_dev,
 			std::vector<int> controls, sf::Vector2f position, fr::Sprite sprite, 
 			Stats stats);
 
-	void update(float dt, int global_time, std::vector<sf::IntRect> geometry,
+	void update(float dt, int global_time, std::vector<sf::FloatRect> geometry,
 			fr::Player &opponent);
 	void draw(sf::RenderWindow &window);
 	void takeDamage(int damage);
@@ -39,8 +40,8 @@ class Player {
 	void takeHit(fr::Punch &punch, bool head);
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;
-	sf::IntRect getHeadHurtbox() const;
-	sf::IntRect getBodyHurtbox() const;
+	sf::FloatRect getHeadHurtbox() const;
+	sf::FloatRect getBodyHurtbox() const;
 	void logState(int global_time);
 	void logInputs(int global_time);
 	void drawDebugGeometry(sf::RenderWindow &window);
@@ -52,8 +53,8 @@ class Player {
 	std::vector<int> controls;
 	float buffer_ttl;
 	sf::Vector2f velocity;
-	sf::IntRect head_hurtbox;
-	sf::IntRect body_hurtbox;
+	sf::FloatRect head_hurtbox;
+	sf::FloatRect body_hurtbox;
 	fr::Sprite sprite;
 	int animation;
 	State last_state;
@@ -63,8 +64,8 @@ class Player {
 
 	void updateVelocity(sf::Vector2f &velocity, State state, State last_state,
 			Stats stats);
-	std::vector<Collision> getCollisions(sf::IntRect rect1,
-			std::vector<sf::IntRect> rects);
+	std::vector<Collision> getCollisions(sf::FloatRect rect1,
+			std::vector<sf::FloatRect> rects);
 };
 
 } // namespace fr

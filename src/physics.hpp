@@ -15,8 +15,8 @@ enum class Collision {
 	bottom
 };
 
-void updatePosition(sf::IntRect &bounds, sf::Vector2f velocity, float dt);
-Collision getCollision(sf::IntRect rect1, sf::IntRect rect2);
-void resolveCollision(sf::IntRect &rect1, sf::IntRect rect2);
+void updatePosition(sf::FloatRect &bounds, sf::Vector2f velocity, float dt);
+Collision getCollision(sf::FloatRect rect1, sf::FloatRect rect2);
+void resolveCollision(sf::FloatRect &rect1, sf::FloatRect rect2);
 
 } // namespace fr

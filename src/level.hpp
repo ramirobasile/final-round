@@ -9,15 +9,15 @@ namespace fr {
 class Level {
 	public:
 	Level();
-	Level(sf::IntRect left, sf::IntRect right, sf::Texture background);
+	Level(sf::FloatRect left, sf::FloatRect right, sf::Texture background);
 
 	void draw(sf::RenderWindow &window);
 	void drawDebugGeometry(sf::RenderWindow &window);
-	std::vector<sf::IntRect> getGeometry();
+	std::vector<sf::FloatRect> getGeometry();
 
 	private:
-	sf::IntRect left;
-	sf::IntRect right;
+	sf::FloatRect left;
+	sf::FloatRect right;
 	sf::Texture background;
 };
 
