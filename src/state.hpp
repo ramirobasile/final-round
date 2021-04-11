@@ -30,6 +30,7 @@ class State {
 	bool isGuarding() const;
 	
 	Movements movement = Movements::idle;
+	Punches punch = Punches::none;
 	bool guard_high = false;
 	bool guard_low = false;
 

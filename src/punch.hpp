@@ -9,6 +9,7 @@
 namespace fr {
 
 enum class Punches {
+	none,
 	jab_body,
 	jab_head,
 	cross_body,

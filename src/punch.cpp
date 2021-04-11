@@ -60,6 +60,9 @@ sf::FloatRect fr::Punch::getHitbox(sf::FloatRect relative_to, int direction) con
 }
 
 std::vector<fr::Punch> fr::default_punches = {
+	// None
+	Punch(),
+	
 	// Body jab
 	Punch(Control::a, Action::release, Control::down, 0, PRESS_END,
 			1, 0, 0, 1, 0.15f, 0.2f, 0.25f, 0.3f, true,
