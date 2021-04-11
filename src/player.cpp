@@ -144,12 +144,12 @@ void fr::Player::updateVelocity(sf::Vector2f &velocity, fr::State state,
 	velocity.x = 0; // Linear velocity
 
 	switch (state.movement) {
-		case fr::Movement::walk_l:
+		case fr::Movements::walk_l:
 			if (!state.isPunching() || state.getPunch().canInterrupt())
 				velocity.x = -stats.walk_speed;
 			break;
 
-		case fr::Movement::walk_r:
+		case fr::Movements::walk_r:
 			if (!state.isPunching() || state.getPunch().canInterrupt())
 				velocity.x = stats.walk_speed;
 			break;

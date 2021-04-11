@@ -41,7 +41,7 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 	// TODO
 	Animations new_animation;
 	switch (state.movement) {
-		case Movement::idle:
+		case Movements::idle:
 			if (state.guard_high)
 				new_animation = Animations::idle_head;
 			else if (state.guard_low)
@@ -49,8 +49,8 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 			else
 				new_animation = Animations::idle;
 			break;
-		case Movement::walk_l:
-		case Movement::walk_r:
+		case Movements::walk_l:
+		case Movements::walk_r:
 			if (state.guard_high)
 				new_animation = Animations::walk_head;
 			else if (state.guard_low)

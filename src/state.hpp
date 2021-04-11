@@ -7,7 +7,7 @@
 
 namespace fr {
 
-enum class Movement {
+enum class Movements {
 	idle,
 	walk_l,
 	walk_r,
@@ -29,8 +29,7 @@ class State {
 	bool isPunching();
 	bool isGuarding() const;
 	
-	Movement movement = Movement::idle;
-	Punches punch = Punches::jab_head;
+	Movements movement = Movements::idle;
 	bool guard_high = false;
 	bool guard_low = false;
 
