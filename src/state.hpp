@@ -11,11 +11,33 @@ enum class Movements {
 	idle,
 	walk_l,
 	walk_r,
-	weave,
-	pull,
-	duck,
 	stun,
+};
+
+enum class Punches {
+	none,
+	jab_body,
+	jab_head,
+	cross_body,
+	cross_head,
+	hook_body,
+	hook_head,
+	upper_body,
+	upper_head,
+};
+
+enum class Dodges {
+	none,
+	pull,
+	weave,
+	duck,
 	escape,
+};
+
+enum class Guards {
+	none,
+	head,
+	body,
 };
 
 class State {
@@ -27,12 +49,11 @@ class State {
 			float dt);
 	Punch &getPunch();
 	bool isPunching();
-	bool isGuarding() const;
 	
 	Movements movement = Movements::idle;
 	Punches punch = Punches::none;
-	bool guard_high = false;
-	bool guard_low = false;
+	Dodges dodge = Dodges::none;
+	Guards guard = Guards::none;
 
 	private:
 	void onHold(Input input, std::vector<Input> buffer);
@@ -41,11 +62,10 @@ class State {
 	void onRelease(Input input, std::vector<Input> buffer);
 	
 	std::vector<Punch> punches;
+	float stun;
 	float tt_dodge;
-	float dodge;
 	float dodge_recovery;
 	float guard_recovery;
-	float stun;
 };
 
 } // namespace fr

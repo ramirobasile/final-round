@@ -8,18 +8,6 @@
 
 namespace fr {
 
-enum class Punches {
-	none,
-	jab_body,
-	jab_head,
-	cross_body,
-	cross_head,
-	hook_body,
-	hook_head,
-	upper_body,
-	upper_head,
-};
-
 class Punch {
 	public:
 	Punch();

@@ -218,8 +218,7 @@ void fr::Match::drawDebugInfo(sf::RenderWindow &window) {
 	p1_str += "HP:" + std::to_string(player1.health) + "/"
 			+ std::to_string(player1.max_health);
 	p1_str += "\nMOV:" + std::to_string((int)player1.state.movement);
-	p1_str += "\nHI:" + std::to_string((int)player1.state.guard_high);
-	p1_str += "\nLO:" + std::to_string((int)player1.state.guard_low);
+	p1_str += "\nGUA:" + std::to_string((int)player1.state.guard);
 	p1_str += "\nPCH:" + changePresicion(player1.state.getPunch().progress, 2);
 	for (int i = 0; i < player1.inputs.size(); ++i)
 		p1_str += "\n>" + (std::string)player1.inputs[i];
@@ -229,8 +228,7 @@ void fr::Match::drawDebugInfo(sf::RenderWindow &window) {
 	p2_str += "HP:" + std::to_string(player2.health) + "/"
 			+ std::to_string(player2.max_health);
 	p2_str += "\nMOV:" + std::to_string((int)player2.state.movement);
-	p2_str += "\nHI:" + std::to_string((int)player2.state.guard_high);
-	p2_str += "\nLO:" + std::to_string((int)player2.state.guard_low);
+	p2_str += "\nGUA:" + std::to_string((int)player2.state.guard);
 	p2_str += "\nPCH:" + changePresicion(player2.state.getPunch().progress, 2);
 	for (int i = 0; i < player2.inputs.size(); ++i)
 		p2_str += "\n>" + (std::string)player2.inputs[i];

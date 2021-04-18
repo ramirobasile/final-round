@@ -17,6 +17,9 @@ void fr::State::update(std::vector<fr::Input> inputs,
 	if (isPunching())
 		getPunch().progress += dt;
 		
+	if (getPunch().isDone())
+		punch = Punches::none;
+		
 	for (int i = 0; i < inputs.size(); ++i) {
 		Input input = inputs[i];
 
@@ -45,12 +48,12 @@ void fr::State::update(std::vector<fr::Input> inputs,
 			movement = Movements::walk_r;
 
 		// Guard
-		guard_high = false;
-		guard_low = false;
 		if (input.control == Control::up && input.action == Action::hold)
-			guard_high = true;
+			guard = Guards::head;
 		else if (input.control == Control::down && input.action == Action::hold)
-			guard_low = true;
+			guard = Guards::body;
+		else
+			guard = Guards::none;
 
 		// Idle
 		if (input.action == Action::release)
@@ -63,9 +66,5 @@ fr::Punch &fr::State::getPunch() {
 }
 
 bool fr::State::isPunching() {
-	return !getPunch().isDone();
-}
-
-bool fr::State::isGuarding() const {
-	return guard_high || guard_low;
+	return punch != Punches::none;
 }

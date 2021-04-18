@@ -45,7 +45,7 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 	last_state = state;
 	state.update(inputs, buffer, dt);
 
-	if (!state.isPunching() && !state.isGuarding())
+	if (!state.isPunching() && state.guard == Guards::none)
 		tt_regen += dt;
 	
 	if (tt_regen > stats.regen_rate) {
@@ -95,7 +95,7 @@ void fr::Player::takePermaDamage(int damage) {
 }
 
 void fr::Player::takeHit(fr::Punch &punch, bool head) {
-	if (state.guard_high && head || state.guard_low) {
+	if (state.guard == Guards::head && head || state.guard == Guards::body) {
 		takeDamage(punch.block_damage);
 	} else {
 		if (health == 0)
