@@ -22,25 +22,25 @@ void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buf
 	std::vector<Input> new_inputs;
 
 	for (int i = 0; i < controls.size(); ++i) {
-		Control control = (Control)i;
+		Controls control = (Controls)i;
 
 		Input prev;
 		for (int i = 0; i < inputs.size() && prev.control != control; ++i) {
 			if (inputs[i].control == control)
 				prev = inputs[i];
 		}
-		bool was_down = prev.control == control && prev.action != Action::release;
+		bool was_down = prev.control == control && prev.action != Actions::release;
 		bool is_down = sf::Keyboard::isKeyPressed((sf::Keyboard::Key)controls[i]);
 		float held = prev.held + dt;
 
 		if (is_down && was_down)
-			new_inputs.push_back(Input{control, Action::hold, held});
+			new_inputs.push_back(Input{control, Actions::hold, held});
 
 		if (!is_down && was_down)
-			new_inputs.push_back(Input{control, Action::release, held});
+			new_inputs.push_back(Input{control, Actions::release, held});
 
 		if (is_down && !was_down)
-			new_inputs.push_back(Input{control, Action::press, held});
+			new_inputs.push_back(Input{control, Actions::press, held});
 	}
 
 	inputs = new_inputs;
@@ -65,13 +65,13 @@ void fr::updateBuffer(std::vector<fr::Input> &buffer,
 	for (int i = 0; i < inputs.size(); ++i) {
 		buffer_ttl = BUFFER_TTL;
 
-		if (inputs[i].action == Action::press)
+		if (inputs[i].action == Actions::press)
 			buffer.push_back(inputs[i]);
 	}
 }
 
-bool fr::inputted(fr::Control control, std::vector<fr::Input> inputs) {
-	bool res = control == Control::none;
+bool fr::inputted(fr::Controls control, std::vector<fr::Input> inputs) {
+	bool res = control == Controls::none;
 	
 	for (int i = 0; i < inputs.size() && !res; ++i)
 		res = control == inputs[i].control;

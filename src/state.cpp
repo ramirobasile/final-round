@@ -41,22 +41,22 @@ void fr::State::update(std::vector<fr::Input> inputs,
 		}
 
 		// Walk
-		if (input.control == Control::left)
+		if (input.control == Controls::left)
 			movement = Movements::walk_l;
 
-		if (input.control == Control::right)
+		if (input.control == Controls::right)
 			movement = Movements::walk_r;
 
 		// Guard
-		if (input.control == Control::up && input.action == Action::hold)
+		if (input.control == Controls::up && input.action == Actions::hold)
 			guard = Guards::head;
-		else if (input.control == Control::down && input.action == Action::hold)
+		else if (input.control == Controls::down && input.action == Actions::hold)
 			guard = Guards::body;
 		else
 			guard = Guards::none;
 
 		// Idle
-		if (input.action == Action::release)
+		if (input.action == Actions::release)
 			movement = Movements::idle;
 	}
 }

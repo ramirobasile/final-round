@@ -11,7 +11,7 @@ enum class Device {
 	joystick,
 };
 
-enum class Control {
+enum class Controls {
 	none = -1,
 	left,
 	right,
@@ -22,7 +22,7 @@ enum class Control {
 	pause,
 };
 
-enum class Action {
+enum class Actions {
 	press,
 	release,
 	hold,
@@ -31,18 +31,18 @@ enum class Action {
 struct Input {
 	explicit operator std::string() const;
 
-	Control control = Control::none;
-	Action action;
+	Controls control = Controls::none;
+	Actions action;
 	float held = 0;
 };
 
 const float BUFFER_TTL = 0.15f;
 const float PRESS_END = 0.15f;
-const float DOUBLE_PRESS_END = 0.1f;
-const Control BODY_CONTROL = Control::down;
-const std::vector<Control> KONAMI_CODE{Control::up, Control::up, Control::down,
-		Control::down, Control::down, Control::left, Control::right,
-		Control::left, Control::right, Control::b, Control::a};
+const float DOUBLE_PRESS_END = 0.15f;
+const Controls BODY_CONTROL = Controls::down;
+const std::vector<Controls> KONAMI_CODE{Controls::up, Controls::up, Controls::down,
+		Controls::down, Controls::down, Controls::left, Controls::right,
+		Controls::left, Controls::right, Controls::b, Controls::a};
 
 void updateInputs(std::vector<Input> &inputs, std::vector<Input> buffer,
 		float buffer_ttl, std::vector<int> controls, float dt);
@@ -51,6 +51,6 @@ void updateInputs(int joytstick, std::vector<Input> &inputs,
 		float dt);
 void updateBuffer(std::vector<Input> &buffer, float &clear_time,
 		std::vector<Input> inputs, float dt);
-bool inputted(Control control, std::vector<Input> inputs);
+bool inputted(Controls control, std::vector<Input> inputs);
 
 } // namespace fr
