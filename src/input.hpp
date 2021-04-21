@@ -26,6 +26,7 @@ enum class Actions {
 	press,
 	release,
 	hold,
+	double_press,
 };
 
 struct Input {
@@ -38,7 +39,7 @@ struct Input {
 
 const float BUFFER_TTL = 0.15f;
 const float PRESS_END = 0.15f;
-const float DOUBLE_PRESS_END = 0.15f;
+const float DOUBLE_PRESS_END = 0.1f;
 const Controls BODY_CONTROL = Controls::down;
 const std::vector<Controls> KONAMI_CODE{Controls::up, Controls::up, Controls::down,
 		Controls::down, Controls::down, Controls::left, Controls::right,

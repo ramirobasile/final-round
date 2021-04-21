@@ -41,6 +41,12 @@ void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buf
 
 		if (is_down && !was_down)
 			new_inputs.push_back(Input{control, Actions::press, held});
+			
+		bool pressed_before = !buffer.empty() && buffer.back().control == control
+				&& buffer.back().action == Actions::release;
+		bool within_dp_end = BUFFER_TTL - buffer_ttl < DOUBLE_PRESS_END;
+		if (is_down && !was_down && pressed_before && within_dp_end)
+			new_inputs.push_back(Input{control, Actions::double_press, held});
 	}
 
 	inputs = new_inputs;
@@ -65,8 +71,7 @@ void fr::updateBuffer(std::vector<fr::Input> &buffer,
 	for (int i = 0; i < inputs.size(); ++i) {
 		buffer_ttl = BUFFER_TTL;
 
-		if (inputs[i].action == Actions::press)
-			buffer.push_back(inputs[i]);
+		buffer.push_back(inputs[i]);
 	}
 }
 
