@@ -29,7 +29,7 @@ enum class Punches {
 enum class Dodges {
 	none,
 	pull,
-	weave,
+	slip,
 	duck,
 	escape,
 };

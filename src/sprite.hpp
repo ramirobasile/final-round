@@ -24,7 +24,7 @@ enum class Animations {
 	upper_body,
 	upper_head,
 	pull,
-	weave,
+	slip,
 	duck,
 	hit_head,
 	hit_body,

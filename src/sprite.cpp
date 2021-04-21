@@ -64,8 +64,8 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 		case Dodges::pull:
 			new_animation = Animations::pull;
 			break;
-		case Dodges::weave:
-			new_animation = Animations::weave;
+		case Dodges::slip:
+			new_animation = Animations::slip;
 			break;
 		case Dodges::duck:
 			new_animation = Animations::duck;
