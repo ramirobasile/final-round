@@ -41,7 +41,7 @@ fr::Match::Match(fr::ConfigFile config) {
 	level = Level(left, right, ring);
 	
 	// Player 1
-	Device device = (Device)config.getInt("player1_controls", "device", 0);
+	Devices device = (Devices)config.getInt("player1_controls", "device", 0);
 	std::vector<int> controls = {
 		config.getInt("player1_controls", "left", -1),
 		config.getInt("player1_controls", "right", -1),
@@ -94,7 +94,7 @@ fr::Match::Match(fr::ConfigFile config) {
 			stats, default_punches);
 			
 	// Player 2
-	device = (Device)config.getInt("player2_controls", "device", 0);
+	device = (Devices)config.getInt("player2_controls", "device", 0);
 	controls = {
 		config.getInt("player2_controls", "left", -1),
 		config.getInt("player2_controls", "right", -1),

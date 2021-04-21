@@ -28,7 +28,7 @@ class Player {
 	bool dead = false;
 
 	Player();
-	Player(int index, std::string alias, int direction, Device input_dev,
+	Player(int index, std::string alias, int direction, Devices input_dev,
 			std::vector<int> controls, sf::Vector2f position, fr::Sprite sprite, 
 			Stats stats, std::vector<Punch> punches);
 
@@ -47,7 +47,7 @@ class Player {
 	void drawDebugHitboxes(sf::RenderWindow &window);
 
 	private:
-	Device input_dev;
+	Devices input_dev;
 	std::vector<int> controls;
 	float buffer_ttl;
 	sf::Vector2f velocity;

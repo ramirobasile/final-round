@@ -6,7 +6,7 @@
 
 namespace fr {
 
-enum class Device {
+enum class Devices {
 	keyboard,
 	joystick,
 };

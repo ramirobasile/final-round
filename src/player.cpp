@@ -18,7 +18,7 @@
 fr::Player::Player() {} // Empty constructor
 
 fr::Player::Player(int index, std::string alias, int direction, 
-		fr::Device input_dev, std::vector<int> controls, sf::Vector2f position, 
+		fr::Devices input_dev, std::vector<int> controls, sf::Vector2f position, 
 		fr::Sprite sprite, fr::Stats stats, std::vector<fr::Punch> punches)
 		: index(index), alias(alias), direction(direction), 
 		input_dev(input_dev), controls(controls), sprite(sprite), stats(stats) {
@@ -36,9 +36,9 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 		fr::Player &opponent) {
 	// Input
 	updateBuffer(buffer, buffer_ttl, inputs, dt);
-	if (input_dev == Device::keyboard)
+	if (input_dev == Devices::keyboard)
 		updateInputs(inputs, buffer, buffer_ttl, controls, dt);
-	else if (input_dev == Device::joystick)
+	else if (input_dev == Devices::joystick)
 		updateInputs(index, inputs, buffer, buffer_ttl, controls, dt);
 
 	// State
