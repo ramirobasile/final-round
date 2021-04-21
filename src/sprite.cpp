@@ -38,8 +38,8 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 		progress = 0;
 	}
 
-	// TODO
 	Animations new_animation;
+	
 	switch (state.movement) {
 		case Movements::idle:
 			if (state.guard == Guards::head)
@@ -59,34 +59,44 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 				new_animation = Animations::walk;
 			break;
 	}
-
-	if (state.isPunching()) {
-		switch (state.punch) {
-			case Punches::jab_body:
-				new_animation = Animations::jab_body;
-				break;
-			case Punches::jab_head:
-				new_animation = Animations::jab_head;
-				break;
-			case Punches::cross_body:
-				new_animation = Animations::cross_body;
-				break;
-			case Punches::cross_head:
-				new_animation = Animations::cross_head;
-				break;
-			case Punches::hook_body:
-				new_animation = Animations::hook_body;
-				break;
-			case Punches::hook_head:
-				new_animation = Animations::hook_head;
-				break;
-			case Punches::upper_body:
-				new_animation = Animations::upper_body;
-				break;
-			case Punches::upper_head:
-				new_animation = Animations::upper_head;
-				break;
-		}
+	
+	switch (state.dodge) {
+		case Dodges::pull:
+			new_animation = Animations::pull;
+			break;
+		case Dodges::weave:
+			new_animation = Animations::weave;
+			break;
+		case Dodges::duck:
+			new_animation = Animations::duck;
+			break;
+	}
+	
+	switch (state.punch) {
+		case Punches::jab_body:
+			new_animation = Animations::jab_body;
+			break;
+		case Punches::jab_head:
+			new_animation = Animations::jab_head;
+			break;
+		case Punches::cross_body:
+			new_animation = Animations::cross_body;
+			break;
+		case Punches::cross_head:
+			new_animation = Animations::cross_head;
+			break;
+		case Punches::hook_body:
+			new_animation = Animations::hook_body;
+			break;
+		case Punches::hook_head:
+			new_animation = Animations::hook_head;
+			break;
+		case Punches::upper_body:
+			new_animation = Animations::upper_body;
+			break;
+		case Punches::upper_head:
+			new_animation = Animations::upper_head;
+			break;
 	}
 
 	if (animation != new_animation) {
