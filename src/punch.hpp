@@ -5,6 +5,7 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "input.hpp"
+#include "animations.hpp"
 
 namespace fr {
 
@@ -15,7 +16,7 @@ class Punch {
 			float max_held, int damage, int perma_damage, int block_damage,
 			int self_damage, float interrupt_end, float hitbox_begin,
 			float hitbox_end, float recovery_end, bool needs_clear, 
-			sf::FloatRect hitbox);
+			sf::FloatRect hitbox, Animations animation);
 
 	void start();
 	void interrupt();
@@ -37,6 +38,7 @@ class Punch {
 	int block_damage;
 	int self_damage;
 	bool needs_clear;
+	Animations animation;
 
 	private:
 	float interrupt_end;

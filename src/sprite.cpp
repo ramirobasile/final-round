@@ -56,44 +56,11 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 			break;
 	}
 	
-	switch (state.dodge) {
-		case Dodges::pull:
-			new_animation = Animations::pull;
-			break;
-		case Dodges::slip:
-			new_animation = Animations::slip;
-			break;
-		case Dodges::duck:
-			new_animation = Animations::duck;
-			break;
-	}
-	
-	switch (state.punch) {
-		case Punches::jab_body:
-			new_animation = Animations::jab_body;
-			break;
-		case Punches::jab_head:
-			new_animation = Animations::jab_head;
-			break;
-		case Punches::cross_body:
-			new_animation = Animations::cross_body;
-			break;
-		case Punches::cross_head:
-			new_animation = Animations::cross_head;
-			break;
-		case Punches::hook_body:
-			new_animation = Animations::hook_body;
-			break;
-		case Punches::hook_head:
-			new_animation = Animations::hook_head;
-			break;
-		case Punches::upper_body:
-			new_animation = Animations::upper_body;
-			break;
-		case Punches::upper_head:
-			new_animation = Animations::upper_head;
-			break;
-	}
+	if (!state.dodge.isDone())
+		new_animation = state.dodge.animation;
+		
+	if (!state.punch.isDone())
+		new_animation = state.punch.animation;
 
 	if (animation != new_animation) {
 		Animations old_animation = animation;

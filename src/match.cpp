@@ -11,6 +11,8 @@
 #include "config.hpp"
 #include "level.hpp"
 #include "player.hpp"
+#include "punch.hpp"
+#include "dodge.hpp"
 #include "input.hpp"
 #include "stats.hpp"
 #include "sprite.hpp"
@@ -100,7 +102,7 @@ fr::Match::Match(fr::ConfigFile config) {
 	Stats stats;
 
 	player1 = Player(1, "MKEY", 1, device, controls, spawn_point, sprite, 
-			stats, default_punches);
+			stats, default_punches, default_dodges);
 			
 	// Player 2
 	device = (Devices)config.getInt("player2_controls", "device", 0);
@@ -122,7 +124,7 @@ fr::Match::Match(fr::ConfigFile config) {
 			sf::Vector2i(128, 128), 16);
 
 	player2 = Player(2, "FLIP", -1, device, controls, spawn_point, sprite, 
-			stats, default_punches);
+			stats, default_punches, default_dodges);
 
 	// UI
 	time_text.setFont(regular);
@@ -228,7 +230,7 @@ void fr::Match::drawDebugInfo(sf::RenderWindow &window) {
 			+ std::to_string(player1.max_health);
 	p1_str += "\nMOV:" + std::to_string((int)player1.state.movement);
 	p1_str += "\nGUA:" + std::to_string((int)player1.state.guard);
-	p1_str += "\nPCH:" + std::to_string((int)player1.state.punch);
+	//p1_str += "\nPCH:" + std::to_string((int)player1.state.punch);
 	for (int i = 0; i < player1.inputs.size(); ++i)
 		p1_str += "\n>" + (std::string)player1.inputs[i];
 	p1_info.setString(p1_str);
@@ -238,7 +240,7 @@ void fr::Match::drawDebugInfo(sf::RenderWindow &window) {
 			+ std::to_string(player2.max_health);
 	p2_str += "\nMOV:" + std::to_string((int)player2.state.movement);
 	p2_str += "\nGUA:" + std::to_string((int)player2.state.guard);
-	p2_str += "\nPCH:" + std::to_string((int)player2.state.punch);
+	//p2_str += "\nPCH:" + std::to_string((int)player2.state.punch);
 	for (int i = 0; i < player2.inputs.size(); ++i)
 		p2_str += "\n>" + (std::string)player2.inputs[i];
 	p2_info.setString(p2_str);

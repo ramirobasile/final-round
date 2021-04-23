@@ -9,6 +9,7 @@
 #include "physics.hpp"
 #include "state.hpp"
 #include "punch.hpp"
+#include "dodge.hpp"
 #include "sprite.hpp"
 #include "stats.hpp"
 
@@ -30,7 +31,7 @@ class Player {
 	Player();
 	Player(int index, std::string alias, int direction, Devices input_dev,
 			std::vector<int> controls, sf::Vector2f position, fr::Sprite sprite, 
-			Stats stats, std::vector<Punch> punches);
+			Stats stats, std::vector<Punch> punches, std::vector<Dodge> dodges);
 
 	void update(float dt, std::vector<sf::FloatRect> geometry, 
 			fr::Player &opponent);
@@ -57,7 +58,6 @@ class Player {
 	int animation;
 	State last_state;
 	Stats stats;
-	std::vector<fr::Punch> punches;
 	float tt_regen = 0;
 
 	void updateVelocity(sf::Vector2f &velocity, State state, State last_state,
