@@ -21,19 +21,21 @@ sf::Text p1_info;
 sf::Text p2_info;
 
 fr::Match::Match(fr::ConfigFile config) {
-	if (!regular.loadFromFile("assets/unscii-8.pcf"));
-	if (!thin.loadFromFile("assets/unscii-8-thin.pcf"));
+	std::string prefix = "../share/games/final-round/assets/";
 
-	star.loadFromFile("assets/star.png");
-	left_star.loadFromFile("assets/left_star.png");
-	right_star.loadFromFile("assets/right_star.png");
-	nostar.loadFromFile("assets/nostar.png");
-	left_nostar.loadFromFile("assets/left_nostar.png");
-	right_nostar.loadFromFile("assets/right_nostar.png");
+	if (!regular.loadFromFile(prefix + "unscii-8.pcf"));
+	if (!thin.loadFromFile(prefix + "unscii-8-thin.pcf"));
+
+	star.loadFromFile(prefix + "star.png");
+	left_star.loadFromFile(prefix + "left_star.png");
+	right_star.loadFromFile(prefix + "right_star.png");
+	nostar.loadFromFile(prefix + "nostar.png");
+	left_nostar.loadFromFile(prefix + "left_nostar.png");
+	right_nostar.loadFromFile(prefix + "right_nostar.png");
 
 	// Level
 	sf::Texture ring;
-	if (!ring.loadFromFile("assets/ring.png"));
+	if (!ring.loadFromFile(prefix + "ring.png"));
 
 	sf::FloatRect left(8, 112, 8, 64);
 	sf::FloatRect right(320 - 16, 112, 8, 64);
@@ -55,9 +57,9 @@ fr::Match::Match(fr::ConfigFile config) {
 	sf::Vector2f spawn_point = sf::Vector2f(16 + 64, 112);
 
 	sf::Texture l_spritesheet;
-	l_spritesheet.loadFromFile("assets/red_l_spritesheet.png");
+	l_spritesheet.loadFromFile(prefix + "red_l_spritesheet.png");
 	sf::Texture r_spritesheet;
-	r_spritesheet.loadFromFile("assets/red_r_spritesheet.png");
+	r_spritesheet.loadFromFile(prefix + "red_r_spritesheet.png");
 	std::vector<Animation> animations {
 		Animation(1, true, false),
 		Animation(1, true, false),
@@ -107,8 +109,8 @@ fr::Match::Match(fr::ConfigFile config) {
 
 	spawn_point = sf::Vector2f(320 - 16 - 64 * 2, 112);
 
-	l_spritesheet.loadFromFile("assets/blue_l_spritesheet.png");
-	r_spritesheet.loadFromFile("assets/blue_l_spritesheet.png");
+	l_spritesheet.loadFromFile(prefix + "blue_l_spritesheet.png");
+	r_spritesheet.loadFromFile(prefix + "blue_l_spritesheet.png");
 	sprite = Sprite(l_spritesheet, r_spritesheet, animations, 
 			sf::Vector2i(128, 128), 16);
 
