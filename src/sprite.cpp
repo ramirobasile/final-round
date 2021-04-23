@@ -6,19 +6,15 @@
 #include "SFML/Graphics.hpp"
 #include "state.hpp"
 
-fr::Animation::Animation(int frames, bool loops, bool reusmes) 
-		: frames(frames), loops(loops), resumes(resumes) {
+fr::Animation::Animation(int frames, bool loops,
+		std::vector<fr::Animations> continues)
+		: frames(frames), loops(loops), continues(continues) {
 }
 
 void fr::Animation::nextFrame() {
 	if (frame < frames - 1)
 		frame++;
 	else if (loops)
-		frame = 0;
-}
-
-void fr::Animation::reset() {
-	if (!resumes)
 		frame = 0;
 }
 
@@ -100,9 +96,20 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 	}
 
 	if (animation != new_animation) {
-		progress = 0;
-		getAnimation().reset();
+		Animations old_animation = animation;
+		int old_frame = getAnimation().frame;
 		animation = new_animation;
+
+		bool cont = false;
+		for (int i = 0; i < getAnimation().continues.size() && !cont; ++i)
+			cont = old_animation == getAnimation().continues[i];
+
+		if (cont) {
+			getAnimation().frame = old_frame;
+		} else {
+			progress = 0;
+			getAnimation().frame = 0;
+		}
 	}
 }
 

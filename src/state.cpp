@@ -55,6 +55,10 @@ void fr::State::update(std::vector<fr::Input> inputs,
 		else
 			guard = Guards::none;
 
+		// Dodge
+		if (input.control == Controls::left && input.action == Actions::double_press)
+			dodge = Dodges::pull;
+
 		// Idle
 		if (input.action == Actions::release)
 			movement = Movements::idle;

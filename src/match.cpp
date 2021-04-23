@@ -60,32 +60,39 @@ fr::Match::Match(fr::ConfigFile config) {
 	l_spritesheet.loadFromFile(prefix + "red_l_spritesheet.png");
 	sf::Texture r_spritesheet;
 	r_spritesheet.loadFromFile(prefix + "red_r_spritesheet.png");
+
+	std::vector<Animations> walk_chain = {
+		Animations::idle,
+		Animations::walk,
+		Animations::walk_head,
+		Animations::walk_body
+	 };
 	std::vector<Animation> animations {
-		Animation(1, true, false),
-		Animation(1, true, false),
-		Animation(1, true, false),
+		Animation(1, true, walk_chain),
+		Animation(1, true, walk_chain),
+		Animation(1, true, walk_chain),
 
-		Animation(8, true, false),
-		Animation(8, true, false),
-		Animation(8, true, false),
+		Animation(8, true, walk_chain),
+		Animation(8, true, walk_chain),
+		Animation(8, true, walk_chain),
 
-		Animation(5, false, false),
-		Animation(5, false, false),
-		Animation(6, false, false),
-		Animation(6, false, false),
-		Animation(5, false, false),
-		Animation(5, false, false),
-		Animation(5, false, false),
-		Animation(5, false, false),
+		Animation(5, false, std::vector<Animations>{}),
+		Animation(5, false, std::vector<Animations>{}),
+		Animation(6, false, std::vector<Animations>{}),
+		Animation(6, false, std::vector<Animations>{}),
+		Animation(5, false, std::vector<Animations>{}),
+		Animation(5, false, std::vector<Animations>{}),
+		Animation(5, false, std::vector<Animations>{}),
+		Animation(5, false, std::vector<Animations>{}),
 		
-		Animation(1, true, false),
-		Animation(1, true, false),
-		Animation(1, true, false),
+		Animation(1, true, std::vector<Animations>{}),
+		Animation(1, true, std::vector<Animations>{}),
+		Animation(1, true, std::vector<Animations>{}),
 		
-		Animation(1, true, false),
-		Animation(1, true, false),
+		Animation(1, true, std::vector<Animations>{}),
+		Animation(1, true, std::vector<Animations>{}),
 		
-		Animation(1, true, false),
+		Animation(1, true, std::vector<Animations>{}),
 	};
 	Sprite sprite(l_spritesheet, r_spritesheet, animations,
 			sf::Vector2i(128, 128), 16);
