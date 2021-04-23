@@ -21,7 +21,7 @@ sf::Text p1_info;
 sf::Text p2_info;
 
 fr::Match::Match(fr::ConfigFile config) {
-	std::string prefix = "../share/games/final-round/assets/";
+	std::string prefix = "../../share/games/final-round/assets/";
 
 	if (!regular.loadFromFile(prefix + "unscii-8.pcf"));
 	if (!thin.loadFromFile(prefix + "unscii-8-thin.pcf"));
