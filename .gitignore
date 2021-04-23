@@ -1,5 +1,6 @@
 tags*
 *.gcov
 build/
+install/
 dev/
 TODO.txt
