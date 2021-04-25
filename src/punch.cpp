@@ -76,30 +76,30 @@ std::vector<fr::Punch> fr::default_punches = {
 	// Body cross
 	Punch(Controls::a, Actions::hold, Controls::down, PRESS_END, PRESS_END + 0.1f,
 			2, 1, 1, 1, 0.15f, 0.2f, 0.25f, 0.5f, true,
-			sf::FloatRect(32, 20, 26, 8), Animations::cross_body),
+			sf::FloatRect(32, 20, 24, 8), Animations::cross_body),
 
 	// Head cross
 	Punch(Controls::a, Actions::hold, Controls::none, PRESS_END, PRESS_END + 0.1f,
-			4, 0, 1, 1, 0.15f, 0.3f, 0.35f, 0.5f, true,
-			sf::FloatRect(32, 8, 26, 8), Animations::cross_head),
+			4, 0, 1, 1, 0.15f, 0.275f, 0.375f, 0.5f, true,
+			sf::FloatRect(32, 8, 24, 8), Animations::cross_head),
 
 	// Body upper
 	Punch(Controls::b, Actions::release, Controls::down, 0, PRESS_END,
-			3, 2, 1, 1, 0.15f, 0.325f, 0.375f, 0.625f, false,
-			sf::FloatRect(48, 20, 24, 12), Animations::upper_body),
+			3, 2, 1, 1, 0.15f, 0.3125f, 0.35f, 0.625f, false,
+			sf::FloatRect(24, 20, 24, 12), Animations::upper_body),
 
 	// Head upper
 	Punch(Controls::b, Actions::release, Controls::none, 0, PRESS_END,
-			4, 0, 1, 1, 0.15f, 0.325f, 0.375f, 0.625f, true,
-			sf::FloatRect(48, 4, 24, 12), Animations::upper_head),
+			4, 0, 1, 1, 0.15f, 0.3125f, 0.35f, 0.625f, true,
+			sf::FloatRect(24, 4, 24, 12), Animations::upper_head),
 
 	// Body hook
 	Punch(Controls::b, Actions::hold, Controls::down, PRESS_END, PRESS_END + 0.1f,
-			2, 2, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.75f, false,
-			sf::FloatRect(64, 20, 16, 12), Animations::hook_body),
+			2, 2, 2, 2, 0.1f, 0.325f, 0.425f, 0.75f, false,
+			sf::FloatRect(26, 20, 16, 12), Animations::hook_body),
 
 	// Head hook
 	Punch(Controls::b, Actions::hold, Controls::none, PRESS_END, PRESS_END + 0.1f,
-			6, 0, 2, 2, 0.1f, 0.35125f, 0.4125f, 0.75f, false,
-			sf::FloatRect(64, 4, 16, 12), Animations::hook_head),
+			6, 0, 2, 2, 0.1f, 0.325f, 0.425f, 0.75f, false,
+			sf::FloatRect(26, 4, 16, 12), Animations::hook_head),
 };
