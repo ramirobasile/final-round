@@ -24,9 +24,9 @@ fr::Player::Player(int index, std::string alias, int direction,
 		std::vector<fr::Dodge> dodges)
 		: index(index), alias(alias), direction(direction), 
 		input_dev(input_dev), controls(controls), sprite(sprite), stats(stats) {
-	bounds = sf::FloatRect(position.x, position.y, 32, 64);
-	head_hurtbox = sf::FloatRect(20, 3, 16, 16);
-	body_hurtbox = sf::FloatRect(16, 19, 16, 16);
+	bounds = sf::FloatRect(position.x, position.y, stats.bounds.x, stats.bounds.y);
+	head_hurtbox = stats.head_hurtbox;
+	body_hurtbox = stats.body_hurtbox;
 
 	state = State(punches, dodges);
 
