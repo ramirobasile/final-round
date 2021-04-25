@@ -70,9 +70,9 @@ fr::Match::Match(fr::ConfigFile config) {
 		Animations::walk_body
 	 };
 	std::vector<Animation> animations {
-		Animation(1, true, walk_chain),
-		Animation(1, true, walk_chain),
-		Animation(1, true, walk_chain),
+		Animation(1, true, std::vector<Animations>{}),
+		Animation(1, true, std::vector<Animations>{}),
+		Animation(1, true, std::vector<Animations>{}),
 
 		Animation(8, true, walk_chain),
 		Animation(8, true, walk_chain),
@@ -80,12 +80,12 @@ fr::Match::Match(fr::ConfigFile config) {
 
 		Animation(5, false, std::vector<Animations>{}),
 		Animation(5, false, std::vector<Animations>{}),
+		Animation(7, false, std::vector<Animations>{}),
+		Animation(7, false, std::vector<Animations>{}),
+		Animation(9, false, std::vector<Animations>{}),
+		Animation(9, false, std::vector<Animations>{}),
 		Animation(6, false, std::vector<Animations>{}),
 		Animation(6, false, std::vector<Animations>{}),
-		Animation(5, false, std::vector<Animations>{}),
-		Animation(5, false, std::vector<Animations>{}),
-		Animation(5, false, std::vector<Animations>{}),
-		Animation(5, false, std::vector<Animations>{}),
 		
 		Animation(1, true, std::vector<Animations>{}),
 		Animation(1, true, std::vector<Animations>{}),
