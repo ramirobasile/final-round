@@ -191,7 +191,7 @@ void fr::Player::drawDebugHurtboxes(sf::RenderWindow &window) {
 }
 
 void fr::Player::drawDebugHitboxes(sf::RenderWindow &window) {
-	if (state.punch.isDone() && state.punch.isActive()) {
+	if (!state.punch.isDone() && state.punch.isActive()) {
 		sf::FloatRect hitbox = state.punch.getHitbox(bounds, direction);
 		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
 		shape.setPosition(hitbox.left, hitbox.top);
