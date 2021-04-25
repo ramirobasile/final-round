@@ -12,8 +12,8 @@ namespace fr {
 class Dodge {
 	public:
 	Dodge();
-	Dodge(Controls control, Actions action, sf::Vector2f offset,
-			float active_begin, float active_end, float recovery_end,
+	Dodge(Controls control, Actions action, int self_damage, float active_begin,
+			float active_end, float recovery_end, sf::Vector2f offset,
 			Animations animation);
 
 	void start();
@@ -27,6 +27,7 @@ class Dodge {
 	float progress = -1;
 	Controls control;
 	Actions action;
+	int self_damage;
 	sf::Vector2f offset;
 	Animations animation;
 
@@ -35,7 +36,5 @@ class Dodge {
 	float active_end;
 	float recovery_end;
 };
-
-extern std::vector<Dodge> default_dodges;
 
 } // namespace fr

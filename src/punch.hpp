@@ -48,6 +48,4 @@ class Punch {
 	sf::FloatRect hitbox;
 };
 
-extern std::vector<Punch> default_punches;
-
 } // namespace fr

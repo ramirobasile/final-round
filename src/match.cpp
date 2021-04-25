@@ -102,7 +102,7 @@ fr::Match::Match(fr::ConfigFile config) {
 	Stats stats;
 
 	player1 = Player(1, "MKEY", 1, device, controls, spawn_point, sprite, 
-			stats, default_punches, default_dodges);
+			stats);
 			
 	// Player 2
 	device = (Devices)config.getInt("player2_controls", "device", 0);
@@ -124,7 +124,7 @@ fr::Match::Match(fr::ConfigFile config) {
 			sf::Vector2i(128, 128), 16);
 
 	player2 = Player(2, "FLIP", -1, device, controls, spawn_point, sprite, 
-			stats, default_punches, default_dodges);
+			stats);
 
 	// UI
 	time_text.setFont(regular);

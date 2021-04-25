@@ -20,15 +20,14 @@ fr::Player::Player() {} // Empty constructor
 
 fr::Player::Player(int index, std::string alias, int direction, 
 		fr::Devices input_dev, std::vector<int> controls, sf::Vector2f position, 
-		fr::Sprite sprite, fr::Stats stats, std::vector<fr::Punch> punches,
-		std::vector<fr::Dodge> dodges)
+		fr::Sprite sprite, fr::Stats stats)
 		: index(index), alias(alias), direction(direction), 
 		input_dev(input_dev), controls(controls), sprite(sprite), stats(stats) {
 	bounds = sf::FloatRect(position.x, position.y, stats.bounds.x, stats.bounds.y);
 	head_hurtbox = stats.head_hurtbox;
 	body_hurtbox = stats.body_hurtbox;
 
-	state = State(punches, dodges);
+	state = State(stats.punches, stats.dodges);
 
 	max_health = stats.max_health;
 	health = max_health;
