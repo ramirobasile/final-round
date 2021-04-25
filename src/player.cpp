@@ -67,10 +67,10 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 	// Hit opponent
 	sf::FloatRect hitbox = state.punch.getHitbox(bounds, direction);
 	if (state.punch.isActive()) {
-		if (hitbox.intersects(opponent.getBodyHurtbox()))
-			opponent.takeHit(state.punch, false);
-		else if (hitbox.intersects(opponent.getHeadHurtbox()))
+		if (hitbox.intersects(opponent.getHeadHurtbox()))
 			opponent.takeHit(state.punch, true);
+		else if (hitbox.intersects(opponent.getBodyHurtbox()))
+			opponent.takeHit(state.punch, false);
 	}
 
 	// Sprite
