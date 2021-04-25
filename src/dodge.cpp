@@ -49,6 +49,12 @@ std::vector<fr::Dodge> fr::default_dodges = {
 	Dodge(),
 	
 	// Pull
-	Dodge(Controls::left, Actions::double_press, sf::Vector2f(-8, 0), 0.1f, 
-			0.2f, 0.4f, Animations::pull),
+	Dodge(Controls::left, Actions::double_press, sf::Vector2f(-8, 0), 0, 
+			0.25f, 0.3f, Animations::pull),
+			
+	Dodge(Controls::up, Actions::double_press, sf::Vector2f(999, 0), 0, 
+			0.225f, 0.225f, Animations::slip),
+			
+	Dodge(Controls::down, Actions::double_press, sf::Vector2f(2, 8), 0.025f, 
+			0.275f, 0.3f, Animations::duck),
 };
