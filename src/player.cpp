@@ -46,7 +46,7 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 	last_state = state;
 	state.update(inputs, buffer, dt);
 
-	if (state.punch.isDone() && state.guard == Guards::none)
+	if (state.punch.isDone() && state.dodge.isDone() && state.guard == Guards::none)
 		tt_regen += dt;
 	
 	if (tt_regen > stats.regen_rate) {
@@ -60,6 +60,7 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 	if (state.punch.canInterrupt() && state.punch.needs_clear && !clear)
 		state.punch.interrupt();
 
+	// Take punch self damage once un-interruptible
 	if (last_state.punch.canInterrupt() && !state.punch.canInterrupt())
 		takeDamage(state.punch.self_damage);
 
@@ -71,6 +72,10 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 		else if (hitbox.intersects(opponent.getBodyHurtbox()))
 			opponent.takeHit(state.punch, false);
 	}
+	
+	// Take dodge self damage
+	if (last_state.dodge.isDone() && !state.dodge.isDone())
+		takeDamage(state.dodge.self_damage);
 
 	// Sprite
 	sprite.update(state, last_state, dt);
