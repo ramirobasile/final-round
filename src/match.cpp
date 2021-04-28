@@ -17,6 +17,7 @@
 #include "stats.hpp"
 #include "sprite.hpp"
 #include "utils.hpp"
+#include "direction.hpp"
 
 // Debug
 sf::Text p1_info;
@@ -101,7 +102,7 @@ fr::Match::Match(fr::ConfigFile config) {
 
 	Stats stats;
 
-	player1 = Player(1, "MKEY", 1, device, controls, spawn_point, sprite, 
+	player1 = Player(1, "MKEY", Direction::right, device, controls, spawn_point, sprite, 
 			stats);
 			
 	// Player 2
@@ -123,7 +124,7 @@ fr::Match::Match(fr::ConfigFile config) {
 	sprite = Sprite(l_spritesheet, r_spritesheet, animations, 
 			sf::Vector2i(128, 128), 16);
 
-	player2 = Player(2, "FLIP", -1, device, controls, spawn_point, sprite, 
+	player2 = Player(2, "FLIP", Direction::left, device, controls, spawn_point, sprite, 
 			stats);
 
 	// UI

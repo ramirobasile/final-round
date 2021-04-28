@@ -5,6 +5,7 @@
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "state.hpp"
+#include "direction.hpp"
 
 fr::Animation::Animation(int frames, bool loops,
 		std::vector<fr::Animations> continues)
@@ -81,12 +82,12 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 }
 
 void fr::Sprite::draw(sf::RenderWindow &window, sf::FloatRect relative_to,
-		int direction) {
+		fr::Direction direction) {
 	sf::IntRect subrect(size.x * getAnimation().frame, size.y * (int)animation,
 			size.x, size.y);
 
 	sf::Sprite sprite;
-	if (direction == 1)
+	if (direction == Direction::right)
 		sprite = sf::Sprite(l_spritesheet, subrect);
 	else
 		sprite = sf::Sprite(r_spritesheet, subrect);

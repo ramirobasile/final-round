@@ -50,9 +50,10 @@ bool fr::Punch::isDone() const {
 	return progress > recovery_end || progress == -1;
 }
 
-sf::FloatRect fr::Punch::getHitbox(sf::FloatRect relative_to, int direction) const {
+sf::FloatRect fr::Punch::getHitbox(sf::FloatRect relative_to, 
+		fr::Direction direction) const {
 	int left;
-	if (direction == 1)
+	if (direction == Direction::right)
 		left = relative_to.left + hitbox.left;
 	else
 		left = relative_to.left - hitbox.left + relative_to.width - hitbox.width;

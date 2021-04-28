@@ -12,6 +12,7 @@
 #include "dodge.hpp"
 #include "sprite.hpp"
 #include "stats.hpp"
+#include "direction.hpp"
 
 namespace fr {
 
@@ -19,7 +20,7 @@ class Player {
 	public:
 	int index;
 	std::string alias;
-	int direction;
+	Direction direction;
 	sf::FloatRect bounds;
 	int health;
 	int max_health;
@@ -29,7 +30,7 @@ class Player {
 	bool dead = false;
 
 	Player();
-	Player(int index, std::string alias, int direction, Device input_dev,
+	Player(int index, std::string alias, Direction direction, Device input_dev,
 			std::vector<int> controls, sf::Vector2f position, fr::Sprite sprite, 
 			Stats stats);
 

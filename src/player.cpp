@@ -15,10 +15,11 @@
 #include "stats.hpp"
 #include "sprite.hpp"
 #include "utils.hpp"
+#include "direction.hpp"
 
 fr::Player::Player() {} // Empty constructor
 
-fr::Player::Player(int index, std::string alias, int direction, 
+fr::Player::Player(int index, std::string alias, fr::Direction direction, 
 		fr::Device input_dev, std::vector<int> controls, sf::Vector2f position, 
 		fr::Sprite sprite, fr::Stats stats)
 		: index(index), alias(alias), direction(direction), 
@@ -127,7 +128,7 @@ sf::Vector2f fr::Player::getSize() const {
 
 sf::FloatRect fr::Player::getHeadHurtbox() const {
 	int left;
-	if (direction == 1)
+	if (direction == Direction::right)
 		left = bounds.left + head_hurtbox.left;
 	else
 		left = bounds.left - head_hurtbox.left + bounds.width - head_hurtbox.width;
@@ -135,8 +136,8 @@ sf::FloatRect fr::Player::getHeadHurtbox() const {
 	int top = bounds.top + head_hurtbox.top + state.dodge.offset.y;
 
 	if (state.dodge.isActive()) {
-		left += state.dodge.offset.x * direction;
-		top += state.dodge.offset.y * direction;
+		left += state.dodge.offset.x * (int)direction;
+		top += state.dodge.offset.y * (int)direction;
 	}
 
 	return sf::FloatRect(left, top, head_hurtbox.width, head_hurtbox.height);
@@ -144,7 +145,7 @@ sf::FloatRect fr::Player::getHeadHurtbox() const {
 
 sf::FloatRect fr::Player::getBodyHurtbox() const {
 	int left;
-	if (direction == 1)
+	if (direction == Direction::right)
 		left = bounds.left + body_hurtbox.left;
 	else
 		left = bounds.left - body_hurtbox.left + bounds.width - body_hurtbox.width;

@@ -6,6 +6,7 @@
 #include "SFML/Window.hpp"
 #include "input.hpp"
 #include "animations.hpp"
+#include "direction.hpp"
 
 namespace fr {
 
@@ -25,7 +26,7 @@ class Punch {
 	bool isActive() const;
 	bool isRecovering() const;
 	bool isDone() const;
-	sf::FloatRect getHitbox(sf::FloatRect relative_to, int direction) const;
+	sf::FloatRect getHitbox(sf::FloatRect relative_to, Direction direction) const;
 
 	float progress = -1;
 	Control control;
