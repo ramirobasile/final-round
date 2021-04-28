@@ -3,11 +3,11 @@
 #include <iostream>
 #include <vector>
 
-#include "input.hpp"
-#include "punch.hpp"
-#include "dodge.hpp"
-#include "physics.hpp"
 #include "animations.hpp"
+#include "dodge.hpp"
+#include "input.hpp"
+#include "physics.hpp"
+#include "punch.hpp"
 
 fr::State::State() {} // Empty constructor
 

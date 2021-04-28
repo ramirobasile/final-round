@@ -1,7 +1,7 @@
 #pragma once
 
-#include <map>
 #include <fstream>
+#include <map>
 #include <string>
 
 namespace fr {

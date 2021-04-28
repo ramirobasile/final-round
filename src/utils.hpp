@@ -1,10 +1,10 @@
 #pragma once
 
-#include <vector>
-#include <iostream>
 #include <iomanip>
-#include <string>
+#include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 inline std::string fillString(std::string str, int w, char fill) {
 	std::stringstream stream;

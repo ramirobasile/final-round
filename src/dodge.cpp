@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "SFML/System.hpp"
-#include "input.hpp"
 #include "animations.hpp"
+#include "input.hpp"
 
 fr::Dodge::Dodge() {} // Empty constructor
 

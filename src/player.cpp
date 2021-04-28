@@ -1,21 +1,21 @@
 #include "player.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
+#include "direction.hpp"
+#include "dodge.hpp"
 #include "input.hpp"
 #include "physics.hpp"
-#include "state.hpp"
 #include "punch.hpp"
-#include "dodge.hpp"
-#include "stats.hpp"
 #include "sprite.hpp"
+#include "state.hpp"
+#include "stats.hpp"
 #include "utils.hpp"
-#include "direction.hpp"
 
 fr::Player::Player() {} // Empty constructor
 

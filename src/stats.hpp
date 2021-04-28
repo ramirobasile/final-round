@@ -1,10 +1,10 @@
 #pragma once
 
-#include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+#include "animations.hpp"
 #include "dodge.hpp"
 #include "input.hpp"
-#include "animations.hpp"
 
 namespace fr {
 

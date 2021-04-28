@@ -1,7 +1,7 @@
 #include "physics.hpp"
 
-#include <vector>
 #include <cmath>
+#include <vector>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"

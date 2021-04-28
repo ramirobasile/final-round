@@ -1,10 +1,10 @@
 #include "input.hpp"
 
-#include <iostream>
-#include <vector>
-#include <string>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"

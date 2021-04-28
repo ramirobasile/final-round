@@ -4,9 +4,9 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
-#include "input.hpp"
 #include "animations.hpp"
 #include "direction.hpp"
+#include "input.hpp"
 
 namespace fr {
 

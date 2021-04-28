@@ -1,18 +1,18 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+#include "direction.hpp"
+#include "dodge.hpp"
 #include "input.hpp"
 #include "physics.hpp"
-#include "state.hpp"
 #include "punch.hpp"
-#include "dodge.hpp"
 #include "sprite.hpp"
+#include "state.hpp"
 #include "stats.hpp"
-#include "direction.hpp"
 
 namespace fr {
 

@@ -2,10 +2,10 @@
 
 #include <vector>
 
-#include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
-#include "state.hpp"
+#include "SFML/Window.hpp"
 #include "direction.hpp"
+#include "state.hpp"
 
 fr::Animation::Animation(int frames, bool loops,
 		std::vector<fr::Animations> continues)

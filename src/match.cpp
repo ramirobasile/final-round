@@ -1,23 +1,23 @@
 #include "match.hpp"
 
-#include <vector>
-#include <iostream>
 #include <iomanip>
-#include <string>
+#include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "config.hpp"
+#include "direction.hpp"
+#include "dodge.hpp"
+#include "input.hpp"
 #include "level.hpp"
 #include "player.hpp"
 #include "punch.hpp"
-#include "dodge.hpp"
-#include "input.hpp"
-#include "stats.hpp"
 #include "sprite.hpp"
+#include "stats.hpp"
 #include "utils.hpp"
-#include "direction.hpp"
 
 // Debug
 sf::Text p1_info;

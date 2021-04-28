@@ -2,9 +2,9 @@
 
 #include <vector>
 
+#include "dodge.hpp"
 #include "input.hpp"
 #include "punch.hpp"
-#include "dodge.hpp"
 
 namespace fr {
 

@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "SFML/Graphics.hpp"
-#include "input.hpp"
 #include "animations.hpp"
+#include "input.hpp"
 
 fr::Punch::Punch() {} // Empty constructor
 

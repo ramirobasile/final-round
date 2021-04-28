@@ -1,9 +1,9 @@
 #include "config.hpp"
 
+#include <fstream>
 #include <map>
 #include <sstream>
 #include <string>
-#include <fstream>
 
 void fr::ConfigFile::parse(std::ifstream file) {
 	cfg.clear();

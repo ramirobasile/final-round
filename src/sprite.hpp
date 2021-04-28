@@ -2,11 +2,11 @@
 
 #include <vector>
 
-#include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
+#include "SFML/Window.hpp"
 #include "animations.hpp"
-#include "state.hpp"
 #include "direction.hpp"
+#include "state.hpp"
 
 namespace fr {
 
