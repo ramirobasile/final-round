@@ -8,7 +8,7 @@
 
 fr::Punch::Punch() {} // Empty constructor
 
-fr::Punch::Punch(Controls control, Actions action, Controls mod,
+fr::Punch::Punch(Control control, Action action, Control mod,
 		float min_held, float max_held, int damage, int perma_damage,
 		int block_damage, int self_damage, float interrupt_end,
 		float hitbox_begin, float hitbox_end, float recovery_end,

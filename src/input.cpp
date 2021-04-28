@@ -22,31 +22,31 @@ void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buf
 	std::vector<Input> new_inputs;
 
 	for (int i = 0; i < controls.size(); ++i) {
-		Controls control = (Controls)i;
+		Control control = (Control)i;
 
 		Input prev;
-		for (int i = 0; i < inputs.size() && prev.control != control; ++i) {
-			if (inputs[i].control == control)
-				prev = inputs[i];
+		for (int j = 0; j < inputs.size() && prev.control != control; ++j) {
+			if (inputs[j].control == control)
+				prev = inputs[j];
 		}
-		bool was_down = prev.control == control && prev.action != Actions::release;
+		bool was_down = prev.control == control && prev.action != Action::release;
 		bool is_down = sf::Keyboard::isKeyPressed((sf::Keyboard::Key)controls[i]);
 		float held = prev.held + dt;
 
 		if (is_down && was_down)
-			new_inputs.push_back(Input{control, Actions::hold, held});
+			new_inputs.push_back(Input{control, Action::hold, held});
 
 		if (!is_down && was_down)
-			new_inputs.push_back(Input{control, Actions::release, held});
+			new_inputs.push_back(Input{control, Action::release, held});
 
 		if (is_down && !was_down)
-			new_inputs.push_back(Input{control, Actions::press, held});
+			new_inputs.push_back(Input{control, Action::press, held});
 			
 		bool pressed_before = !buffer.empty() && buffer.back().control == control
-				&& buffer.back().action == Actions::release;
+				&& buffer.back().action == Action::release;
 		bool within_dp_end = BUFFER_TTL - buffer_ttl < DOUBLE_PRESS_END;
 		if (is_down && !was_down && pressed_before && within_dp_end)
-			new_inputs.push_back(Input{control, Actions::double_press, held});
+			new_inputs.push_back(Input{control, Action::double_press, held});
 	}
 
 	inputs = new_inputs;
@@ -75,8 +75,8 @@ void fr::updateBuffer(std::vector<fr::Input> &buffer,
 	}
 }
 
-bool fr::inputted(fr::Controls control, std::vector<fr::Input> inputs) {
-	bool res = control == Controls::none;
+bool fr::inputted(fr::Control control, std::vector<fr::Input> inputs) {
+	bool res = control == Control::none;
 	
 	for (int i = 0; i < inputs.size() && !res; ++i)
 		res = control == inputs[i].control;

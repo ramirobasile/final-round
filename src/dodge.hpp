@@ -12,7 +12,7 @@ namespace fr {
 class Dodge {
 	public:
 	Dodge();
-	Dodge(Controls control, Actions action, int self_damage, float active_begin,
+	Dodge(Control control, Action action, int self_damage, float active_begin,
 			float active_end, float recovery_end, sf::Vector2f offset,
 			Animations animation);
 
@@ -25,8 +25,8 @@ class Dodge {
 	bool isDone() const;
 
 	float progress = -1;
-	Controls control;
-	Actions action;
+	Control control;
+	Action action;
 	int self_damage;
 	sf::Vector2f offset;
 	Animations animation;

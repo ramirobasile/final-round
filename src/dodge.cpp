@@ -8,7 +8,7 @@
 
 fr::Dodge::Dodge() {} // Empty constructor
 
-fr::Dodge::Dodge(Controls control, Actions action, int self_damage,
+fr::Dodge::Dodge(Control control, Action action, int self_damage,
 		float active_begin, float active_end, float recovery_end, 
 		sf::Vector2f offset, fr::Animations animation)
 		: control(control), action(action), self_damage(self_damage),
