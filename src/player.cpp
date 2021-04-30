@@ -28,7 +28,7 @@ fr::Player::Player(int index, std::string alias, fr::Direction direction,
 	head_hurtbox = stats.head_hurtbox;
 	body_hurtbox = stats.body_hurtbox;
 
-	state = State(stats.punches, stats.dodges);
+	state = State(stats.punches, stats.dodge);
 
 	max_health = stats.max_health;
 	health = max_health;
@@ -79,7 +79,8 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 		takeDamage(state.dodge.self_damage);
 
 	// Sprite
-	sprite.update(state, last_state, dt);
+	sprite.update(state, last_state, 
+			distance(getPosition(), opponent.getPosition()), dt);
 
 	// Physics
 	updateVelocity(velocity, state, last_state, stats);
@@ -127,18 +128,16 @@ sf::Vector2f fr::Player::getSize() const {
 }
 
 sf::FloatRect fr::Player::getHeadHurtbox() const {
+	if (state.dodge.isActive())
+		return sf::FloatRect(0, 0, 0, 0);
+		
 	int left;
 	if (direction == Direction::right)
 		left = bounds.left + head_hurtbox.left;
 	else
 		left = bounds.left - head_hurtbox.left + bounds.width - head_hurtbox.width;
 	
-	int top = bounds.top + head_hurtbox.top + state.dodge.offset.y;
-
-	if (state.dodge.isActive()) {
-		left += state.dodge.offset.x * (int)direction;
-		top += state.dodge.offset.y * (int)direction;
-	}
+	int top = bounds.top + head_hurtbox.top;
 
 	return sf::FloatRect(left, top, head_hurtbox.width, head_hurtbox.height);
 }

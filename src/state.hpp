@@ -24,7 +24,7 @@ enum class Guards {
 class State {
 	public:
 	State();
-	State(std::vector<Punch> punches, std::vector<Dodge> dodges);
+	State(std::vector<Punch> punches, Dodge dodge);
 	
 	void update(std::vector<Input> inputs, std::vector<Input> buffer,
 			float dt);
@@ -36,7 +36,6 @@ class State {
 
 	private:
 	std::vector<Punch> punches;
-	std::vector<Dodge> dodges;
 	float stun;
 	float guard_recovery;
 };

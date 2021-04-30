@@ -27,7 +27,8 @@ fr::Sprite::Sprite(sf::Texture l_spritesheet, sf::Texture r_spritesheet,
 		animations(animations), size(size), fps(fps) {
 }
 
-void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
+void fr::Sprite::update(fr::State state, fr::State last_state, 
+		float opponent_distance, float dt) {
 	progress += dt;
 
 	if (progress > (1 / fps)) {
@@ -35,32 +36,40 @@ void fr::Sprite::update(fr::State state, fr::State last_state, float dt) {
 		progress = 0;
 	}
 
-	Animations new_animation;
+	Animations new_animation = animation;
 	
-	switch (state.movement) {
-		case Movements::idle:
-			if (state.guard == Guards::head)
-				new_animation = Animations::idle_head;
-			else if (state.guard == Guards::body)
-				new_animation = Animations::idle_body;
-			else
-				new_animation = Animations::idle;
-			break;
-		case Movements::walk_l:
-		case Movements::walk_r:
-			if (state.guard== Guards::head)
-				new_animation = Animations::walk_head;
-			else if (state.guard == Guards::body)
-				new_animation = Animations::walk_body;
-			else
-				new_animation = Animations::walk;
-			break;
+	if (state.dodge.isDone() && state.punch.isDone()) {
+		switch (state.movement) {
+			case Movements::idle:
+				if (state.guard == Guards::head)
+					new_animation = Animations::idle_head;
+				else if (state.guard == Guards::body)
+					new_animation = Animations::idle_body;
+				else
+					new_animation = Animations::idle;
+				break;
+			case Movements::walk_l:
+			case Movements::walk_r:
+				if (state.guard== Guards::head)
+					new_animation = Animations::walk_head;
+				else if (state.guard == Guards::body)
+					new_animation = Animations::walk_body;
+				else
+					new_animation = Animations::walk;
+				break;
+		}
 	}
 	
-	if (!state.dodge.isDone())
-		new_animation = state.dodge.animation;
+	if (last_state.dodge.isDone() && !state.dodge.isDone()) {
+		if (opponent_distance < DUCK_DISTANCE)
+			new_animation = Animations::duck;
+		else if (opponent_distance < SLIP_DISTANCE)
+			new_animation = Animations::slip;
+		else
+			new_animation = Animations::pull;
+	}
 		
-	if (!state.punch.isDone())
+	if (last_state.punch.isDone() && !state.punch.isDone())
 		new_animation = state.punch.animation;
 
 	if (animation != new_animation) {

@@ -19,27 +19,7 @@ struct Stats {
 	sf::FloatRect head_hurtbox = sf::FloatRect(16, 3, 16, 16);
 	sf::FloatRect body_hurtbox = sf::FloatRect(12, 19, 16, 16);
 	
-	std::vector<Dodge> dodges = {
-		Dodge(), // None
-		
-		// Pull
-		Dodge(Control::left, Action::double_press,
-				0,
-				0, 0.25f, 0.3f, 
-				sf::Vector2f(-8, 0), Animations::pull),
-		
-		// Slip
-		Dodge(Control::up, Action::double_press, 
-				0,
-				0, 0.25f, 0.25f,
-				sf::Vector2f(999, 0), Animations::slip),
-		
-		// Duck
-		Dodge(Control::down, Action::double_press, 
-				1,
-				0.025f, 0.275f, 0.3f, 
-				sf::Vector2f(2, 8), Animations::duck),
-	};
+	Dodge dodge = Dodge(1, 0.05, 0.275, 0.3);
 	
 	std::vector<Punch> punches = {
 		Punch(), // None

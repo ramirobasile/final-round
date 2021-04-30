@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -25,4 +26,9 @@ inline int sign(int n) {
 	if (n < 0)
 		return -1;
 	return 0;
+}
+
+// Why SFML's Vector2 doesn't have this is beyond me
+inline float distance(sf::Vector2f a, sf::Vector2f b) {
+	return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
 }

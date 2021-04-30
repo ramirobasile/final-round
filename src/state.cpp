@@ -11,8 +11,8 @@
 
 fr::State::State() {} // Empty constructor
 
-fr::State::State(std::vector<fr::Punch> punches, std::vector<fr::Dodge> dodges)
-		: punches(punches), dodges(dodges) {
+fr::State::State(std::vector<fr::Punch> punches, fr::Dodge dodge)
+		: punches(punches), dodge(dodge) {
 }
 
 void fr::State::update(std::vector<fr::Input> inputs, 
@@ -44,15 +44,9 @@ void fr::State::update(std::vector<fr::Input> inputs,
 		}
 		
 		// Dodge
-		for (int j = 0; j < dodges.size() && dodge.isDone() && punch.isDone(); ++j) {
-			bool same_control = input.control == dodges[j].control;
-			bool same_action = input.action == dodges[j].action;
-
-			if (same_control && same_action) {
-				dodge.end();
-				dodge = dodges[j];
-				dodge.start();
-			}
+		if (dodge.isDone() && input.control == Control::backwards 
+				&& input.action == Action::double_press) {
+			dodge.start();
 		}
 
 		// Walk

@@ -30,12 +30,15 @@ class Sprite {
 	Sprite(sf::Texture l_spritesheet, sf::Texture r_spritesheet, 
 			std::vector<Animation> animations, sf::Vector2i size, float fps);
 
-	void update(State state, State last_state, float dt);
+	void update(State state, State last_state, float opponent_distance, float dt);
 	void draw(sf::RenderWindow &window, sf::FloatRect relative_to, 
 			Direction direction);
 	Animation &getAnimation();
 	
 	private:
+	static constexpr float DUCK_DISTANCE = 48;
+	static constexpr float SLIP_DISTANCE = 64;
+	
 	sf::Texture l_spritesheet;
 	sf::Texture r_spritesheet;
 	std::vector<Animation> animations;
