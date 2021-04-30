@@ -17,12 +17,6 @@ fr::State::State(std::vector<fr::Punch> punches, fr::Dodge dodge)
 
 void fr::State::update(std::vector<fr::Input> inputs, 
 		std::vector<fr::Input> buffer, float dt) {
-	if (!punch.isDone())
-		punch.progress += dt;
-		
-	if (!dodge.isDone())
-		dodge.progress += dt;
-		
 	for (int i = 0; i < inputs.size(); ++i) {
 		Input input = inputs[i];
 
@@ -68,4 +62,9 @@ void fr::State::update(std::vector<fr::Input> inputs,
 		if (input.action == Action::release)
 			movement = Movements::idle;
 	}
+	if (!punch.isDone())
+		punch.progress += dt;
+		
+	if (!dodge.isDone())
+		dodge.progress += dt;
 }
