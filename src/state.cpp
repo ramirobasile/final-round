@@ -27,7 +27,7 @@ void fr::State::update(std::vector<fr::Input> inputs,
 		Input input = inputs[i];
 
 		// Punch
-		for (int j = 0; j < punches.size() && punch.isDone(); ++j) {
+		for (int j = 0; j < punches.size() && punch.isDone() && dodge.isDone(); ++j) {
 			bool same_control = input.control == punches[j].control;
 			bool same_action = input.action == punches[j].action;
 			// TODO Change to has input rather than input buffered
@@ -44,7 +44,7 @@ void fr::State::update(std::vector<fr::Input> inputs,
 		}
 		
 		// Dodge
-		for (int j = 0; j < dodges.size() && dodge.isDone(); ++j) {
+		for (int j = 0; j < dodges.size() && dodge.isDone() && punch.isDone(); ++j) {
 			bool same_control = input.control == dodges[j].control;
 			bool same_action = input.action == dodges[j].action;
 
