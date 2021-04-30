@@ -46,10 +46,8 @@ const std::vector<Control> KONAMI_CODE{Control::up, Control::up, Control::down,
 		Control::left, Control::right, Control::b, Control::a};
 
 void updateInputs(std::vector<Input> &inputs, std::vector<Input> buffer,
-		float buffer_ttl, std::vector<int> controls, float dt);
-void updateInputs(int joytstick, std::vector<Input> &inputs,
-		std::vector<Input> buffer, float buffer_ttl, std::vector<int> controls,
-		float dt);
+		float buffer_ttl, std::vector<int> controls, float dt, 
+		int joystick = -1);
 void updateBuffer(std::vector<Input> &buffer, float &clear_time,
 		std::vector<Input> inputs, float dt);
 bool inputted(Control control, std::vector<Input> inputs);

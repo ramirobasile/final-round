@@ -17,12 +17,22 @@ fr::Input::operator std::string() const {
 			+ " " + stream.str();
 }
 
-void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buffer,
-		float buffer_ttl, std::vector<int> controls, float dt) {
+void fr::updateInputs(std::vector<fr::Input> &inputs,
+		std::vector<fr::Input> buffer, float buffer_ttl,
+		std::vector<int> controls, float dt, int joystick) {
 	std::vector<Input> new_inputs;
 
 	for (int i = 0; i < controls.size(); ++i) {
 		Control control = (Control)i;
+
+		bool is_down;
+		if (joystick == -1) {
+			sf::Keyboard::Key key = (sf::Keyboard::Key)controls[(int)control];
+			is_down = sf::Keyboard::isKeyPressed(key);
+		} else { 
+			int button = controls[(int)control];
+			is_down = sf::Joystick::isButtonPressed(joystick, button);
+		}
 
 		Input prev;
 		for (int j = 0; j < inputs.size() && prev.control != control; ++j) {
@@ -30,8 +40,12 @@ void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buf
 				prev = inputs[j];
 		}
 		bool was_down = prev.control == control && prev.action != Action::release;
-		bool is_down = sf::Keyboard::isKeyPressed((sf::Keyboard::Key)controls[i]);
+
 		float held = prev.held + dt;
+		
+		bool pressed_before = !buffer.empty() && buffer.back().control == control
+				&& buffer.back().action == Action::release;
+		bool within_dp_end = BUFFER_TTL - buffer_ttl < DOUBLE_PRESS_END;
 
 		if (is_down && was_down)
 			new_inputs.push_back(Input{control, Action::hold, held});
@@ -42,20 +56,11 @@ void fr::updateInputs(std::vector<fr::Input> &inputs, std::vector<fr::Input> buf
 		if (is_down && !was_down)
 			new_inputs.push_back(Input{control, Action::press, held});
 			
-		bool pressed_before = !buffer.empty() && buffer.back().control == control
-				&& buffer.back().action == Action::release;
-		bool within_dp_end = BUFFER_TTL - buffer_ttl < DOUBLE_PRESS_END;
 		if (is_down && !was_down && pressed_before && within_dp_end)
 			new_inputs.push_back(Input{control, Action::double_press, held});
 	}
 
 	inputs = new_inputs;
-}
-
-// TODO Joystick
-void fr::updateInputs(int joytstick, std::vector<fr::Input> &inputs,
-		std::vector<fr::Input> buffer, float buffer_ttl,
-		std::vector<int> controls, float dt) {
 }
 
 // TODO Explain

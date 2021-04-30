@@ -41,7 +41,7 @@ void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry,
 	if (input_dev == Device::keyboard)
 		updateInputs(inputs, buffer, buffer_ttl, controls, dt);
 	else if (input_dev == Device::joystick)
-		updateInputs(index, inputs, buffer, buffer_ttl, controls, dt);
+		updateInputs(inputs, buffer, buffer_ttl, controls, dt, index);
 
 	// State
 	last_state = state;
