@@ -31,7 +31,7 @@ struct Stats {
 		// Slip
 		Dodge(Control::up, Action::double_press, 
 				0,
-				0, 0.225f, 0.225f, 
+				0, 0.25f, 0.25f,
 				sf::Vector2f(999, 0), Animations::slip),
 		
 		// Duck

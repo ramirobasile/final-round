@@ -88,8 +88,8 @@ fr::Match::Match(fr::ConfigFile config) {
 		Animation(7, false, std::vector<Animations>{}),
 		Animation(7, false, std::vector<Animations>{}),
 		
-		Animation(1, true, std::vector<Animations>{}),
-		Animation(1, true, std::vector<Animations>{}),
+		Animation(6, true, std::vector<Animations>{}),
+		Animation(6, true, std::vector<Animations>{}),
 		Animation(1, true, std::vector<Animations>{}),
 		
 		Animation(1, true, std::vector<Animations>{}),
