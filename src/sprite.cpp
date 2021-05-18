@@ -4,110 +4,103 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
+#include "animation.hpp"
 #include "direction.hpp"
-#include "state.hpp"
+#include "dodge.hpp"
+#include "guard.hpp"
+#include "movement.hpp"
+#include "punch.hpp"
 
-fr::Animation::Animation(int frames, bool loops,
-		std::vector<fr::Animations> continues)
-		: frames(frames), loops(loops), continues(continues) {
+fr::Sprite::Sprite(sf::Texture r_spritesheet, sf::Texture l_spritesheet,
+		std::vector<Animation> movement_anims)
+		: r_spritesheet(r_spritesheet), l_spritesheet(l_spritesheet),
+		movement_anims(movement_anims) {
 }
 
-void fr::Animation::nextFrame() {
-	if (frame < frames - 1)
-		frame++;
-	else if (loops)
-		frame = 0;
-}
-
-fr::Sprite::Sprite() {} // Empty constructor
-
-fr::Sprite::Sprite(sf::Texture l_spritesheet, sf::Texture r_spritesheet, 
-		std::vector<Animation> animations, sf::Vector2i size, float fps) 
-		: l_spritesheet(l_spritesheet), r_spritesheet(r_spritesheet), 
-		animations(animations), size(size), fps(fps) {
-}
-
-void fr::Sprite::update(fr::State state, fr::State last_state, 
-		float opponent_distance, float dt) {
+void fr::Sprite::update(fr::Punch punch, fr::Punch prev_punch, fr::Dodge dodge,
+		fr::Dodge prev_dodge, float dt) {
 	progress += dt;
 
-	if (progress > (1 / fps)) {
-		getAnimation().nextFrame();
+	if (progress > (1 / FPS)) {
 		progress = 0;
-	}
-
-	Animations new_animation = animation;
-	
-	if (state.dodge.isDone() && state.punch.isDone()) {
-		switch (state.movement) {
-			case Movements::idle:
-				if (state.guard == Guards::head)
-					new_animation = Animations::idle_head;
-				else if (state.guard == Guards::body)
-					new_animation = Animations::idle_body;
-				else
-					new_animation = Animations::idle;
-				break;
-			case Movements::walk_l:
-			case Movements::walk_r:
-				if (state.guard== Guards::head)
-					new_animation = Animations::walk_head;
-				else if (state.guard == Guards::body)
-					new_animation = Animations::walk_body;
-				else
-					new_animation = Animations::walk;
-				break;
+		
+		if (punch.isDone() && dodge.isDone()) {
+			for (int i = 0; i< movement_anims.size(); ++i)
+				movement_anims[i].nextFrame();
 		}
-	}
-	
-	if (last_state.dodge.isDone() && !state.dodge.isDone()) {
-		if (opponent_distance < DUCK_DISTANCE)
-			new_animation = Animations::duck;
-		else if (opponent_distance < SLIP_DISTANCE)
-			new_animation = Animations::slip;
-		else
-			new_animation = Animations::pull;
+		
+		if (!dodge.isDone())
+			dodge_animation.nextFrame();
+			
+		if (!punch.isDone())
+			punch_animation.nextFrame();
 	}
 		
-	if (last_state.punch.isDone() && !state.punch.isDone())
-		new_animation = state.punch.animation;
-
-	if (animation != new_animation) {
-		Animations old_animation = animation;
-		int old_frame = getAnimation().frame;
-		animation = new_animation;
-
-		bool cont = false;
-		for (int i = 0; i < getAnimation().continues.size() && !cont; ++i)
-			cont = old_animation == getAnimation().continues[i];
-
-		if (cont) {
-			getAnimation().frame = old_frame;
-		} else {
-			progress = 0;
-			getAnimation().frame = 0;
-		}
+	if (prev_dodge.isDone() && !dodge.isDone()) {
+		dodge_animation = dodge.animation;
+		progress = 0;
+	}
+	
+	if (prev_punch.isDone() && !punch.isDone()) {
+		punch_animation = punch.animation;
+		progress = 0;
 	}
 }
 
-void fr::Sprite::draw(sf::RenderWindow &window, sf::FloatRect relative_to,
-		fr::Direction direction) {
-	sf::IntRect subrect(size.x * getAnimation().frame, size.y * (int)animation,
-			size.x, size.y);
+void fr::Sprite::draw(sf::RenderWindow &window, fr::Movement movement, 
+		fr::Guard guard, fr::Punch punch, fr::Dodge dodge, 
+		sf::FloatRect relative_to, fr::Direction direction) {
+	Animation animation = getMovementAnim(movement, guard);
+	
+	if (!dodge.isDone())
+		animation = dodge_animation;
+		
+	if (!punch.isDone())
+		animation = punch_animation;
+	
+	sf::IntRect subrect(SIZE * animation.getFrame(),
+			SIZE * animation.getSheetY(), SIZE, SIZE);
+	sprite.setTextureRect(subrect);
 
-	sf::Sprite sprite;
 	if (direction == Direction::right)
-		sprite = sf::Sprite(l_spritesheet, subrect);
+		sprite.setTexture(r_spritesheet);
 	else
-		sprite = sf::Sprite(r_spritesheet, subrect);
+		sprite.setTexture(l_spritesheet);
 
-	int left = relative_to.left + (relative_to.width - size.x) / 2;
-	int top = relative_to.top + (relative_to.height - size.y)/ 2;
+	int left = relative_to.left + (relative_to.width - SIZE) / 2;
+	int top = relative_to.top + (relative_to.height - SIZE) / 2;
 	sprite.setPosition(left, top);
 
 	window.draw(sprite);
 }
 
-fr::Animation &fr::Sprite::getAnimation() {
-	return animations[(int)animation];
+fr::Animation fr::Sprite::getMovementAnim(fr::Movement movement, 
+		fr::Guard guard) const  {
+	Animation animation = movement_anims[(int)MovementAnims::idle];
+	
+	switch (movement) {
+		case Movement::idle:
+			if (guard == Guard::head)
+				animation = movement_anims[(int)MovementAnims::idle_head];
+			else if (guard == Guard::body)
+				animation = movement_anims[(int)MovementAnims::idle_body];
+			else
+				animation = movement_anims[(int)MovementAnims::idle];
+			break;
+
+		case Movement::walk_b:
+		case Movement::walk_f:
+			if (guard== Guard::head)
+				animation = movement_anims[(int)MovementAnims::walk_head];
+			else if (guard == Guard::body)
+				animation = movement_anims[(int)MovementAnims::walk_body];
+			else
+				animation = movement_anims[(int)MovementAnims::walk];
+			break;
+
+		case Movement::stun:
+			break;
+	}
+	
+	return animation;
 }

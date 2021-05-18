@@ -9,197 +9,204 @@
 #include "SFML/Graphics.hpp"
 #include "direction.hpp"
 #include "dodge.hpp"
+#include "guard.hpp"
+#include "health.hpp"
 #include "input.hpp"
+#include "input_manager.hpp"
+#include "movement.hpp"
 #include "physics.hpp"
 #include "punch.hpp"
 #include "sprite.hpp"
-#include "state.hpp"
 #include "stats.hpp"
 #include "utils.hpp"
 
-fr::Player::Player() {} // Empty constructor
+fr::Player::Player(fr::Direction direction, fr::Device input_dev,
+		std::vector<int> controls, fr::Stats stats, sf::Texture r_spritesheet,
+		sf::Texture l_spritesheet, std::vector<fr::Animation> movement_anims,
+		int joystick)
+		: direction(direction), stats(stats) {
+	input_manager = InputManager(input_dev, controls, joystick);
 
-fr::Player::Player(int index, std::string alias, fr::Direction direction, 
-		fr::Device input_dev, std::vector<int> controls, sf::Vector2f position, 
-		fr::Sprite sprite, fr::Stats stats)
-		: index(index), alias(alias), direction(direction), 
-		input_dev(input_dev), controls(controls), sprite(sprite), stats(stats) {
-	bounds = sf::FloatRect(position.x, position.y, stats.bounds.x, stats.bounds.y);
+	bounds = sf::FloatRect(0, 0, stats.bounds.x, stats.bounds.y);
 	head_hurtbox = stats.head_hurtbox;
 	body_hurtbox = stats.body_hurtbox;
 
-	state = State(stats.punches, stats.dodge);
+	health = Health(stats.max_health, stats.min_health, stats.health_regen, 
+			stats.regen_rate);
 
-	max_health = stats.max_health;
-	health = max_health;
+	punches = stats.punches;
+	dodges = stats.dodges;
+
+	sprite = Sprite(r_spritesheet, l_spritesheet, movement_anims);
 }
 
-void fr::Player::update(float dt, std::vector<sf::FloatRect> geometry, 
-		fr::Player &opponent) {
-	// Input
-	updateBuffer(buffer, buffer_ttl, inputs, dt);
-	if (input_dev == Device::keyboard)
-		updateInputs(inputs, buffer, buffer_ttl, controls, dt);
-	else if (input_dev == Device::joystick)
-		updateInputs(inputs, buffer, buffer_ttl, controls, dt, index);
+void fr::Player::update(float opponent_distance, float dt) {
+	input_manager.update(dt);
 
-	// State
-	last_state = state;
-	state.update(inputs, buffer, dt);
-
-	if (state.punch.isDone() && state.dodge.isDone() && state.guard == Guards::none)
-		tt_regen += dt;
+	sprite.update(punch, prev_punch, dodge, prev_dodge, dt);
 	
-	if (tt_regen > stats.regen_rate) {
-		takeDamage(-stats.health_regen);
-		tt_regen = 0;
-	}
+	if (getGuard() == Guard::none)
+		health.regen(dt);
+		
+	if (!isReady())
+		health.resetRegen();
 
-	// Interrupt punches when hurtbox obstructed
-	bool clear = !getHeadHurtbox().intersects(opponent.getHeadHurtbox())
-			&& !getBodyHurtbox().intersects(opponent.getBodyHurtbox());
-	if (state.punch.canInterrupt() && state.punch.needs_clear && !clear)
-		state.punch.interrupt();
+	prev_punch = punch;
+	punch.update(dt);
+	
+	// Take self damage when punch becomes uninterruptible
+	if (prev_punch.canInterrupt() && !punch.canInterrupt())
+		health.takeDamage(punch.getCost());
 
-	// Take punch self damage once un-interruptible
-	if (last_state.punch.canInterrupt() && !state.punch.canInterrupt())
-		takeDamage(state.punch.self_damage);
-
-	// Hit opponent
-	sf::FloatRect hitbox = state.punch.getHitbox(bounds, direction);
-	if (state.punch.isActive()) {
-		if (hitbox.intersects(opponent.getHeadHurtbox()))
-			opponent.takeHit(state.punch, true);
-		else if (hitbox.intersects(opponent.getBodyHurtbox()))
-			opponent.takeHit(state.punch, false);
+	// Feint when punch button release before it's uninterruptible
+	if (punch.canInterrupt() 
+			&& input_manager.inputted(punch.getControl(), Action::release)) {
+		punch.end();
+		health.resetRegen();
 	}
 	
-	// Take dodge self damage
-	if (last_state.dodge.isDone() && !state.dodge.isDone())
-		takeDamage(state.dodge.self_damage);
+	if (isReady())
+		setNewPunch();
 
-	// Sprite
-	sprite.update(state, last_state, 
-			distance(getPosition(), opponent.getPosition()), dt);
+	prev_dodge = dodge;
+	dodge.update(dt);
+	
+	// Take self damage when dodge starts
+	if (prev_dodge.isDone() && !dodge.isDone())
+		health.takeDamage(dodge.getCost());
 
-	// Physics
-	updateVelocity(velocity, state, last_state, stats);
-	updatePosition(bounds, velocity, dt);
-	resolveCollision(bounds, opponent.bounds);
-	for (int i = 0; i < geometry.size(); ++i)
-		resolveCollision(bounds, geometry[i]);
+	if (isReady())
+		setNewDodge(opponent_distance);
 }
 
 void fr::Player::draw(sf::RenderWindow &window) {
-	sprite.draw(window, bounds, direction);
+	sprite.draw(window, getMovement(), getGuard(), punch, dodge, getBounds(), 
+			direction);
 }
 
-void fr::Player::takeDamage(int damage) {
-	health = std::clamp(health - damage, 0, max_health);
-}
-
-void fr::Player::takePermaDamage(int damage) {
-	max_health = std::clamp(max_health - damage, 0, stats.max_health);
-}
-
-void fr::Player::takeHit(fr::Punch &punch, bool head) {
-	if (state.guard == Guards::head && head || state.guard == Guards::body) {
-		takeDamage(punch.block_damage);
+void fr::Player::takeHit(Hit hit) {
+	if ((getGuard() == Guard::head && hit.head) || getGuard() == Guard::body) {
+		health.takeDamage(hit.block_damage);
 	} else {
-		if (health == 0)
-			dead = true;
+		if (health.getCurrent() <= 1 && hit.damage >= stats.min_ko_damage)
+			ko = true;
 
-		takeDamage(punch.damage);
-		takePermaDamage(punch.perma_damage);
+		health.takeDamage(hit.damage);
+		health.takePermaDamage(hit.perma_damage);
 
-		if (state.punch.canInterrupt())
-			state.punch.interrupt();
+		if (punch.canInterrupt())
+			punch.end();
 	}
-
-	punch.interrupt();
 }
 
-sf::Vector2f fr::Player::getPosition() const {
-	return sf::Vector2f(bounds.left, bounds.top);
+sf::Vector2f fr::Player::getVelocity() const {
+	sf::Vector2f velocity;
+	
+	if (dodge.isDone() && (punch.isDone() || punch.canInterrupt())) {
+		switch (getMovement()) {
+			case fr::Movement::walk_b:
+				velocity.x = -stats.velocity;
+				break;
+
+			case fr::Movement::walk_f:
+				velocity.x = stats.velocity;
+				break;
+
+			case Movement::idle:
+			case Movement::stun:
+				break;
+		}
+	}
+	
+	return velocity;
 }
 
-sf::Vector2f fr::Player::getSize() const {
-	return sf::Vector2f(bounds.width, bounds.height);
+sf::FloatRect fr::Player::getBounds() const {
+	return sf::FloatRect(position.x, position.y, bounds.width, bounds.height);
 }
 
 sf::FloatRect fr::Player::getHeadHurtbox() const {
-	if (state.dodge.isActive())
+	if (dodge.isActive())
 		return sf::FloatRect(0, 0, 0, 0);
 		
-	int left;
+	int left = getBounds().left;
 	if (direction == Direction::right)
-		left = bounds.left + head_hurtbox.left;
+		left += head_hurtbox.left;
 	else
-		left = bounds.left - head_hurtbox.left + bounds.width - head_hurtbox.width;
+		left += - head_hurtbox.left + getBounds().width - head_hurtbox.width;
 	
-	int top = bounds.top + head_hurtbox.top;
+	int top = getBounds().top + head_hurtbox.top;
 
 	return sf::FloatRect(left, top, head_hurtbox.width, head_hurtbox.height);
 }
 
 sf::FloatRect fr::Player::getBodyHurtbox() const {
-	int left;
+	int left = getBounds().left;
 	if (direction == Direction::right)
-		left = bounds.left + body_hurtbox.left;
+		left += body_hurtbox.left;
 	else
-		left = bounds.left - body_hurtbox.left + bounds.width - body_hurtbox.width;
-	int top = bounds.top + body_hurtbox.top;
+		left += - body_hurtbox.left + getBounds().width - body_hurtbox.width;
+
+	int top = getBounds().top + body_hurtbox.top;
+
 	return sf::FloatRect(left, top, body_hurtbox.width, body_hurtbox.height);
 }
 
-void fr::Player::updateVelocity(sf::Vector2f &velocity, fr::State state,
-		fr::State last_state, fr::Stats stats) {
-	velocity.x = 0; // Linear velocity
+int fr::Player::getHealth() const {
+	return health.getCurrent();
+}
 
-	if ((state.dodge.isDone() || state.dodge.isStartingUp())
-			&& (state.punch.isDone() || state.punch.canInterrupt())) {
-		switch (state.movement) {
-			case fr::Movements::walk_l:
-				velocity.x = -stats.walk_speed;
-				break;
+int fr::Player::getMaxHealth() const {
+	return health.getMax();
+}
 
-			case fr::Movements::walk_r:
-				velocity.x = stats.walk_speed;
-				break;
+fr::Direction fr::Player::getDirection() const {
+	return direction;
+}
+
+fr::Movement fr::Player::getMovement() const {
+	Movement movement = Movement::idle;
+
+	if (input_manager.inputted(Control::backwards))
+		movement = Movement::walk_b;
+	else if (input_manager.inputted(Control::forwards))
+		movement = Movement::walk_f;
+
+	return movement;
+}
+
+fr::Guard fr::Player::getGuard() const {
+	Guard guard = Guard::none;
+
+	if (input_manager.inputted(Control::up))
+		guard = Guard::head;
+	else if (input_manager.inputted(Control::down))
+		guard = Guard::body;
+
+	return guard;
+}
+
+bool fr::Player::isReady() const {
+	return getMovement() != Movement::stun && punch.isDone() && dodge.isDone();
+}
+
+void fr::Player::setNewPunch() {
+	for (int i = 0; i < punches.size(); ++i) {
+		if (input_manager.inputted(punches[i].getControl(), Action::press)
+				&& input_manager.inputted(punches[i].getMod())) {
+			punch = punches[i];
+			punch.reset();
 		}
 	}
 }
 
-///////////////////////////////////////////////////////////
-// Debug methods
-///////////////////////////////////////////////////////////
-void fr::Player::drawDebugGeometry(sf::RenderWindow &window) {
-	sf::RectangleShape shape(getSize());
-	shape.setPosition(getPosition());
-	shape.setFillColor(sf::Color::Cyan);
-	window.draw(shape);
-}
-
-void fr::Player::drawDebugHurtboxes(sf::RenderWindow &window) {
-	sf::RectangleShape head(sf::Vector2f(getHeadHurtbox().width, 
-			getHeadHurtbox().height));
-	head.setPosition(getHeadHurtbox().left, getHeadHurtbox().top);
-	head.setFillColor(sf::Color::Yellow);
-	window.draw(head);
-
-	sf::RectangleShape body(sf::Vector2f(getBodyHurtbox().width, 
-			getBodyHurtbox().height));
-	body.setPosition(getBodyHurtbox().left, getBodyHurtbox().top);
-	body.setFillColor(sf::Color::Yellow);
-	window.draw(body);
-}
-
-void fr::Player::drawDebugHitboxes(sf::RenderWindow &window) {
-	if (!state.punch.isDone() && state.punch.isActive()) {
-		sf::FloatRect hitbox = state.punch.getHitbox(bounds, direction);
-		sf::RectangleShape shape(sf::Vector2f(hitbox.width, hitbox.height));
-		shape.setPosition(hitbox.left, hitbox.top);
-		shape.setFillColor(sf::Color::Red);
-		window.draw(shape);
+void fr::Player::setNewDodge(float opponent_distance) {
+	if (input_manager.inputted(Control::dodge, Action::press)) {
+		for (int i = 0; i < dodges.size(); ++i) {
+			if (opponent_distance > dodges[i].getMinDistance())
+				dodge = dodges[i];
+		}
+		
+		dodge.reset();
 	}
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -13,16 +12,21 @@ enum class Device {
 
 enum class Control {
 	none = -1,
-	left,
-	right,
+	backwards,
+	forwards,
 	up,
 	down,
-	a,
-	b,
-	pause,
+	jab,		// A
+	cross,		// B
+	upper,		// X
+	hook,		// Y
+	dodge,		// L
+	body,		// R
+	pause,		// Start
 };
 
 enum class Action {
+	none = -1,
 	press,
 	release,
 	hold,
@@ -33,23 +37,15 @@ struct Input {
 	explicit operator std::string() const;
 
 	Control control = Control::none;
-	Action action;
+	Action action = Action::none;
 	float held = 0;
 };
 
 const float BUFFER_TTL = 0.15f;
-const float PRESS_END = 0.15f;
 const float DOUBLE_PRESS_END = 0.1f;
-const Control BODY_CONTROL = Control::down;
 const std::vector<Control> KONAMI_CODE{Control::up, Control::up, Control::down,
-		Control::down, Control::down, Control::left, Control::right,
-		Control::left, Control::right, Control::b, Control::a};
-
-void updateInputs(std::vector<Input> &inputs, std::vector<Input> buffer,
-		float buffer_ttl, std::vector<int> controls, float dt, 
-		int joystick = -1);
-void updateBuffer(std::vector<Input> &buffer, float &clear_time,
-		std::vector<Input> inputs, float dt);
-bool inputted(Control control, std::vector<Input> inputs);
+		Control::down, Control::down, Control::backwards, Control::forwards,
+		Control::backwards, Control::forwards, Control::cross,
+		Control::jab};
 
 } // namespace fr

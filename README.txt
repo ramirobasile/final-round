@@ -12,11 +12,9 @@ Install dependencies:
 
 Then run:
 
-```
-meson build/
-ninja -C build/
-sudo ninja -C build/ install
-```
+$ meson build/
+$ ninja -C build/
+$ sudo ninja -C build/ install
 
 TODO Prefix
 
@@ -25,15 +23,18 @@ cookies.
 
 ## Running
 
-A desktop entry will be installed with the game. Failing that, run 
-`final-round`.
+A desktop entry will be installed with the game. Failing that, run:
+
+$ final-round
 
 ## Getting help
 
 A manual will be installed along with the game, which can be accessed
-by running `man final-round`. It has 3 sections: 1, 5 and 6 (see 
-`man man` for more information about sections and the `man` command in
-general).
+by running:
+
+$ man 6 final-round
+
+Sections ??? cover ???.
 
 You can also send me an email to rbasile@dc.uba.ar if the manuals don't
 have the answers you're looking for.

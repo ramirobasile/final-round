@@ -44,18 +44,6 @@ int main() {
 
         match.draw(window);
 
-        if (config.getBool("debug", "draw_geometry", false))
-        	match.drawDebugGeometry(window);
-
-        if (config.getBool("debug", "draw_hurtboxes", false))
-        	match.drawDebugHurtboxes(window);
-
-        if (config.getBool("debug", "draw_hitboxes", false))
-        	match.drawDebugHitboxes(window);
-
-        if (config.getBool("debug", "draw_info", false))
-        	match.drawDebugInfo(window);
-
         window.display();
     }
 

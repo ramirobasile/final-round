@@ -1,6 +1,8 @@
 tags*
 *.gcov
+.buildconfig
 build/
 install/
 dev/
 TODO.txt
+*~$

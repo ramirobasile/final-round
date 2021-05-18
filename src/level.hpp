@@ -8,12 +8,12 @@ namespace fr {
 
 class Level {
 	public:
-	Level();
+	Level() {};
 	Level(sf::FloatRect left, sf::FloatRect right, sf::Texture background);
 
 	void draw(sf::RenderWindow &window);
 	void drawDebugGeometry(sf::RenderWindow &window);
-	std::vector<sf::FloatRect> getGeometry();
+	std::vector<sf::FloatRect> getGeometry() const;
 
 	private:
 	sf::FloatRect left;

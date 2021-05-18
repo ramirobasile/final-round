@@ -4,21 +4,18 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
-		
-fr::Level::Level() {} // Empty constructor
 
 fr::Level::Level(sf::FloatRect left, sf::FloatRect right, sf::Texture background)
 		: left(left), right(right), background(background) {
 }
 
-std::vector<sf::FloatRect> fr::Level::getGeometry() {
+std::vector<sf::FloatRect> fr::Level::getGeometry() const {
 	return std::vector<sf::FloatRect> {left, right};
 }
 
 void fr::Level::draw(sf::RenderWindow &window) {
 	window.draw(sf::Sprite(background));
 }
-
 
 ///////////////////////////////////////////////////////////
 // Debug methods

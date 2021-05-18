@@ -3,35 +3,36 @@
 #include <vector>
 
 #include "SFML/Graphics.hpp"
-#include "animations.hpp"
+#include "animation.hpp"
+#include "direction.hpp"
 #include "input.hpp"
 
-fr::Punch::Punch() {} // Empty constructor
-
-fr::Punch::Punch(Control control, Action action, Control mod,
-		float min_held, float max_held, int damage, int perma_damage,
-		int block_damage, int self_damage, float interrupt_end,
-		float hitbox_begin, float hitbox_end, float recovery_end,
-		bool needs_clear, sf::FloatRect hitbox, fr::Animations animation)
-		: control(control), action(action), mod(mod),
-		min_held(min_held), max_held(max_held), damage(damage),
-		perma_damage(perma_damage), block_damage(block_damage),
-		self_damage(self_damage), interrupt_end(interrupt_end),
-		hitbox_begin(hitbox_begin), hitbox_end(hitbox_end),
-		recovery_end(recovery_end), needs_clear(needs_clear), hitbox(hitbox),
-		animation(animation) {
+fr::Punch::Punch(fr::Control control, fr::Control mod, fr::Hit hit,
+		int cost, float interrupt_end, float hitbox_begin, float hitbox_end,
+		float recovery_end, sf::FloatRect hitbox, sf::FloatRect clearbox,
+		Animation animation)
+		: control(control), mod(mod), hit(hit), cost(cost),
+		interrupt_end(interrupt_end), hitbox_begin(hitbox_begin),
+		hitbox_end(hitbox_end), recovery_end(recovery_end), hitbox(hitbox),
+		clearbox(clearbox), animation(animation) {
 }
 
-void fr::Punch::start() {
+void fr::Punch::update(float dt) {
+	if (!isDone())
+		progress += dt;
+}
+
+void fr::Punch::reset() {
 	progress = 0;
-}
-
-void fr::Punch::interrupt() {
-	progress = hitbox_end;
 }
 
 void fr::Punch::end() {
 	progress = -1;
+}
+
+void fr::Punch::interrupt() {
+	if (!isDone())
+		progress = hitbox_end;
 }
 
 bool fr::Punch::canInterrupt() const {
@@ -47,16 +48,47 @@ bool fr::Punch::isRecovering() const {
 }
 
 bool fr::Punch::isDone() const {
-	return progress > recovery_end || progress == -1;
+	return progress == -1 || progress > recovery_end;
 }
 
-sf::FloatRect fr::Punch::getHitbox(sf::FloatRect relative_to, 
+fr::Control fr::Punch::getControl() const {
+	return control;
+}
+
+fr::Control fr::Punch::getMod() const {
+	return mod;
+}
+
+fr::Hit fr::Punch::getHit() const {
+	return hit;
+}
+
+sf::FloatRect fr::Punch::getHitbox(sf::FloatRect relative_to,
 		fr::Direction direction) const {
 	int left;
 	if (direction == Direction::right)
 		left = relative_to.left + hitbox.left;
 	else
 		left = relative_to.left - hitbox.left + relative_to.width - hitbox.width;
+
 	int top = relative_to.top + hitbox.top;
+
 	return sf::FloatRect(left, top, hitbox.width, hitbox.height);
+}
+
+sf::FloatRect fr::Punch::getClearbox(sf::FloatRect relative_to,
+		fr::Direction direction) const {
+	int left;
+	if (direction == Direction::right)
+		left = relative_to.left + clearbox.left;
+	else
+		left = relative_to.left - clearbox.left + relative_to.width - clearbox.width;
+
+	int top = relative_to.top + clearbox.top;
+
+	return sf::FloatRect(left, top, clearbox.width, clearbox.height);
+}
+
+int fr::Punch::getCost() const {
+	return cost;
 }

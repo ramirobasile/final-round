@@ -15,10 +15,6 @@ class Match {
 
 	void update(float dt);
 	void draw(sf::RenderWindow &window);
-	void drawDebugGeometry(sf::RenderWindow &window);
-	void drawDebugHurtboxes(sf::RenderWindow &window);
-	void drawDebugHitboxes(sf::RenderWindow &window);
-	void drawDebugInfo(sf::RenderWindow &window);
 
 	private:
 	Level level;

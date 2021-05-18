@@ -2,7 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
-#include "animations.hpp"
+#include "animation.hpp"
 #include "dodge.hpp"
 #include "input.hpp"
 
@@ -10,67 +10,73 @@ namespace fr {
 
 struct Stats {
 	int max_health = 20;
-	float health_regen = 1;
+	int min_health = 1;
+	int health_regen = 1;
 	float regen_rate = 1;
+	int min_ko_damage = 2;
 
-	float walk_speed = 92;
+	float velocity = 92;
 	
 	sf::Vector2f bounds = sf::Vector2f(32, 64);
 	sf::FloatRect head_hurtbox = sf::FloatRect(16, 3, 16, 16);
 	sf::FloatRect body_hurtbox = sf::FloatRect(12, 19, 16, 16);
 	
-	Dodge dodge = Dodge(1, 0.05, 0.275, 0.3);
+	Punch jab = Punch(			Control::jab, Control::none,
+								Hit{2, 0, 0, true}, 1,
+								0.125f, 0.2f, 0.25f, 0.3125f,
+								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								Animation(12, 5, false));
+								
+	Punch body_jab = Punch(		Control::jab, Control::body,
+								Hit{1, 0, 0, false}, 1,
+								0.125f, 0.2f, 0.25f, 0.3125f,
+								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								Animation(13, 5, false));
+
+	Punch cross = Punch(		Control::cross, Control::none,
+								Hit{4, 0, 1, true}, 1,
+								0.125f, 0.275f, 0.325f, 0.5f,
+								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								Animation(14, 7, false));
+								
+	Punch body_cross = Punch(	Control::cross, Control::body,
+								Hit{1, 2, 1, false}, 1,
+								0.125f, 0.275f, 0.325f, 0.5f,
+								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								Animation(15, 7, false));
+
+	Punch upper = Punch(		Control::upper, Control::none,
+								Hit{4, 0, 1, true}, 1,
+								0.125f, 0.3125f, 0.35f, 0.55f, 
+								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								Animation(16, 8, false));
+								
+	Punch body_upper = Punch(	Control::upper, Control::body,
+								Hit{2, 4, 1, false}, 1,
+								0.125f, 0.3125f, 0.35f, 0.55f, 
+								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								Animation(17, 8, false));
+								
+	Punch hook = Punch(			Control::hook, Control::none,
+								Hit{6, 0, 3, true}, 2,
+								0.1f, 0.325f, 0.425f, 0.75f,
+								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								Animation(18, 9, false));
+								
+	Punch body_hook = Punch(	Control::hook, Control::body,
+								Hit{2, 4, 1, false}, 2,
+								0.1f, 0.325f, 0.425f, 0.75f,
+								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								Animation(19, 9, false));
+
+	std::vector<Punch> punches = {jab, body_jab, cross, body_cross, upper, 
+			body_upper, hook, body_hook};
 	
-	std::vector<Punch> punches = {
-		Punch(), // None
-		
-		// Body jab
-		Punch(Control::a, Action::release, Control::down, 0, PRESS_END,
-				1, 0, 0, 1, 
-				0.15f, 0.2f, 0.25f, 0.3f, 
-				true, sf::FloatRect(32, 20, 28, 8), Animations::jab_body),
-		// Head jab
-		Punch(Control::a, Action::release, Control::none, 0, PRESS_END,
-				2, 0, 0, 1, 
-				0.15f, 0.2f, 0.25f, 0.3f,
-				true, sf::FloatRect(32, 8, 28, 8), Animations::jab_head),
-
-		// Body cross
-		Punch(Control::a, Action::hold, Control::down, PRESS_END, PRESS_END + 0.1f,
-				2, 1, 1, 1, 
-				0.15f, 0.2f, 0.25f, 0.5f, 
-				true, sf::FloatRect(32, 20, 28, 8), Animations::cross_body),
-
-		// Head cross
-		Punch(Control::a, Action::hold, Control::none, PRESS_END, PRESS_END + 0.1f,
-				4, 0, 1, 1, 
-				0.15f, 0.275f, 0.325f, 0.5f,
-				true, sf::FloatRect(32, 8, 28, 8), Animations::cross_head),
-
-		// Body upper
-		Punch(Control::b, Action::release, Control::down, 0, PRESS_END,
-				3, 2, 1, 1, 
-				0.15f, 0.3125f, 0.35f, 0.625f, 
-				false, sf::FloatRect(26, 20, 16, 12), Animations::upper_body),
-
-		// Head upper
-		Punch(Control::b, Action::release, Control::none, 0, PRESS_END,
-				4, 0, 1, 1, 
-				0.15f, 0.3125f, 0.35f, 0.55f, 
-				true, sf::FloatRect(26, 4, 16, 12), Animations::upper_head),
-
-		// Body hook
-		Punch(Control::b, Action::hold, Control::down, PRESS_END, PRESS_END + 0.1f,
-				2, 2, 2, 2, 
-				0.15f, 0.3125f, 0.35f, 0.55f,
-				false, sf::FloatRect(30, 20, 16, 12), Animations::hook_body),
-
-		// Head hook
-		Punch(Control::b, Action::hold, Control::none, PRESS_END, PRESS_END + 0.1f,
-				6, 0, 2, 2, 
-				0.1f, 0.325f, 0.425f, 0.75f,
-				false, sf::FloatRect(30, 4, 16, 12), Animations::hook_head),
-	};
+	Dodge duck = Dodge(1, 0.05, 0.275, 0.3756, 0, Animation(8, 6, false));
+	Dodge slip = Dodge(1, 0.05, 0.275, 0.3756, 42, Animation(7, 6, false));
+	Dodge pull = Dodge(1, 0.05, 0.275, 0.3756, 62, Animation(6, 6, false));
+	
+	std::vector<Dodge> dodges = {duck, slip, pull};
 };
 
 } // namespace fr

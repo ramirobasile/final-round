@@ -29,6 +29,6 @@ inline int sign(int n) {
 }
 
 // Why SFML's Vector2 doesn't have this is beyond me
-inline float distance(sf::Vector2f a, sf::Vector2f b) {
+inline float vector2Distance(sf::Vector2f a, sf::Vector2f b) {
 	return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
 }

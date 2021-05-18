@@ -1,7 +1,10 @@
 sources = files(
+	'animation.cpp',
 	'config.cpp',
 	'dodge.cpp',
+	'health.cpp',
 	'input.cpp',
+	'input_manager.cpp',
 	'level.cpp',
 	'main.cpp',
 	'match.cpp',
@@ -9,9 +12,6 @@ sources = files(
 	'player.cpp',
 	'punch.cpp',
 	'sprite.cpp',
-	'state.cpp',
 )
 
 sfmldeps = [dependency('sfml-all')]
-
-executable('final-round', sources, dependencies: sfmldeps, install: true, install_dir: join_paths(bindir, 'games'))
