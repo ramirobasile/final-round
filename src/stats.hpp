@@ -24,49 +24,49 @@ struct Stats {
 	Punch jab = Punch(			Control::jab, Control::none,
 								Hit{2, 0, 0, true}, 1,
 								0.125f, 0.2f, 0.25f, 0.3125f,
-								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 8, 42, 8),
 								Animation(12, 5, false));
 								
 	Punch body_jab = Punch(		Control::jab, Control::body,
 								Hit{1, 0, 0, false}, 1,
 								0.125f, 0.2f, 0.25f, 0.3125f,
-								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 8, 40, 8),
 								Animation(13, 5, false));
 
 	Punch cross = Punch(		Control::cross, Control::none,
 								Hit{4, 0, 1, true}, 1,
 								0.125f, 0.275f, 0.325f, 0.5f,
-								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 8, 40, 8),
 								Animation(14, 7, false));
 								
 	Punch body_cross = Punch(	Control::cross, Control::body,
 								Hit{1, 2, 1, false}, 1,
 								0.125f, 0.275f, 0.325f, 0.5f,
-								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 8, 36, 8),
 								Animation(15, 7, false));
 
 	Punch upper = Punch(		Control::upper, Control::none,
-								Hit{4, 0, 1, true}, 1,
+								Hit{6, 0, 1, true}, 1,
 								0.125f, 0.3125f, 0.35f, 0.55f, 
-								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								sf::FloatRect(24, 8, 16, 8), sf::FloatRect(0, 0, 0, 0),
 								Animation(16, 8, false));
 								
 	Punch body_upper = Punch(	Control::upper, Control::body,
 								Hit{2, 4, 1, false}, 1,
 								0.125f, 0.3125f, 0.35f, 0.55f, 
-								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								sf::FloatRect(24, 20, 16, 8), sf::FloatRect(0, 0, 0, 0),
 								Animation(17, 8, false));
 								
 	Punch hook = Punch(			Control::hook, Control::none,
 								Hit{6, 0, 3, true}, 2,
 								0.1f, 0.325f, 0.425f, 0.75f,
-								sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								sf::FloatRect(32, 8, 12, 8), sf::FloatRect(0, 0, 0, 0),
 								Animation(18, 9, false));
 								
 	Punch body_hook = Punch(	Control::hook, Control::body,
 								Hit{2, 4, 1, false}, 2,
 								0.1f, 0.325f, 0.425f, 0.75f,
-								sf::FloatRect(32, 20, 28, 8), sf::FloatRect(0, 0, 0, 0),
+								sf::FloatRect(32, 20, 12, 8), sf::FloatRect(0, 0, 0, 0),
 								Animation(19, 9, false));
 
 	std::vector<Punch> punches = {jab, body_jab, cross, body_cross, upper, 

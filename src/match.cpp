@@ -155,11 +155,11 @@ void fr::Match::update(float dt) {
 
 	// Stuff each other
 	sf::FloatRect clearbox = player1.punch.getClearbox(player1.getBounds(), player1.getDirection());
-	if (!player1.punch.isDone() && hitbox.intersects(player2.getBounds()))
+	if (!player1.punch.isRecovering() && clearbox.intersects(player2.getBounds()))
 		player1.punch.interrupt();
 
 	clearbox = player2.punch.getClearbox(player2.getBounds(), player2.getDirection());
-	if (!player2.punch.isDone() && hitbox.intersects(player1.getBounds()))
+	if (!player2.punch.isRecovering() && clearbox.intersects(player1.getBounds()))
 		player2.punch.interrupt();
 
 	// Round timer
