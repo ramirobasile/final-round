@@ -19,7 +19,7 @@
 #include "utils.hpp"
 
 fr::Match::Match(fr::ConfigFile config) {
-	std::string prefix = "../../share/games/final-round/assets/";
+	std::string prefix = "../share/games/final-round/assets/";
 
 	regular.loadFromFile(prefix + "unscii-8.pcf");
 	thin.loadFromFile(prefix + "unscii-8-thin.pcf");

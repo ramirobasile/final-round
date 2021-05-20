@@ -10,7 +10,7 @@ const float FPS = 60;
 
 int main() {
 	fr::ConfigFile config;
-	config.parse(std::ifstream("../../etc/final-round.cfg"));
+	config.parse(std::ifstream("../etc/final-round.cfg"));
 
 	int scale = config.getFloat("video", "scale", 1.f);
 	int width = 320 * scale;
