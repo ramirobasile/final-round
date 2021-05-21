@@ -33,8 +33,7 @@ class Player {
 	sf::FloatRect getBounds() const;
 	sf::FloatRect getHeadHurtbox() const;
 	sf::FloatRect getBodyHurtbox() const;
-	int getHealth() const;
-	int getMaxHealth() const;
+	Health const& getHealth() const;
 	Direction getDirection() const;
 	Movement getMovement() const;
 	Guard getGuard() const;

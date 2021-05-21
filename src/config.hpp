@@ -9,6 +9,8 @@ namespace fr {
 class ConfigFile {
 	public:
 	void parse(std::ifstream file);
+	
+	// HACK These should be const but [] isn't a const operation ???
 	bool hasKey(std::string section, std::string key);
 	int getInt(std::string section, std::string key, int fallback = -1);
 	float getFloat(std::string section, std::string key,
@@ -19,10 +21,10 @@ class ConfigFile {
 			bool fallback = false);
 
 	private:
-	const char OPEN_SECTION = '[';
-	const char CLOSE_SECTION = ']';
-	const char DELIMIT = '=';
-	const char COMMENT = ';';
+	static constexpr char OPEN_SECTION = '[';
+	static constexpr char CLOSE_SECTION = ']';
+	static constexpr char DELIMIT = '=';
+	static constexpr char COMMENT = ';';
 
 	std::map<std::string, std::map<std::string, std::string>> cfg;
 };

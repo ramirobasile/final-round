@@ -3,6 +3,7 @@ sources = files(
 	'config.cpp',
 	'dodge.cpp',
 	'health.cpp',
+	'health_bar.cpp',
 	'input.cpp',
 	'input_manager.cpp',
 	'level.cpp',

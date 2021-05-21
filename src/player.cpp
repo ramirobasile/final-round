@@ -152,12 +152,8 @@ sf::FloatRect fr::Player::getBodyHurtbox() const {
 	return sf::FloatRect(left, top, body_hurtbox.width, body_hurtbox.height);
 }
 
-int fr::Player::getHealth() const {
-	return health.getCurrent();
-}
-
-int fr::Player::getMaxHealth() const {
-	return health.getMax();
+const fr::Health& fr::Player::getHealth() const {
+	return health;
 }
 
 fr::Direction fr::Player::getDirection() const {

@@ -11,6 +11,7 @@
 #include "config.hpp"
 #include "direction.hpp"
 #include "dodge.hpp"
+#include "health_bar.hpp"
 #include "input.hpp"
 #include "level.hpp"
 #include "player.hpp"
@@ -18,12 +19,11 @@
 #include "stats.hpp"
 #include "utils.hpp"
 
-fr::Match::Match(fr::ConfigFile config) {
+fr::Match::Match(fr::ConfigFile config) : config(config) {
+	// Load assets
 	std::string prefix = "../share/games/final-round/assets/";
 
-	regular.loadFromFile(prefix + "unscii-8.pcf");
-	thin.loadFromFile(prefix + "unscii-8-thin.pcf");
-
+	ring.loadFromFile(prefix + "ring.png");
 	star.loadFromFile(prefix + "star.png");
 	left_star.loadFromFile(prefix + "left_star.png");
 	right_star.loadFromFile(prefix + "right_star.png");
@@ -31,35 +31,15 @@ fr::Match::Match(fr::ConfigFile config) {
 	left_nostar.loadFromFile(prefix + "left_nostar.png");
 	right_nostar.loadFromFile(prefix + "right_nostar.png");
 
+	regular.loadFromFile(prefix + "unscii-8.pcf");
+	thin.loadFromFile(prefix + "unscii-8-thin.pcf");
+	
 	// Level
-	sf::Texture ring;
-	ring.loadFromFile(prefix + "ring.png");
-
 	sf::FloatRect left(8, 112, 8, 64);
 	sf::FloatRect right(320 - 16, 112, 8, 64);
 
 	level = Level(left, right, ring);
 	
-	// Player 1
-	Device device = (Device)config.getInt("player1_controls", "device", 0);
-	std::vector<int> controls = {
-		config.getInt("player1_controls", "left", -1),
-		config.getInt("player1_controls", "right", -1),
-		config.getInt("player1_controls", "up", -1),
-		config.getInt("player1_controls", "down", -1),
-		config.getInt("player1_controls", "a", -1),
-		config.getInt("player1_controls", "b", -1),
-		config.getInt("player1_controls", "x", -1),
-		config.getInt("player1_controls", "y", -1),
-		config.getInt("player1_controls", "l", -1),
-		config.getInt("player1_controls", "r", -1),
-		config.getInt("player1_controls", "pause", -1),
-	};
-
-	sf::Texture r_spritesheet, l_spritesheet;
-	r_spritesheet.loadFromFile(prefix + "red_right_spritesheet.png");
-	l_spritesheet.loadFromFile(prefix + "red_left_spritesheet.png");
-
 	// TODO Make all of this const somewhere else
 	std::vector<Animation> movement_anims {
 		Animation(0, 1, true),		// idle
@@ -72,47 +52,44 @@ fr::Match::Match(fr::ConfigFile config) {
 		Animation(10, 1, false),	// hit_body
 		Animation(11, 1, false),	// ko
 	};
+	
+	// Player 1
+	Device device = (Device)config.getInt("player1_controls", "device", 0);
+
+	sf::Texture r_spritesheet, l_spritesheet;
+	r_spritesheet.loadFromFile(prefix + "red_right_spritesheet.png");
+	l_spritesheet.loadFromFile(prefix + "red_left_spritesheet.png");
 
 	Stats stats;
 
-	player1 = Player(Direction::right, device, controls, stats, r_spritesheet,
-			l_spritesheet, movement_anims, 0);
+	player1 = Player(Direction::right, device, getControls("player1_controls"), 
+			stats, r_spritesheet, l_spritesheet, movement_anims, 0);
 	player1.position = sf::Vector2f(16 + 64, 112);
 			
 	// Player 2
 	device = (Device)config.getInt("player2_controls", "device", 0);
-	controls = {
-		config.getInt("player2_controls", "left", -1),
-		config.getInt("player2_controls", "right", -1),
-		config.getInt("player2_controls", "up", -1),
-		config.getInt("player2_controls", "down", -1),
-		config.getInt("player2_controls", "a", -1),
-		config.getInt("player2_controls", "b", -1),
-		config.getInt("player2_controls", "x", -1),
-		config.getInt("player2_controls", "y", -1),
-		config.getInt("player2_controls", "l", -1),
-		config.getInt("player2_controls", "r", -1),
-		config.getInt("player2_controls", "pause", -1),
-	};
-
+	
 	r_spritesheet.loadFromFile(prefix + "blue_right_spritesheet.png");
 	l_spritesheet.loadFromFile(prefix + "blue_left_spritesheet.png");
 
-	player2 = Player(Direction::left, device, controls, stats, r_spritesheet,
-			l_spritesheet, movement_anims, 1);
+	player2 = Player(Direction::left, device, getControls("player2_controls"), 
+			stats, r_spritesheet, l_spritesheet, movement_anims, 1);
 	player2.position = sf::Vector2f(320 - 16 - 64 * 2, 112);
 
-	// UI
-	time_text.setFont(regular);
-	time_text.setCharacterSize(8);
-	p1_alias_text.setFont(regular);
-	p1_alias_text.setCharacterSize(8);
+	// UI elements
+	// TODO Make values relative to screen size
+	time_text = sf::Text("", regular, 8);
+	
+	p1_alias_text = sf::Text("PLAYER 1", regular, 8);
 	p1_alias_text.setPosition(8, 16);
-	p1_alias_text.setString("PLAYER 1");
-	p2_alias_text.setFont(regular);
-	p2_alias_text.setCharacterSize(8);
-	p2_alias_text.setString("PLAYER 2");
+	p2_alias_text = sf::Text("PLAYER 2", regular, 8);
 	p2_alias_text.setPosition(312 - p2_alias_text.getLocalBounds().width , 16);
+	
+	p1_health_bar = HealthBar(sf::Vector2f(134, 30), Direction::left, star, 
+			left_star, right_star, nostar, left_nostar, right_nostar);
+			
+	p2_health_bar = HealthBar(sf::Vector2f(170, 30), Direction::right, star, 
+			left_star, right_star, nostar, left_nostar, right_nostar);
 }
 
 void fr::Match::update(float dt) {
@@ -171,49 +148,37 @@ void fr::Match::update(float dt) {
 	time_text.setString(minutes + ":" + seconds);
 }
 
-void fr::Match::draw(sf::RenderWindow &window) {
+void fr::Match::draw(sf::RenderWindow& window) {
 	level.draw(window);
 
 	player1.draw(window);
 	player2.draw(window);
 
-	// TODO Make positions relative to screen size
 	int middle = 160 - time_text.getLocalBounds().width / 2;
 	time_text.setPosition(middle, 16);
 	window.draw(time_text);
 
 	window.draw(p1_alias_text);
 	window.draw(p2_alias_text);
+	
+	p1_health_bar.draw(window, player1.getHealth());
+	p2_health_bar.draw(window, player2.getHealth());
+}
 
-	// Player 1 health
-	for (int i = 0; i < player1.getMaxHealth(); i+=2) {
-		sf::Sprite sprite(nostar);
-		if (i == player1.getMaxHealth() - 1)
-			sprite = sf::Sprite(right_nostar);
-		sprite.setPosition(134 - sprite.getTextureRect().width * (i / 2) - i, 32);
-		window.draw(sprite);
-	}
-	for (int i = 0; i < player1.getHealth(); i+=2) {
-		sf::Sprite sprite(star);
-		if (i ==  player1.getHealth() - 1)
-			sprite = sf::Sprite(right_star);
-		sprite.setPosition(134 - sprite.getTextureRect().width * (i / 2) - i, 32);
-		window.draw(sprite);
-	}
-
-	// Player 2 health
-	for (int i = 0; i < player2.getMaxHealth(); i+=2) {
-		sf::Sprite sprite(nostar);
-		if (i ==  player2.getMaxHealth() - 1)
-			sprite = sf::Sprite(left_nostar);
-		sprite.setPosition(170 + sprite.getTextureRect().width * (i / 2) + i, 32);
-		window.draw(sprite);
-	}
-	for (int i = 0; i < player2.getHealth(); i+=2) {
-		sf::Sprite sprite(star);
-		if (i ==  player2.getHealth() - 1)
-			sprite = sf::Sprite(left_star);
-		sprite.setPosition(170 + sprite.getTextureRect().width * (i / 2) + i, 32);
-		window.draw(sprite);
-	}
+std::vector<int> fr::Match::getControls(std::string section) {
+	std::vector<int> controls = {
+		config.getInt(section, "left", -1),
+		config.getInt(section, "right", -1),
+		config.getInt(section, "up", -1),
+		config.getInt(section, "down", -1),
+		config.getInt(section, "a", -1),
+		config.getInt(section, "b", -1),
+		config.getInt(section, "x", -1),
+		config.getInt(section, "y", -1),
+		config.getInt(section, "l", -1),
+		config.getInt(section, "r", -1),
+		config.getInt(section, "pause", -1),
+	};
+	
+	return controls;
 }

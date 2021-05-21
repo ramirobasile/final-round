@@ -25,7 +25,7 @@ void fr::ConfigFile::parse(std::ifstream file) {
 	}
 }
 
-bool fr::ConfigFile::hasKey(std::string section, std::string key){
+bool fr::ConfigFile::hasKey(std::string section, std::string key) {
 	return cfg.find(section) != cfg.end()
 			&& cfg[section].find(key) != cfg[section].end();
 }
