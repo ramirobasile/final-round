@@ -24,7 +24,8 @@ class Punch {
 	Punch() {}; // Empty constructor
 	Punch(Control control, Control mod, Hit hit, int cost, float interrupt_end,
 			float hitbox_begin, float hitbox_end, float recovery_end, 
-			sf::FloatRect hitbox, sf::FloatRect clearbox, Animation animation);
+			sf::FloatRect hitbox, sf::FloatRect clearbox, 
+			Animation::Name animation);
 
 	void update(float dt);
 	void reset();
@@ -42,8 +43,7 @@ class Punch {
 			Direction direction) const;
 	sf::FloatRect getClearbox(sf::FloatRect relative_to,
 			Direction direction) const;
-
-	Animation animation; // Sprite needs reference
+	Animation::Name getAnimation() const;
 
 	private:
 	static constexpr int BODY_OFFSET = 14;
@@ -60,6 +60,7 @@ class Punch {
 	sf::FloatRect hitbox;
 	sf::FloatRect clearbox;
 	float progress = -1;
+	Animation::Name animation = Animation::Name::idle;
 };
 
 } // namespace fr

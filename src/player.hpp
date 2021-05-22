@@ -25,7 +25,7 @@ class Player {
 	Player() {}; // Empty
 	Player(Direction direction, Device input_dev, std::vector<int> controls,
 			Stats stats, sf::Texture r_spritesheet, sf::Texture l_spritesheet,
-			std::vector<Animation> base_animations, int joystick = -1);
+			std::vector<Animation> animations, int joystick = -1);
 
 	void update(float opponent_distance, float dt);
 	void draw(sf::RenderWindow &window);
@@ -38,6 +38,8 @@ class Player {
 	Direction getDirection() const;
 	Movement getMovement() const;
 	Guard getGuard() const;
+	Stun getStun() const;
+	float getStunTime() const;
 	bool isReady() const;
 
 	sf::Vector2f position;

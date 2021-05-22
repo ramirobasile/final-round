@@ -7,14 +7,16 @@
 #include "match.hpp"
 
 const float FPS = 60;
+const int WIDTH = 320;
+const int HEIGHT = 240;
 
 int main() {
 	fr::ConfigFile config;
 	config.parse(std::ifstream("../etc/final-round.cfg"));
 
 	int scale = config.getFloat("video", "scale", 1.f);
-	int width = 320 * scale;
-	int height = 240 * scale;
+	int width = WIDTH * scale;
+	int height = HEIGHT * scale;
     sf::RenderWindow window (sf::VideoMode(width, height), "Final Round");
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, width, height));

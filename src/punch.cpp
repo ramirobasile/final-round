@@ -10,7 +10,7 @@
 fr::Punch::Punch(fr::Control control, fr::Control mod, fr::Hit hit,
 		int cost, float interrupt_end, float hitbox_begin, float hitbox_end,
 		float recovery_end, sf::FloatRect hitbox, sf::FloatRect clearbox,
-		Animation animation)
+		Animation::Name animation)
 		: control(control), mod(mod), hit(hit), cost(cost),
 		interrupt_end(interrupt_end), hitbox_begin(hitbox_begin),
 		hitbox_end(hitbox_end), recovery_end(recovery_end), hitbox(hitbox),
@@ -91,4 +91,8 @@ sf::FloatRect fr::Punch::getClearbox(sf::FloatRect relative_to,
 
 int fr::Punch::getCost() const {
 	return cost;
+}
+
+fr::Animation::Name fr::Punch::getAnimation() const {
+	return animation;
 }

@@ -17,6 +17,7 @@
 #include "player.hpp"
 #include "sprite.hpp"
 #include "stats.hpp"
+#include "stun.hpp"
 #include "utils.hpp"
 
 fr::Match::Match(fr::ConfigFile config) : config(config) {
@@ -41,16 +42,27 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	level = Level(left, right, ring);
 	
 	// TODO Make all of this const somewhere else
-	std::vector<Animation> movement_anims {
-		Animation(0, 1, true),		// idle
-		Animation(1, 1, true),		// idle_head
-		Animation(2, 1, true),		// idle_body
-		Animation(3, 8, true),		// walk
-		Animation(4, 8, true),		// walk_head
-		Animation(5, 8, true),		// walk_body
-		Animation(9, 1, false),		// hit_head
-		Animation(10, 1, false),	// hit_body
-		Animation(11, 1, false),	// ko
+	std::vector<Animation> animations {
+		Animation(1, false),	// idle
+		Animation(1, false),	// idle_guard_head
+		Animation(1, false),	// idle_guard_body
+		Animation(8, true),		// walk
+		Animation(8, true),		// walk_guard_head
+		Animation(8, true),		// walk_guard_body
+		Animation(6, false),	// pull
+		Animation(6, false),	// slip
+		Animation(6, false),	// duck
+		Animation(1, false),	// hit_head
+		Animation(1, false),	// hit_body
+		Animation(1, false),	// ko
+		Animation(5, false),	// jab
+		Animation(5, false),	// jab_body
+		Animation(7, false),	// cross
+		Animation(7, false),	// cross_body
+		Animation(8, false),	// upper
+		Animation(8, false),	// upper_body
+		Animation(9, false),	// hook
+		Animation(9, false),	// hook_body
 	};
 	
 	// Player 1
@@ -63,7 +75,7 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	Stats stats;
 
 	player1 = Player(Direction::right, device, getControls("player1_controls"), 
-			stats, r_spritesheet, l_spritesheet, movement_anims, 0);
+			stats, r_spritesheet, l_spritesheet, animations, 0);
 	player1.position = sf::Vector2f(16 + 64, 112);
 			
 	// Player 2
@@ -73,7 +85,7 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	l_spritesheet.loadFromFile(prefix + "blue_left_spritesheet.png");
 
 	player2 = Player(Direction::left, device, getControls("player2_controls"), 
-			stats, r_spritesheet, l_spritesheet, movement_anims, 1);
+			stats, r_spritesheet, l_spritesheet, animations, 1);
 	player2.position = sf::Vector2f(320 - 16 - 64 * 2, 112);
 
 	// UI elements

@@ -23,7 +23,7 @@
 
 fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 		std::vector<int> controls, fr::Stats stats, sf::Texture r_spritesheet,
-		sf::Texture l_spritesheet, std::vector<fr::Animation> movement_anims,
+		sf::Texture l_spritesheet, std::vector<fr::Animation> animations,
 		int joystick)
 		: direction(direction), stats(stats) {
 	input_manager = InputManager(input_dev, controls, joystick);
@@ -38,7 +38,7 @@ fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 	punches = stats.punches;
 	dodges = stats.dodges;
 
-	sprite = Sprite(r_spritesheet, l_spritesheet, movement_anims);
+	sprite = Sprite(r_spritesheet, l_spritesheet, animations);
 }
 
 void fr::Player::update(float opponent_distance, float dt) {
@@ -201,6 +201,14 @@ fr::Guard fr::Player::getGuard() const {
 		guard = Guard::body;
 
 	return guard;
+}
+
+fr::Stun fr::Player::getStun() const {
+	return stun;
+}
+
+float fr::Player::getStunTime() const {
+	return stun_time;
 }
 
 bool fr::Player::isReady() const {

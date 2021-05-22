@@ -14,23 +14,11 @@
 
 namespace fr {
 
-enum class MovementAnims {
-	idle,
-	idle_guard_head,
-	idle_guard_body,
-	walk,
-	walk_guard_head,
-	walk_guard_body,
-	hit_head,
-	hit_body,
-	ko,
-};
-
 class Sprite {
 	public:
 	Sprite() {};
 	Sprite(sf::Texture r_spritesheet, sf::Texture l_spritesheet,
-			std::vector<Animation> movement_anims);
+			std::vector<Animation> animations);
 
 	void update(Punch punch, Punch prev_punch,
 			Dodge dodge, Dodge prev_dodge, float dt);
@@ -42,15 +30,15 @@ class Sprite {
 	static constexpr float FPS = 16;
 	static constexpr int SIZE = 128;
 	
-	Animation getMovementAnim(Movement movement, Guard guard, Stun stun) const;
+	Animation::Name getCurrentAnimation(Movement movement, Guard guard, 
+			Punch punch, Dodge dodge, Stun stun) const;
+	Animation& getAnimation(Animation::Name animation);
 	
 	sf::Texture r_spritesheet;
 	sf::Texture l_spritesheet;
-	std::vector<Animation> movement_anims;
+	std::vector<Animation> animations;
 	sf::Sprite sprite;
 	float progress = 0;
-	Animation dodge_animation;
-	Animation punch_animation;
 };
 
 } // namespace fr
