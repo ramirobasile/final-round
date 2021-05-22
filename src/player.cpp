@@ -18,6 +18,7 @@
 #include "punch.hpp"
 #include "sprite.hpp"
 #include "stats.hpp"
+#include "stun.hpp"
 #include "utils.hpp"
 
 fr::Player::Player(fr::Direction direction, fr::Device input_dev,
@@ -42,8 +43,13 @@ fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 
 void fr::Player::update(float opponent_distance, float dt) {
 	input_manager.update(dt);
-
+	
 	sprite.update(punch, prev_punch, dodge, prev_dodge, dt);
+	
+	if (stun_time >= 0)
+		stun_time -= dt;
+	else
+		stun = Stun::none;
 	
 	if (getGuard() == Guard::none)
 		health.regen(dt);
@@ -79,20 +85,32 @@ void fr::Player::update(float opponent_distance, float dt) {
 		setNewDodge(opponent_distance);
 }
 
-void fr::Player::draw(sf::RenderWindow &window) {
-	sprite.draw(window, getMovement(), getGuard(), punch, dodge, getBounds(), 
-			direction);
+void fr::Player::draw(sf::RenderWindow& window) {
+	sprite.draw(window, getMovement(), getGuard(), punch, dodge, stun, 
+			getBounds(), direction);
 }
 
 void fr::Player::takeHit(Hit hit) {
-	if ((getGuard() == Guard::head && hit.head) || getGuard() == Guard::body) {
+	if (getGuard() == Guard::head && hit.head || getGuard() == Guard::body) {
 		health.takeDamage(hit.block_damage);
+		
+		stun_time = hit.block_stun;
+		if (hit.head)
+			stun = Stun::block_head;
+		else
+			stun = Stun::block_body;
 	} else {
 		if (health.getCurrent() <= 1 && hit.damage >= stats.min_ko_damage)
 			ko = true;
 
 		health.takeDamage(hit.damage);
 		health.takePermaDamage(hit.perma_damage);
+		
+		stun_time = hit.hit_stun;
+		if (hit.head)
+			stun = Stun::head;
+		else
+			stun = Stun::body;
 
 		if (punch.canInterrupt())
 			punch.end();
@@ -167,6 +185,9 @@ fr::Movement fr::Player::getMovement() const {
 		movement = Movement::walk_b;
 	else if (input_manager.inputted(Control::forwards))
 		movement = Movement::walk_f;
+		
+	if (stun_time > 0)
+		movement = Movement::stun;
 
 	return movement;
 }

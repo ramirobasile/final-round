@@ -10,16 +10,17 @@
 #include "guard.hpp"
 #include "movement.hpp"
 #include "punch.hpp"
+#include "stun.hpp"
 
 namespace fr {
 
 enum class MovementAnims {
 	idle,
-	idle_head,
-	idle_body,
+	idle_guard_head,
+	idle_guard_body,
 	walk,
-	walk_head,
-	walk_body,
+	walk_guard_head,
+	walk_guard_body,
 	hit_head,
 	hit_body,
 	ko,
@@ -34,14 +35,14 @@ class Sprite {
 	void update(Punch punch, Punch prev_punch,
 			Dodge dodge, Dodge prev_dodge, float dt);
 	void draw(sf::RenderWindow &window, Movement movement, Guard guard, 
-			Punch punch, Dodge dodge, sf::FloatRect relative_to, 
+			Punch punch, Dodge dodge, Stun stun, sf::FloatRect relative_to, 
 			Direction direction);
 	
 	private:
 	static constexpr float FPS = 16;
 	static constexpr int SIZE = 128;
 	
-	Animation getMovementAnim(Movement movement, Guard guard) const;
+	Animation getMovementAnim(Movement movement, Guard guard, Stun stun) const;
 	
 	sf::Texture r_spritesheet;
 	sf::Texture l_spritesheet;

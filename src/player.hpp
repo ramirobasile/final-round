@@ -16,6 +16,7 @@
 #include "punch.hpp"
 #include "sprite.hpp"
 #include "stats.hpp"
+#include "stun.hpp"
 
 namespace fr {
 
@@ -33,7 +34,7 @@ class Player {
 	sf::FloatRect getBounds() const;
 	sf::FloatRect getHeadHurtbox() const;
 	sf::FloatRect getBodyHurtbox() const;
-	Health const& getHealth() const;
+	const Health& getHealth() const;
 	Direction getDirection() const;
 	Movement getMovement() const;
 	Guard getGuard() const;
@@ -46,7 +47,7 @@ class Player {
 	void setNewPunch();
 	void setNewDodge(float opponent_distance);
 	
-	Direction direction;
+	Direction direction = Direction::left;
 	Stats stats;
 	sf::FloatRect bounds;
 	InputManager input_manager;
@@ -59,6 +60,8 @@ class Player {
 	Dodge prev_dodge;
 	std::vector<Dodge> dodges;
 	fr::Sprite sprite;
+	fr::Stun stun = Stun::none;
+	float stun_time = 0;
 	bool ko = false;
 };
 

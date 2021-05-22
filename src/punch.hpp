@@ -14,6 +14,8 @@ struct Hit {
 	int damage = -1;
 	int perma_damage = -1;
 	int block_damage = -1;
+	float hit_stun = -1;
+	float block_stun = -1;
 	bool head = false;
 };
 
