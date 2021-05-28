@@ -22,10 +22,11 @@
 #include "utils.hpp"
 
 fr::Player::Player(fr::Direction direction, fr::Device input_dev,
-		std::vector<int> controls, fr::Stats stats, sf::Texture r_spritesheet,
-		sf::Texture l_spritesheet, std::vector<fr::Animation> animations,
-		int joystick)
-		: direction(direction), stats(stats) {
+		std::vector<int> controls, fr::Stats stats, 
+		std::vector<fr::Punch> punches, std::vector<fr::Dodge> dodges, 
+		sf::Texture r_spritesheet, sf::Texture l_spritesheet, 
+		std::vector<fr::Animation> animations, int joystick)
+		: direction(direction), stats(stats), punches(punches), dodges(dodges) {
 	input_manager = InputManager(input_dev, controls, joystick);
 
 	bounds = sf::FloatRect(0, 0, stats.bounds.x, stats.bounds.y);
@@ -34,9 +35,6 @@ fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 
 	health = Health(stats.max_health, stats.min_health, stats.health_regen, 
 			stats.regen_rate);
-
-	punches = stats.punches;
-	dodges = stats.dodges;
 
 	sprite = Sprite(r_spritesheet, l_spritesheet, animations);
 }

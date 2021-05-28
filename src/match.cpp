@@ -15,8 +15,6 @@
 #include "input.hpp"
 #include "level.hpp"
 #include "player.hpp"
-#include "sprite.hpp"
-#include "stats.hpp"
 #include "stun.hpp"
 #include "utils.hpp"
 
@@ -40,52 +38,33 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	sf::FloatRect right(320 - 16, 112, 8, 64);
 
 	level = Level(left, right, ring);
-	
-	// TODO Make all of this const somewhere else
-	std::vector<Animation> animations {
-		Animation(1, false),	// idle
-		Animation(1, false),	// idle_guard_head
-		Animation(1, false),	// idle_guard_body
-		Animation(8, true),		// walk
-		Animation(8, true),		// walk_guard_head
-		Animation(8, true),		// walk_guard_body
-		Animation(6, false),	// pull
-		Animation(6, false),	// slip
-		Animation(6, false),	// duck
-		Animation(1, false),	// hit_head
-		Animation(1, false),	// hit_body
-		Animation(1, false),	// ko
-		Animation(5, false),	// jab
-		Animation(5, false),	// jab_body
-		Animation(7, false),	// cross
-		Animation(7, false),	// cross_body
-		Animation(8, false),	// upper
-		Animation(8, false),	// upper_body
-		Animation(9, false),	// hook
-		Animation(9, false),	// hook_body
-	};
-	
+
 	// Player 1
+	Character character = characters[(int)Character::Name::base];
+	
 	Device device = (Device)config.getInt("player1_controls", "device", 0);
 
 	sf::Texture r_spritesheet, l_spritesheet;
 	r_spritesheet.loadFromFile(prefix + "red_right_spritesheet.png");
 	l_spritesheet.loadFromFile(prefix + "red_left_spritesheet.png");
 
-	Stats stats;
-
 	player1 = Player(Direction::right, device, getControls("player1_controls"), 
-			stats, r_spritesheet, l_spritesheet, animations, 0);
+			character.stats, character.punches, character.dodges, r_spritesheet,
+			l_spritesheet, character.animations, 0);
+			
 	player1.position = sf::Vector2f(16 + 64, 112);
 			
 	// Player 2
-	device = (Device)config.getInt("player2_controls", "device", 0);
+	character = characters[(int)Character::Name::base];
 	
+	device = (Device)config.getInt("player2_controls", "device", 0);
+
 	r_spritesheet.loadFromFile(prefix + "blue_right_spritesheet.png");
 	l_spritesheet.loadFromFile(prefix + "blue_left_spritesheet.png");
 
 	player2 = Player(Direction::left, device, getControls("player2_controls"), 
-			stats, r_spritesheet, l_spritesheet, animations, 1);
+			character.stats, character.punches, character.dodges, r_spritesheet,
+			l_spritesheet, character.animations, 1);
 	player2.position = sf::Vector2f(320 - 16 - 64 * 2, 112);
 
 	// UI elements

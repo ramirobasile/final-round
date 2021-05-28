@@ -1,5 +1,6 @@
 sources = files(
 	'animation.cpp',
+	'character.cpp',
 	'config.cpp',
 	'dodge.cpp',
 	'health.cpp',

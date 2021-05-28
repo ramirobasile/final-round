@@ -24,7 +24,8 @@ class Player {
 	public:
 	Player() {}; // Empty
 	Player(Direction direction, Device input_dev, std::vector<int> controls,
-			Stats stats, sf::Texture r_spritesheet, sf::Texture l_spritesheet,
+			Stats stats, std::vector<Punch> punches, std::vector<Dodge> dodges, 
+			sf::Texture r_spritesheet, sf::Texture l_spritesheet, 
 			std::vector<Animation> animations, int joystick = -1);
 
 	void update(float opponent_distance, float dt);
