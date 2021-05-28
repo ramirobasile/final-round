@@ -1,5 +1,6 @@
 #include "match.hpp"
 
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -8,6 +9,7 @@
 
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
+#include "character.hpp"
 #include "config.hpp"
 #include "direction.hpp"
 #include "dodge.hpp"
@@ -17,6 +19,7 @@
 #include "player.hpp"
 #include "stun.hpp"
 #include "utils.hpp"
+
 
 fr::Match::Match(fr::ConfigFile config) : config(config) {
 	// Load assets
@@ -65,6 +68,7 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	player2 = Player(Direction::left, device, getControls("player2_controls"), 
 			character.stats, character.punches, character.dodges, r_spritesheet,
 			l_spritesheet, character.animations, 1);
+			
 	player2.position = sf::Vector2f(320 - 16 - 64 * 2, 112);
 
 	// UI elements
@@ -139,7 +143,7 @@ void fr::Match::update(float dt) {
 	time_text.setString(minutes + ":" + seconds);
 }
 
-void fr::Match::draw(sf::RenderWindow& window) {
+void fr::Match::draw(sf::RenderWindow& window, float dt) {
 	level.draw(window);
 
 	player1.draw(window);
@@ -154,6 +158,18 @@ void fr::Match::draw(sf::RenderWindow& window) {
 	
 	p1_health_bar.draw(window, player1.getHealth());
 	p2_health_bar.draw(window, player2.getHealth());
+	
+	// Shake screen when stunned
+	if (player1.getStunTime() > MIN_SHAKE_STUN
+		|| player2.getStunTime() > MIN_SHAKE_STUN) {
+		sf::View view = window.getView();
+		
+		shake += 2 * PI * SHAKE_SPEED * dt;
+		int direction = sign(std::sin(shake));
+		view.move(direction, 0);
+		
+		window.setView(view);
+	}
 }
 
 std::vector<int> fr::Match::getControls(std::string section) {

@@ -16,9 +16,12 @@ class Match {
 	Match(fr::ConfigFile config);
 
 	void update(float dt);
-	void draw(sf::RenderWindow &window);
+	void draw(sf::RenderWindow &window, float dt);
 
 	private:
+	const float MIN_SHAKE_STUN = 0.1f;
+	const float SHAKE_SPEED = 10;
+
 	std::vector<int> getControls(std::string section);
 	
 	ConfigFile config;
@@ -40,6 +43,7 @@ class Match {
 	sf::Text time_text;
 	HealthBar p1_health_bar;
 	HealthBar p2_health_bar;
+	float shake = 0;
 };
 
 } // namespace fr

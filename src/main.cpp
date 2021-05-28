@@ -44,7 +44,7 @@ int main() {
 		// Draw calls
         window.clear();
 
-        match.draw(window);
+        match.draw(window, dt);
 
         window.display();
     }

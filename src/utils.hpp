@@ -20,15 +20,20 @@ inline std::string changePresicion(float number, int presicion) {
 }
 
 // Why cmath doesn't have this is beyond me
-inline int sign(int n) {
+inline int sign(double n) {
+	int res = 0;
+	
 	if (n > 0)
-		return 1;
-	if (n < 0)
-		return -1;
-	return 0;
+		res = 1;
+	else if (n < 0)
+		res = -1;
+		
+	return res;
 }
 
 // Why SFML's Vector2 doesn't have this is beyond me
 inline float vector2Distance(sf::Vector2f a, sf::Vector2f b) {
 	return std::sqrt(std::pow(a.x - b.x, 2) + std::pow(a.y - b.y, 2));
 }
+
+const double PI = std::atan(1) * 4;
