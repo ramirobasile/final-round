@@ -2,6 +2,7 @@ assets = files(
 	'blue_left_spritesheet.png',
 	'blue_right_spritesheet.png',
 	'dodge.ogg',
+	'block.ogg',
 	'hit.ogg',
 	'jab.ogg',
 	'ko.ogg',

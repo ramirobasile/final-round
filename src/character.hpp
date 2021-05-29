@@ -2,7 +2,8 @@
 
 #include <vector>
 
-#include "animation.hpp"
+#include "SFML/Audio.hpp"
+#include "animations.hpp"
 #include "dodge.hpp"
 #include "punch.hpp"
 #include "stats.hpp"
@@ -10,16 +11,12 @@
 namespace fr {
 
 struct Character {
+	Character(sf::Sound jab, sf::Sound power); // Default character
+	
 	Stats stats;
 	std::vector<Punch> punches;
 	std::vector<Dodge> dodges;
-	std::vector<Animation> animations;
-	
-	enum class Name {
-		base,
-	};
+	Animations animations;
 };
-
-extern std::vector<Character> characters;
 
 }; // namespace fr

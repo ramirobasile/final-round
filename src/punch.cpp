@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "SFML/Audio.hpp"
 #include "SFML/Graphics.hpp"
 #include "animation.hpp"
 #include "direction.hpp"
@@ -10,11 +11,11 @@
 fr::Punch::Punch(fr::Control control, fr::Control mod, fr::Hit hit,
 		int cost, float interrupt_end, float hitbox_begin, float hitbox_end,
 		float recovery_end, sf::FloatRect hitbox, sf::FloatRect clearbox,
-		Animation::Name animation)
+		fr::Animation animation, sf::Sound sound)
 		: control(control), mod(mod), hit(hit), cost(cost),
 		interrupt_end(interrupt_end), hitbox_begin(hitbox_begin),
 		hitbox_end(hitbox_end), recovery_end(recovery_end), hitbox(hitbox),
-		clearbox(clearbox), animation(animation) {
+		clearbox(clearbox), animation(animation), sound(sound) {
 }
 
 void fr::Punch::update(float dt) {
@@ -91,8 +92,4 @@ sf::FloatRect fr::Punch::getClearbox(sf::FloatRect relative_to,
 
 int fr::Punch::getCost() const {
 	return cost;
-}
-
-fr::Animation::Name fr::Punch::getAnimation() const {
-	return animation;
 }

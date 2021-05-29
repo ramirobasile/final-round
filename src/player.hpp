@@ -3,8 +3,10 @@
 #include <string>
 #include <vector>
 
+#include "SFML/Audio.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
+#include "animations.hpp"
 #include "direction.hpp"
 #include "dodge.hpp"
 #include "guard.hpp"
@@ -14,6 +16,7 @@
 #include "movement.hpp"
 #include "physics.hpp"
 #include "punch.hpp"
+#include "sounds.hpp"
 #include "sprite.hpp"
 #include "stats.hpp"
 #include "stun.hpp"
@@ -26,7 +29,7 @@ class Player {
 	Player(Direction direction, Device input_dev, std::vector<int> controls,
 			Stats stats, std::vector<Punch> punches, std::vector<Dodge> dodges, 
 			sf::Texture r_spritesheet, sf::Texture l_spritesheet, 
-			std::vector<Animation> animations, int joystick = -1);
+			Animations animations, Sounds sounds, int joystick = -1);
 
 	void update(float opponent_distance, float dt);
 	void draw(sf::RenderWindow &window);
@@ -52,16 +55,17 @@ class Player {
 	
 	Direction direction = Direction::left;
 	Stats stats;
-	sf::FloatRect bounds;
+	std::vector<Punch> punches;
+	std::vector<Dodge> dodges;
+	Sounds sounds;
 	InputManager input_manager;
+	sf::FloatRect bounds;
 	sf::FloatRect head_hurtbox;
 	sf::FloatRect body_hurtbox;
 	Health health;
 	Punch prev_punch;
-	std::vector<Punch> punches;
 	Dodge dodge;
 	Dodge prev_dodge;
-	std::vector<Dodge> dodges;
 	fr::Sprite sprite;
 	fr::Stun stun = Stun::none;
 	float stun_time = 0;

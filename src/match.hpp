@@ -34,6 +34,14 @@ class Match {
 	sf::Texture right_nostar;
 	sf::Font regular;
 	sf::Font thin;
+	sf::SoundBuffer step;
+	sf::SoundBuffer dodge;
+	sf::SoundBuffer jab;
+	sf::SoundBuffer power;
+	sf::SoundBuffer block;
+	sf::SoundBuffer hit;
+	sf::SoundBuffer ko;
+	sf::SoundBuffer ui_move;
 	Level level;
 	Player player1;
 	Player player2;

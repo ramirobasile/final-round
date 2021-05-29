@@ -5,6 +5,7 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "animation.hpp"
+#include "animations.hpp"
 #include "direction.hpp"
 #include "dodge.hpp"
 #include "guard.hpp"
@@ -13,12 +14,13 @@
 #include "stun.hpp"
 
 fr::Sprite::Sprite(sf::Texture r_spritesheet, sf::Texture l_spritesheet,
-		std::vector<Animation> animations)
+		Animations animations)
 		: r_spritesheet(r_spritesheet), l_spritesheet(l_spritesheet),
 		animations(animations) {
 }
 
-void fr::Sprite::update(fr::Punch punch, fr::Punch prev_punch, fr::Dodge dodge,
+// HACK Ugly (maybe) avoidable ref pass
+void fr::Sprite::update(fr::Punch& punch, fr::Punch prev_punch, fr::Dodge& dodge,
 		fr::Dodge prev_dodge, float dt) {
 	progress += dt;
 
@@ -26,25 +28,25 @@ void fr::Sprite::update(fr::Punch punch, fr::Punch prev_punch, fr::Dodge dodge,
 		progress = 0;
 		
 		if (punch.isDone() && dodge.isDone()) {
-			getAnimation(Animation::Name::walk).nextFrame();
-			getAnimation(Animation::Name::walk_guard_head).nextFrame();
-			getAnimation(Animation::Name::walk_guard_body).nextFrame();
+			animations.walk.nextFrame();
+			animations.walk_guard_head.nextFrame();
+			animations.walk_guard_body.nextFrame();
 		}
 		
 		if (!dodge.isDone())
-			getAnimation(dodge.getAnimation()).nextFrame();
+			dodge.animation.nextFrame();
 			
 		if (!punch.isDone())
-			getAnimation(punch.getAnimation()).nextFrame();
+			punch.animation.nextFrame();
 	}
 		
 	if (prev_dodge.isDone() && !dodge.isDone()) {
-		getAnimation(dodge.getAnimation()).reset();
+		dodge.animation.reset();
 		progress = 0;
 	}
 	
 	if (prev_punch.isDone() && !punch.isDone()) {
-		getAnimation(punch.getAnimation()).reset();
+		punch.animation.reset();
 		progress = 0;
 	}
 }
@@ -52,11 +54,11 @@ void fr::Sprite::update(fr::Punch punch, fr::Punch prev_punch, fr::Dodge dodge,
 void fr::Sprite::draw(sf::RenderWindow &window, fr::Movement movement, 
 		fr::Guard guard, fr::Punch punch, fr::Dodge dodge, fr::Stun stun,
 		sf::FloatRect relative_to, fr::Direction direction) {
-	Animation::Name animation = getCurrentAnimation(movement, guard, punch, 
+	Animation animation = getCurrentAnimation(movement, guard, punch, 
 			dodge, stun);
 	
-	sf::IntRect subrect(SIZE * getAnimation(animation).getFrame(),
-			SIZE * (int)animation, SIZE, SIZE);
+	sf::IntRect subrect(SIZE * animation.getFrame(), 
+			SIZE * animation.getSheetY(), SIZE, SIZE);
 	sprite.setTextureRect(subrect);
 
 	if (direction == Direction::right)
@@ -72,19 +74,19 @@ void fr::Sprite::draw(sf::RenderWindow &window, fr::Movement movement,
 }
 
 // Yeah, I know...
-fr::Animation::Name fr::Sprite::getCurrentAnimation(fr::Movement movement, 
+fr::Animation fr::Sprite::getCurrentAnimation(fr::Movement movement, 
 		fr::Guard guard, fr::Punch punch, fr::Dodge dodge, 
 		fr::Stun stun) const  {
-	Animation::Name animation = Animation::Name::idle;
+	Animation animation = animations.idle;
 	
 	switch (movement) {
 		case Movement::idle:
 			switch (guard) {
 				case Guard::head:
-					animation = Animation::Name::idle_guard_head;
+					animation = animations.idle_guard_head;
 					break;
 				case Guard::body:
-					animation = Animation::Name::idle_guard_body;
+					animation = animations.idle_guard_body;
 					break;
 			}
 			break;
@@ -93,13 +95,13 @@ fr::Animation::Name fr::Sprite::getCurrentAnimation(fr::Movement movement,
 		case Movement::walk_f:
 			switch (guard) {
 				case Guard::head:
-					animation = Animation::Name::walk_guard_head;
+					animation = animations.walk_guard_head;
 					break;
 				case Guard::body:
-					animation = Animation::Name::walk_guard_body;
+					animation = animations.walk_guard_body;
 					break;
 				default:
-					animation = Animation::Name::walk;
+					animation = animations.walk;
 					break;
 			}
 			break;
@@ -107,30 +109,26 @@ fr::Animation::Name fr::Sprite::getCurrentAnimation(fr::Movement movement,
 		case Movement::stun:
 			switch (stun) {
 				case Stun::head:
-					animation = Animation::Name::hit_head;
+					animation = animations.hit_head;
 					break;
 				case Stun::body:
-					animation = Animation::Name::hit_body;
+					animation = animations.hit_body;
 					break;
 				case Stun::block_head:
-					animation = Animation::Name::idle_guard_head;
+					animation = animations.idle_guard_head;
 					break;
 				case Stun::block_body:
-					animation = Animation::Name::idle_guard_body;
+					animation = animations.idle_guard_body;
 					break;
 			}
 			break;
 	}
 	
 	if (!dodge.isDone())
-		animation = dodge.getAnimation();
+		animation = dodge.animation;
 		
 	if (!punch.isDone())
-		animation = punch.getAnimation();
+		animation = punch.animation;
 	
 	return animation;
-}
-
-fr::Animation& fr::Sprite::getAnimation(fr::Animation::Name animation) {
-	return animations[(int)animation];
 }

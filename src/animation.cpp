@@ -1,7 +1,7 @@
 #include "sprite.hpp"
 
-fr::Animation::Animation(int frames, bool loops)
-		: frames(frames), loops(loops) {
+fr::Animation::Animation(int sheet_y, int frames, bool loops)
+		: sheet_y(sheet_y), frames(frames), loops(loops) {
 }
 
 void fr::Animation::nextFrame() {
@@ -13,6 +13,10 @@ void fr::Animation::nextFrame() {
 
 void fr::Animation::reset() {
 	frame = 0;
+}
+
+int fr::Animation::getSheetY() const {
+	return sheet_y;
 }
 
 int fr::Animation::getFrames() const {

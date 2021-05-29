@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 
+#include <SFML/Audio.hpp>
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "config.hpp"

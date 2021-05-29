@@ -17,6 +17,7 @@
 #include "input.hpp"
 #include "level.hpp"
 #include "player.hpp"
+#include "sounds.hpp"
 #include "stun.hpp"
 #include "utils.hpp"
 
@@ -36,6 +37,15 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	regular.loadFromFile(prefix + "unscii-8.pcf");
 	thin.loadFromFile(prefix + "unscii-8-thin.pcf");
 	
+	step.loadFromFile(prefix + "step.ogg");
+	dodge.loadFromFile(prefix + "dodge.ogg");
+	jab.loadFromFile(prefix + "jab.ogg");
+	power.loadFromFile(prefix + "power.ogg");
+	block.loadFromFile(prefix + "block.ogg");
+	hit.loadFromFile(prefix + "hit.ogg");
+	ko.loadFromFile(prefix + "ko.ogg");
+	ui_move.loadFromFile(prefix + "ui_move.ogg");
+	
 	// Level
 	sf::FloatRect left(8, 112, 8, 64);
 	sf::FloatRect right(320 - 16, 112, 8, 64);
@@ -43,23 +53,31 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	level = Level(left, right, ring);
 
 	// Player 1
-	Character character = characters[(int)Character::Name::base];
+	Character character = Character(sf::Sound(jab), sf::Sound(power));
 	
 	Device device = (Device)config.getInt("player1_controls", "device", 0);
 
 	sf::Texture r_spritesheet, l_spritesheet;
 	r_spritesheet.loadFromFile(prefix + "red_right_spritesheet.png");
 	l_spritesheet.loadFromFile(prefix + "red_left_spritesheet.png");
+	
+	Sounds sounds = {
+		sf::Sound(step),
+		sf::Sound(dodge), 
+		sf::Sound(block), 
+		sf::Sound(hit),
+		sf::Sound(ko), 
+		sf::Sound(ui_move)
+	};
 
 	player1 = Player(Direction::right, device, getControls("player1_controls"), 
 			character.stats, character.punches, character.dodges, r_spritesheet,
-			l_spritesheet, character.animations, 0);
+			l_spritesheet, character.animations, sounds, 0);
 			
 	player1.position = sf::Vector2f(16 + 64, 112);
 			
 	// Player 2
-	character = characters[(int)Character::Name::base];
-	
+	character = Character(sf::Sound(jab), sf::Sound(power));
 	device = (Device)config.getInt("player2_controls", "device", 0);
 
 	r_spritesheet.loadFromFile(prefix + "blue_right_spritesheet.png");
@@ -67,7 +85,7 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 
 	player2 = Player(Direction::left, device, getControls("player2_controls"), 
 			character.stats, character.punches, character.dodges, r_spritesheet,
-			l_spritesheet, character.animations, 1);
+			l_spritesheet, character.animations, sounds, 1);
 			
 	player2.position = sf::Vector2f(320 - 16 - 64 * 2, 112);
 

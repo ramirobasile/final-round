@@ -5,8 +5,10 @@
 #include <string>
 #include <vector>
 
-#include "SFML/System.hpp"
+#include "SFML/Audio.hpp"
 #include "SFML/Graphics.hpp"
+#include "SFML/System.hpp"
+#include "animations.hpp"
 #include "direction.hpp"
 #include "dodge.hpp"
 #include "guard.hpp"
@@ -16,6 +18,7 @@
 #include "movement.hpp"
 #include "physics.hpp"
 #include "punch.hpp"
+#include "sounds.hpp"
 #include "sprite.hpp"
 #include "stats.hpp"
 #include "stun.hpp"
@@ -25,8 +28,9 @@ fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 		std::vector<int> controls, fr::Stats stats, 
 		std::vector<fr::Punch> punches, std::vector<fr::Dodge> dodges, 
 		sf::Texture r_spritesheet, sf::Texture l_spritesheet, 
-		std::vector<fr::Animation> animations, int joystick)
-		: direction(direction), stats(stats), punches(punches), dodges(dodges) {
+		Animations animations, Sounds sounds, int joystick)
+		: direction(direction), stats(stats), punches(punches), dodges(dodges),
+		sounds(sounds) {
 	input_manager = InputManager(input_dev, controls, joystick);
 
 	bounds = sf::FloatRect(0, 0, stats.bounds.x, stats.bounds.y);
@@ -41,7 +45,6 @@ fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 
 void fr::Player::update(float opponent_distance, float dt) {
 	input_manager.update(dt);
-	
 	sprite.update(punch, prev_punch, dodge, prev_dodge, dt);
 	
 	if (stun_time >= 0)
@@ -58,6 +61,13 @@ void fr::Player::update(float opponent_distance, float dt) {
 	prev_punch = punch;
 	punch.update(dt);
 	
+	if (isReady())
+		setNewPunch();
+		
+	// Play punch sound when punch starts
+	if (prev_punch.isDone() && !punch.isDone())
+		punch.sound.play();
+
 	// Take self damage when punch becomes uninterruptible
 	if (prev_punch.canInterrupt() && !punch.canInterrupt())
 		health.takeDamage(punch.getCost());
@@ -68,19 +78,25 @@ void fr::Player::update(float opponent_distance, float dt) {
 		punch.end();
 		health.resetRegen();
 	}
-	
-	if (isReady())
-		setNewPunch();
 
 	prev_dodge = dodge;
 	dodge.update(dt);
-	
-	// Take self damage when dodge starts
-	if (prev_dodge.isDone() && !dodge.isDone())
-		health.takeDamage(dodge.getCost());
 
 	if (isReady())
 		setNewDodge(opponent_distance);
+		
+	// Take self damage when dodge starts and play sound
+	if (prev_dodge.isDone() && !dodge.isDone()) {
+		health.takeDamage(dodge.getCost());
+		sounds.dodge.play();
+	}
+	
+	// Play step sound when moving
+	/*if (getMovement() == Movement::walk_b || getMovement() == Movement::walk_f) {
+		if (!sound.isPlaying())
+			sound.setBuffer(getSound(Sound::step)).play();
+	} else
+		//sound.stop();*/
 }
 
 void fr::Player::draw(sf::RenderWindow& window) {
@@ -89,7 +105,8 @@ void fr::Player::draw(sf::RenderWindow& window) {
 }
 
 void fr::Player::takeHit(Hit hit) {
-	if (getGuard() == Guard::head && hit.head || getGuard() == Guard::body) {
+	if ((getGuard() == Guard::head && hit.head) 
+		|| (getGuard() == Guard::body && !hit.head)) {
 		health.takeDamage(hit.block_damage);
 		
 		stun_time = hit.block_stun;
@@ -97,6 +114,8 @@ void fr::Player::takeHit(Hit hit) {
 			stun = Stun::block_head;
 		else
 			stun = Stun::block_body;
+			
+		sounds.block.play();
 	} else {
 		if (health.getCurrent() <= 1 && hit.damage >= stats.min_ko_damage)
 			ko = true;
@@ -112,6 +131,8 @@ void fr::Player::takeHit(Hit hit) {
 
 		if (punch.canInterrupt())
 			punch.end();
+			
+		sounds.hit.play();
 	}
 }
 
