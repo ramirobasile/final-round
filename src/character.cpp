@@ -25,7 +25,7 @@ fr::Character::Character(sf::Sound jab, sf::Sound power) {
 	punches = std::vector<Punch>{
 		// Jab
 		fr::Punch(	fr::Control::jab, fr::Control::none,
-					fr::Hit{2, 0, 0, 0.1f, 0.05f, true}, 1,
+					fr::Hit{2, 0, 0, 0.1f, 0.05f, true}, 0,
 					0.125f, 0.2f, 0.25f, 0.3125f,
 					sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 8, 42, 8),
 					fr::Animation(12, 5, false),

@@ -65,8 +65,10 @@ void fr::Player::update(float opponent_distance, float dt) {
 		setNewPunch();
 		
 	// Play punch sound when punch starts
-	if (prev_punch.isDone() && !punch.isDone())
+	if (prev_punch.isDone() && !punch.isDone()) {
+		prev_punch.sound.stop();
 		punch.sound.play();
+	}
 
 	// Take self damage when punch becomes uninterruptible
 	if (prev_punch.canInterrupt() && !punch.canInterrupt())
@@ -76,6 +78,7 @@ void fr::Player::update(float opponent_distance, float dt) {
 	if (punch.canInterrupt() 
 			&& input_manager.inputted(punch.getControl(), Action::release)) {
 		punch.end();
+		punch.sound.stop();
 		health.resetRegen();
 	}
 
@@ -88,15 +91,17 @@ void fr::Player::update(float opponent_distance, float dt) {
 	// Take self damage when dodge starts and play sound
 	if (prev_dodge.isDone() && !dodge.isDone()) {
 		health.takeDamage(dodge.getCost());
+		sounds.dodge.stop();
 		sounds.dodge.play();
 	}
 	
 	// Play step sound when moving
-	/*if (getMovement() == Movement::walk_b || getMovement() == Movement::walk_f) {
-		if (!sound.isPlaying())
-			sound.setBuffer(getSound(Sound::step)).play();
+	if (isReady() && (getMovement() == Movement::walk_b 
+			|| getMovement() == Movement::walk_f)) {
+		if (sounds.step.getStatus() != sf::SoundSource::Status::Playing)
+			sounds.step.play();
 	} else
-		//sound.stop();*/
+		sounds.step.stop();
 }
 
 void fr::Player::draw(sf::RenderWindow& window) {
