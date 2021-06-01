@@ -25,7 +25,7 @@ fr::Character::Character(sf::Sound jab, sf::Sound power) {
 	punches = std::vector<Punch>{
 		// Jab
 		fr::Punch(	fr::Control::jab, fr::Control::none,
-					fr::Hit{2, 0, 0, 0.1f, 0.05f, true}, 0,
+					fr::Hit{1, 0, 0, 0.1f, 0.05f, true}, 0,
 					0.125f, 0.2f, 0.25f, 0.3125f,
 					sf::FloatRect(32, 8, 28, 8), sf::FloatRect(0, 8, 42, 8),
 					fr::Animation(12, 5, false),
@@ -59,7 +59,7 @@ fr::Character::Character(sf::Sound jab, sf::Sound power) {
 		fr::Punch(	fr::Control::upper, fr::Control::none,
 					fr::Hit{6, 0, 1, 0.25f, 0.1f, true}, 2,
 					0.125f, 0.3125f, 0.35f, 0.55f, 
-					sf::FloatRect(24, 8, 16, 8), sf::FloatRect(0, 0, 0, 0),
+					sf::FloatRect(26, 8, 16, 8), sf::FloatRect(0, 0, 0, 0),
 					fr::Animation(16, 8, false),
 					power),
 		
@@ -98,9 +98,9 @@ fr::Character::Character(sf::Sound jab, sf::Sound power) {
 		fr::Animation(0, 1, false),	// idle
 		fr::Animation(1, 1, false),	// idle_guard_head
 		fr::Animation(2, 1, false),	// idle_guard_body
-		fr::Animation(3, 8, true),		// walk
-		fr::Animation(4, 8, true),		// walk_guard_head
-		fr::Animation(5, 8, true),		// walk_guard_body
+		fr::Animation(3, 8, true),	// walk
+		fr::Animation(4, 8, true),	// walk_guard_head
+		fr::Animation(5, 8, true),	// walk_guard_body
 		fr::Animation(6, 1, false),	// hit_head
 		fr::Animation(7, 1, false),	// hit_body
 		fr::Animation(8, 1, false),	// ko
