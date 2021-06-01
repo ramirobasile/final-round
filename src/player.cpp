@@ -127,6 +127,7 @@ void fr::Player::takeHit(Hit hit) {
 
 		health.takeDamage(hit.damage);
 		health.takePermaDamage(hit.perma_damage);
+		health.resetRegen();
 		
 		stun_time = hit.hit_stun;
 		if (hit.head)
