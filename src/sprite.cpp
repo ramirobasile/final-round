@@ -124,10 +124,10 @@ fr::Animation fr::Sprite::getCurrentAnimation(fr::Movement movement,
 			break;
 	}
 	
-	if (!dodge.isDone())
+	if (!dodge.isDone() && movement != Movement::stun)
 		animation = dodge.animation;
 		
-	if (!punch.isDone())
+	if (!punch.isDone() && movement != Movement::stun)
 		animation = punch.animation;
 	
 	return animation;
