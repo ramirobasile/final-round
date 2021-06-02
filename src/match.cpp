@@ -21,7 +21,6 @@
 #include "stun.hpp"
 #include "utils.hpp"
 
-
 fr::Match::Match(fr::ConfigFile config) : config(config) {
 	// Load assets
 	std::string prefix = "../share/games/final-round/assets/";
@@ -93,6 +92,8 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	// TODO Make values relative to screen size
 	time_text = sf::Text("", regular, 8);
 	
+	win_text = sf::Text("", regular, 8);
+	
 	p1_alias_text = sf::Text("PLAYER 1", regular, 8);
 	p1_alias_text.setPosition(8, 16);
 	p2_alias_text = sf::Text("PLAYER 2", regular, 8);
@@ -106,6 +107,10 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 }
 
 void fr::Match::update(float dt) {
+	// Don't update match when it's done
+	if (isDone())
+		return;
+		
 	float distance = vector2Distance(player1.position, player2.position);
 
 	player1.update(distance, dt);
@@ -145,12 +150,23 @@ void fr::Match::update(float dt) {
 
 	// Stuff each other
 	sf::FloatRect clearbox = player1.punch.getClearbox(player1.getBounds(), player1.getDirection());
-	if (!player1.punch.isRecovering() && clearbox.intersects(player2.getBounds()))
+	if (player1.punch.canInterrupt() && clearbox.intersects(player2.getBounds()))
 		player1.punch.interrupt();
 
 	clearbox = player2.punch.getClearbox(player2.getBounds(), player2.getDirection());
-	if (!player2.punch.isRecovering() && clearbox.intersects(player1.getBounds()))
+	if (player2.punch.canInterrupt() && clearbox.intersects(player1.getBounds()))
 		player2.punch.interrupt();
+		
+	// End on first KO
+	if (player1.isKO()) {
+		done = true;
+		win_text.setString("PLAYER 2 WINS");
+	} else if (player2.isKO()) {
+		done = true;
+		win_text.setString("PLAYER 1 WINS");
+	}
+	win_text.setPosition(160 - win_text.getLocalBounds().width / 2, 
+			120 - win_text.getLocalBounds().height / 2);
 
 	// Round timer
 	if (round_time > 0)
@@ -159,34 +175,37 @@ void fr::Match::update(float dt) {
 	std::string minutes = std::to_string((int)round_time / 60);
 	std::string seconds = fillString(std::to_string((int)round_time % 60), 2, '0');
 	time_text.setString(minutes + ":" + seconds);
+	time_text.setPosition(160 - time_text.getLocalBounds().width / 2, 16);
 }
 
 void fr::Match::draw(sf::RenderWindow& window, float dt) {
-	level.draw(window);
+	if (isDone()) {
+		window.draw(win_text);
+	} else {
+		level.draw(window);
 
-	player1.draw(window);
-	player2.draw(window);
+		player1.draw(window);
+		player2.draw(window);
 
-	int middle = 160 - time_text.getLocalBounds().width / 2;
-	time_text.setPosition(middle, 16);
-	window.draw(time_text);
+		window.draw(time_text);
 
-	window.draw(p1_alias_text);
-	window.draw(p2_alias_text);
-	
-	p1_health_bar.draw(window, player1.getHealth());
-	p2_health_bar.draw(window, player2.getHealth());
-	
-	// Shake screen when stunned
-	if (player1.getStunTime() > MIN_SHAKE_STUN
-		|| player2.getStunTime() > MIN_SHAKE_STUN) {
-		sf::View view = window.getView();
+		window.draw(p1_alias_text);
+		window.draw(p2_alias_text);
 		
-		shake += 2 * PI * SHAKE_SPEED * dt;
-		int direction = sign(std::sin(shake));
-		view.move(direction, 0);
+		p1_health_bar.draw(window, player1.getHealth());
+		p2_health_bar.draw(window, player2.getHealth());
 		
-		window.setView(view);
+		// Shake screen when stunned
+		if (player1.getStunTime() > MIN_SHAKE_STUN
+			|| player2.getStunTime() > MIN_SHAKE_STUN) {
+			sf::View view = window.getView();
+			
+			shake += 2 * PI * SHAKE_SPEED * dt;
+			int direction = sign(std::sin(shake));
+			view.move(direction, 0);
+			
+			window.setView(view);
+		}
 	}
 }
 
@@ -206,4 +225,8 @@ std::vector<int> fr::Match::getControls(std::string section) {
 	};
 	
 	return controls;
+}
+
+bool fr::Match::isDone() const {
+	return done;
 }

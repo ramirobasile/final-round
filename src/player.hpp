@@ -42,6 +42,7 @@ class Player {
 	Direction getDirection() const;
 	Movement getMovement() const;
 	Guard getGuard() const;
+	bool isKO() const;
 	Stun getStun() const;
 	float getStunTime() const;
 	bool isReady() const;

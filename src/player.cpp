@@ -122,8 +122,10 @@ void fr::Player::takeHit(Hit hit) {
 			
 		sounds.block.play();
 	} else {
-		if (health.getCurrent() <= 1 && hit.damage >= stats.min_ko_damage)
+		if (health.getCurrent() <= health.getMin() 
+				&& hit.damage >= stats.min_ko_damage) {
 			ko = true;
+		}
 
 		health.takeDamage(hit.damage);
 		health.takePermaDamage(hit.perma_damage);
@@ -226,6 +228,10 @@ fr::Guard fr::Player::getGuard() const {
 		guard = Guard::body;
 
 	return guard;
+}
+
+bool fr::Player::isKO() const {
+	return ko;
 }
 
 fr::Stun fr::Player::getStun() const {

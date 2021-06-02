@@ -11,6 +11,7 @@ class Health {
 	void takeDamage(int damage);
 	void takePermaDamage(int damage);
 	void resetRegen();
+	int getMin() const;
 	int getMax() const;
 	int getCurrent() const;
 	

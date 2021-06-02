@@ -28,6 +28,10 @@ void fr::Health::resetRegen() {
 	tt_regen = 0;
 }
 
+int fr::Health::getMin() const {
+	return min;
+}
+
 int fr::Health::getMax() const {
 	return max;
 }

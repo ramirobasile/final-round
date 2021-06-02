@@ -17,6 +17,7 @@ class Match {
 
 	void update(float dt);
 	void draw(sf::RenderWindow &window, float dt);
+	bool isDone() const;
 
 	private:
 	const float MIN_SHAKE_STUN = 0.1f;
@@ -49,9 +50,11 @@ class Match {
 	sf::Text p1_alias_text;
 	sf::Text p2_alias_text;
 	sf::Text time_text;
+	sf::Text win_text;
 	HealthBar p1_health_bar;
 	HealthBar p2_health_bar;
 	float shake = 0;
+	bool done = false;
 };
 
 } // namespace fr
