@@ -8,14 +8,27 @@
 #include "direction.hpp"
 #include "input.hpp"
 
-fr::Punch::Punch(fr::Control control, fr::Control mod, fr::Hit hit,
-		int cost, float interrupt_end, float hitbox_begin, float hitbox_end,
-		float recovery_end, sf::FloatRect hitbox, sf::FloatRect clearbox,
-		fr::Animation animation, sf::Sound sound)
-		: control(control), mod(mod), hit(hit), cost(cost),
-		interrupt_end(interrupt_end), hitbox_begin(hitbox_begin),
-		hitbox_end(hitbox_end), recovery_end(recovery_end), hitbox(hitbox),
-		clearbox(clearbox), animation(animation), sound(sound) {
+// Head punch constructor
+fr::Punch::Punch(fr::Control control, fr::Hit hit, int cost, float hit_range, 
+		float stuff_range, float interrupt_end, float active_begin, 
+		float active_end, float recovery_end, fr::Animation animation, 
+		sf::Sound sound)
+		: control(control), mod(Control::none), hit(hit), 
+		cost(cost), hit_range(hit_range), stuff_range(stuff_range), 
+		interrupt_end(interrupt_end), active_begin(active_begin), 
+		active_end(active_end), recovery_end(recovery_end), 
+		animation(animation), sound(sound) {
+}
+		
+// Body punch constructor
+fr::Punch::Punch(fr::Punch head_punch, fr::Hit hit, float hit_range, 
+		float stuff_range, fr::Animation animation)
+		: control(head_punch.control), mod(BODY_MOD), hit(hit), 
+		cost(head_punch.cost), hit_range(hit_range), stuff_range(stuff_range), 
+		interrupt_end(head_punch.interrupt_end), 
+		active_begin(head_punch.active_begin), active_end(head_punch.active_end), 
+		recovery_end(head_punch.recovery_end), animation(animation), 
+		sound(head_punch.sound) {
 }
 
 void fr::Punch::update(float dt) {
@@ -33,7 +46,7 @@ void fr::Punch::end() {
 
 void fr::Punch::interrupt() {
 	if (!isDone())
-		progress = hitbox_end;
+		progress = active_end;
 }
 
 bool fr::Punch::canInterrupt() const {
@@ -41,11 +54,11 @@ bool fr::Punch::canInterrupt() const {
 }
 
 bool fr::Punch::isActive() const {
-	return progress > hitbox_begin && !isRecovering() && !isDone();
+	return progress > active_begin && !isRecovering() && !isDone();
 }
 
 bool fr::Punch::isRecovering() const {
-	return progress >= hitbox_end && !isDone();
+	return progress >= active_end && !isDone();
 }
 
 bool fr::Punch::isDone() const {
@@ -64,32 +77,30 @@ fr::Hit fr::Punch::getHit() const {
 	return hit;
 }
 
-sf::FloatRect fr::Punch::getHitbox(sf::FloatRect relative_to,
-		fr::Direction direction) const {
-	int left;
-	if (direction == Direction::right)
-		left = relative_to.left + hitbox.left;
-	else
-		left = relative_to.left - hitbox.left + relative_to.width - hitbox.width;
-
-	int top = relative_to.top + hitbox.top;
-
-	return sf::FloatRect(left, top, hitbox.width, hitbox.height);
-}
-
-sf::FloatRect fr::Punch::getClearbox(sf::FloatRect relative_to,
-		fr::Direction direction) const {
-	int left;
-	if (direction == Direction::right)
-		left = relative_to.left + clearbox.left;
-	else
-		left = relative_to.left - clearbox.left + relative_to.width - clearbox.width;
-
-	int top = relative_to.top + clearbox.top;
-
-	return sf::FloatRect(left, top, clearbox.width, clearbox.height);
-}
-
 int fr::Punch::getCost() const {
 	return cost;
+}
+
+bool fr::Punch::hits(sf::FloatRect hurtbox, sf::FloatRect relative_to, 
+		fr::Direction direction) const {
+	float left = relative_to.left;
+	
+	if (direction == Direction::left)
+		left = left - relative_to.width - hit_range;
+
+	sf::FloatRect hitbox(left, relative_to.top, hit_range, 1);
+
+	return isActive() && hitbox.intersects(hurtbox);
+}
+
+bool fr::Punch::getsStuffed(sf::FloatRect hurtbox, sf::FloatRect relative_to, 
+		fr::Direction direction) const {
+	float left = relative_to.left;
+	
+	if (direction == Direction::left)
+		left = left - relative_to.width - stuff_range;
+
+	sf::FloatRect stuffbox(left, relative_to.top, stuff_range, 1);
+
+	return isActive() && stuffbox.intersects(hurtbox);
 }

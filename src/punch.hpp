@@ -18,15 +18,21 @@ struct Hit {
 	float hit_stun = -1;
 	float block_stun = -1;
 	bool head = false;
+	bool can_ko = false;
 };
 
 class Punch {
 	public:
 	Punch() {}; // Empty constructor
-	Punch(Control control, Control mod, Hit hit, int cost, float interrupt_end,
-			float hitbox_begin, float hitbox_end, float recovery_end, 
-			sf::FloatRect hitbox, sf::FloatRect clearbox, 
-			Animation animation, sf::Sound sound);
+	
+	// Head punch constructor
+	Punch(Control control, Hit hit, int cost, float hit_range, float stuff_range, 
+			float interrupt_end, float hitbox_begin, float hitbox_end, 
+			float recovery_end, Animation animation, sf::Sound sound); 
+			
+	// Body punch constructor
+	Punch(Punch head_punch, Hit hit, float range, float min_distance, 
+			Animation animation); 
 
 	void update(float dt);
 	void reset();
@@ -40,28 +46,27 @@ class Punch {
 	Control getMod() const;
 	Hit getHit() const;
 	int getCost() const;
-	sf::FloatRect getHitbox(sf::FloatRect relative_to,
+	bool hits(sf::FloatRect hurtbox, sf::FloatRect relative_to, 
 			Direction direction) const;
-	sf::FloatRect getClearbox(sf::FloatRect relative_to,
+	bool getsStuffed(sf::FloatRect hurtbox, sf::FloatRect relative_to, 
 			Direction direction) const;
 	
 	Animation animation;
 	sf::Sound sound;
 
 	private:
-	static constexpr int BODY_OFFSET = 14;
-	static constexpr float FEINT_END = 0.1f;
+	static constexpr Control BODY_MOD = Control::body;
 
 	Control control = Control::none;
 	Control mod = Control::none;
 	Hit hit;
 	int cost = -1;
+	float hit_range = -1;
+	float stuff_range = -1;
 	float interrupt_end = -1;
-	float hitbox_begin = -1;
-	float hitbox_end = -1;
+	float active_begin = -1;
+	float active_end = -1;
 	float recovery_end = -1;
-	sf::FloatRect hitbox;
-	sf::FloatRect clearbox;
 	float progress = -1;
 };
 

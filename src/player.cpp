@@ -33,9 +33,7 @@ fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 		sounds(sounds) {
 	input_manager = InputManager(input_dev, controls, joystick);
 
-	bounds = sf::FloatRect(0, 0, stats.bounds.x, stats.bounds.y);
-	head_hurtbox = stats.head_hurtbox;
-	body_hurtbox = stats.body_hurtbox;
+	bounds = stats.bounds;
 
 	health = Health(stats.max_health, stats.min_health, stats.health_regen, 
 			stats.regen_rate);
@@ -122,10 +120,8 @@ void fr::Player::takeHit(Hit hit) {
 			
 		sounds.block.play();
 	} else {
-		if (health.getCurrent() <= health.getMin() 
-				&& hit.damage >= stats.min_ko_damage) {
+		if (health.getCurrent() <= health.getMin() && hit.can_ko)
 			ko = true;
-		}
 
 		health.takeDamage(hit.damage);
 		health.takePermaDamage(hit.perma_damage);
@@ -168,33 +164,6 @@ sf::Vector2f fr::Player::getVelocity() const {
 
 sf::FloatRect fr::Player::getBounds() const {
 	return sf::FloatRect(position.x, position.y, bounds.width, bounds.height);
-}
-
-sf::FloatRect fr::Player::getHeadHurtbox() const {
-	if (dodge.isActive())
-		return sf::FloatRect(0, 0, 0, 0);
-		
-	int left = getBounds().left;
-	if (direction == Direction::right)
-		left += head_hurtbox.left;
-	else
-		left += - head_hurtbox.left + getBounds().width - head_hurtbox.width;
-	
-	int top = getBounds().top + head_hurtbox.top;
-
-	return sf::FloatRect(left, top, head_hurtbox.width, head_hurtbox.height);
-}
-
-sf::FloatRect fr::Player::getBodyHurtbox() const {
-	int left = getBounds().left;
-	if (direction == Direction::right)
-		left += body_hurtbox.left;
-	else
-		left += - body_hurtbox.left + getBounds().width - body_hurtbox.width;
-
-	int top = getBounds().top + body_hurtbox.top;
-
-	return sf::FloatRect(left, top, body_hurtbox.width, body_hurtbox.height);
 }
 
 const fr::Health& fr::Player::getHealth() const {

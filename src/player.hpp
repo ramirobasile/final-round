@@ -36,8 +36,6 @@ class Player {
 	void takeHit(fr::Hit hit);
 	sf::Vector2f getVelocity() const;
 	sf::FloatRect getBounds() const;
-	sf::FloatRect getHeadHurtbox() const;
-	sf::FloatRect getBodyHurtbox() const;
 	const Health& getHealth() const;
 	Direction getDirection() const;
 	Movement getMovement() const;
@@ -61,8 +59,6 @@ class Player {
 	Sounds sounds;
 	InputManager input_manager;
 	sf::FloatRect bounds;
-	sf::FloatRect head_hurtbox;
-	sf::FloatRect body_hurtbox;
 	Health health;
 	Punch prev_punch;
 	Dodge dodge;

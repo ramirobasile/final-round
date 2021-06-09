@@ -11,7 +11,7 @@
 namespace fr {
 
 struct Character {
-	Character(sf::Sound jab, sf::Sound power); // Default character
+	Character(sf::Sound jab_sound, sf::Sound power_sound); // Default character
 	
 	Stats stats;
 	std::vector<Punch> punches;

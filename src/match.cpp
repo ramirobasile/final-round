@@ -111,10 +111,10 @@ void fr::Match::update(float dt) {
 	if (isDone())
 		return;
 		
-	float distance = vector2Distance(player1.position, player2.position);
+	float dist = distance(player1.position, player2.position);
 
-	player1.update(distance, dt);
-	player2.update(distance, dt);
+	player1.update(dist, dt);
+	player2.update(dist, dt);
 
 	// Move players and resolve collisions
 	std::vector<sf::FloatRect> geometry = level.getGeometry();
@@ -132,30 +132,23 @@ void fr::Match::update(float dt) {
 		resolveCollision(player2.position, player2.getBounds(), geometry[i]);
 
 	// Hit each other
-	sf::FloatRect hitbox = player1.punch.getHitbox(player1.getBounds(), player1.getDirection());
-	if (player1.punch.isActive() &&
-			(hitbox.intersects(player2.getHeadHurtbox())
-			|| hitbox.intersects(player2.getBodyHurtbox()))) {
+	if (player1.punch.hits(player2.getBounds(), player1.getBounds(), player1.getDirection())) {
 		player2.takeHit(player1.punch.getHit());
 		player1.punch.interrupt();
 	}
-
-	hitbox = player2.punch.getHitbox(player2.getBounds(), player2.getDirection());
-	if (player2.punch.isActive() &&
-			(hitbox.intersects(player1.getHeadHurtbox())
-			|| hitbox.intersects(player1.getBodyHurtbox()))) {
+	
+	if (player2.punch.hits(player1.getBounds(), player2.getBounds(), player2.getDirection())) {
 		player1.takeHit(player2.punch.getHit());
 		player2.punch.interrupt();
 	}
 
 	// Stuff each other
-	sf::FloatRect clearbox = player1.punch.getClearbox(player1.getBounds(), player1.getDirection());
-	if (player1.punch.canInterrupt() && clearbox.intersects(player2.getBounds()))
+	if (player1.punch.getsStuffed(player2.getBounds(), player1.getBounds(), player1.getDirection()))
 		player1.punch.interrupt();
-
-	clearbox = player2.punch.getClearbox(player2.getBounds(), player2.getDirection());
-	if (player2.punch.canInterrupt() && clearbox.intersects(player1.getBounds()))
+		
+	if (player2.punch.getsStuffed(player1.getBounds(), player2.getBounds(), player2.getDirection()))
 		player2.punch.interrupt();
+
 		
 	// End on first KO
 	if (player1.isKO()) {
