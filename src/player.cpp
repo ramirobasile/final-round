@@ -26,10 +26,10 @@
 
 fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 		std::vector<int> controls, fr::Stats stats, 
-		std::vector<fr::Punch> punches, std::vector<fr::Dodge> dodges, 
+		std::vector<fr::Punch> punches, fr::Dodge dodge, 
 		sf::Texture r_spritesheet, sf::Texture l_spritesheet, 
 		Animations animations, Sounds sounds, int joystick)
-		: direction(direction), stats(stats), punches(punches), dodges(dodges),
+		: direction(direction), stats(stats), punches(punches), dodge(dodge),
 		sounds(sounds) {
 	input_manager = InputManager(input_dev, controls, joystick);
 
@@ -41,7 +41,7 @@ fr::Player::Player(fr::Direction direction, fr::Device input_dev,
 	sprite = Sprite(r_spritesheet, l_spritesheet, animations);
 }
 
-void fr::Player::update(float opponent_distance, float dt) {
+void fr::Player::update(float dt) {
 	input_manager.update(dt);
 	sprite.update(punch, prev_punch, dodge, prev_dodge, dt);
 	
@@ -59,8 +59,16 @@ void fr::Player::update(float opponent_distance, float dt) {
 	prev_punch = punch;
 	punch.update(dt);
 	
-	if (isReady())
-		setNewPunch();
+	// Attempt to throw punch
+	if (isReady()) {
+		for (int i = 0; i < punches.size(); ++i) {
+			if (input_manager.inputted(punches[i].getControl(), Action::press)
+					&& input_manager.inputted(punches[i].getMod())) {
+				punch = punches[i];
+				punch.reset();
+			}
+		}
+	}
 		
 	// Play punch sound when punch starts
 	if (prev_punch.isDone() && !punch.isDone()) {
@@ -83,8 +91,8 @@ void fr::Player::update(float opponent_distance, float dt) {
 	prev_dodge = dodge;
 	dodge.update(dt);
 
-	if (isReady())
-		setNewDodge(opponent_distance);
+	if (isReady() && input_manager.inputted(Control::dodge, Action::press))
+		dodge.reset();
 		
 	// Take self damage when dodge starts and play sound
 	if (prev_dodge.isDone() && !dodge.isDone()) {
@@ -213,25 +221,4 @@ float fr::Player::getStunTime() const {
 
 bool fr::Player::isReady() const {
 	return getMovement() != Movement::stun && punch.isDone() && dodge.isDone();
-}
-
-void fr::Player::setNewPunch() {
-	for (int i = 0; i < punches.size(); ++i) {
-		if (input_manager.inputted(punches[i].getControl(), Action::press)
-				&& input_manager.inputted(punches[i].getMod())) {
-			punch = punches[i];
-			punch.reset();
-		}
-	}
-}
-
-void fr::Player::setNewDodge(float opponent_distance) {
-	if (input_manager.inputted(Control::dodge, Action::press)) {
-		for (int i = 0; i < dodges.size(); ++i) {
-			if (opponent_distance > dodges[i].getMinDistance())
-				dodge = dodges[i];
-		}
-		
-		dodge.reset();
-	}
 }

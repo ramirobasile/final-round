@@ -70,7 +70,7 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	};
 
 	player1 = Player(Direction::right, device, getControls("player1_controls"), 
-			character.stats, character.punches, character.dodges, r_spritesheet,
+			character.stats, character.punches, character.dodge, r_spritesheet,
 			l_spritesheet, character.animations, sounds, 0);
 			
 	player1.position = sf::Vector2f(16 + 64, 112);
@@ -83,7 +83,7 @@ fr::Match::Match(fr::ConfigFile config) : config(config) {
 	l_spritesheet.loadFromFile(prefix + "blue_left_spritesheet.png");
 
 	player2 = Player(Direction::left, device, getControls("player2_controls"), 
-			character.stats, character.punches, character.dodges, r_spritesheet,
+			character.stats, character.punches, character.dodge, r_spritesheet,
 			l_spritesheet, character.animations, sounds, 1);
 			
 	player2.position = sf::Vector2f(320 - 16 - 64 * 2, 112);
@@ -111,10 +111,8 @@ void fr::Match::update(float dt) {
 	if (isDone())
 		return;
 		
-	float dist = distance(player1.position, player2.position);
-
-	player1.update(dist, dt);
-	player2.update(dist, dt);
+	player1.update(dt);
+	player2.update(dt);
 
 	// Move players and resolve collisions
 	std::vector<sf::FloatRect> geometry = level.getGeometry();

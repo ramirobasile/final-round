@@ -3,10 +3,9 @@
 #include "animation.hpp"
 
 fr::Dodge::Dodge(int cost, float active_begin, float active_end,
-		float recovery_end, int min_distance, fr::Animation animation)
+		float recovery_end, fr::Animation animation)
 		: cost(cost), active_begin(active_begin), active_end(active_end),
-		recovery_end(recovery_end), min_distance(min_distance), 
-		animation(animation) {
+		recovery_end(recovery_end), animation(animation) {
 }
 
 void fr::Dodge::update(float dt) {
@@ -36,8 +35,4 @@ bool fr::Dodge::isDone() const {
 
 float fr::Dodge::getCost() const {
 	return cost;
-}
-
-int fr::Dodge::getMinDistance() const {
-	return min_distance;
 }

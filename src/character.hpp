@@ -15,7 +15,7 @@ struct Character {
 	
 	Stats stats;
 	std::vector<Punch> punches;
-	std::vector<Dodge> dodges;
+	Dodge dodge;
 	Animations animations;
 };
 

@@ -27,11 +27,11 @@ class Player {
 	public:
 	Player() {}; // Empty
 	Player(Direction direction, Device input_dev, std::vector<int> controls,
-			Stats stats, std::vector<Punch> punches, std::vector<Dodge> dodges, 
+			Stats stats, std::vector<Punch> punches, Dodge dodge,
 			sf::Texture r_spritesheet, sf::Texture l_spritesheet, 
 			Animations animations, Sounds sounds, int joystick = -1);
 
-	void update(float opponent_distance, float dt);
+	void update(float dt);
 	void draw(sf::RenderWindow &window);
 	void takeHit(fr::Hit hit);
 	sf::Vector2f getVelocity() const;
@@ -49,13 +49,9 @@ class Player {
 	Punch punch;
 
 	private:
-	void setNewPunch();
-	void setNewDodge(float opponent_distance);
-	
 	Direction direction = Direction::left;
 	Stats stats;
 	std::vector<Punch> punches;
-	std::vector<Dodge> dodges;
 	Sounds sounds;
 	InputManager input_manager;
 	sf::FloatRect bounds;
