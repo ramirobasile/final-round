@@ -86,7 +86,7 @@ bool fr::Punch::hits(sf::FloatRect hurtbox, sf::FloatRect relative_to,
 	float left = relative_to.left;
 	
 	if (direction == Direction::left)
-		left = left - relative_to.width - hit_range;
+		left = left + relative_to.width - hit_range;
 
 	sf::FloatRect hitbox(left, relative_to.top, hit_range, 1);
 
@@ -98,9 +98,9 @@ bool fr::Punch::getsStuffed(sf::FloatRect hurtbox, sf::FloatRect relative_to,
 	float left = relative_to.left;
 	
 	if (direction == Direction::left)
-		left = left - relative_to.width - stuff_range;
+		left = left + relative_to.width - stuff_range;
 
 	sf::FloatRect stuffbox(left, relative_to.top, stuff_range, 1);
 
-	return isActive() && stuffbox.intersects(hurtbox);
+	return canInterrupt() && stuffbox.intersects(hurtbox);
 }

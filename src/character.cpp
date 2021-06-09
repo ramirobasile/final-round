@@ -20,47 +20,47 @@ fr::Character::Character(sf::Sound jab_sound, sf::Sound power_sound) {
 	};
 
 	fr::Punch jab = fr::Punch(	fr::Control::jab,
-								fr::Hit{1, 0, 0, 0.1f, 0.05f, false, true}, 0,
+								fr::Hit{1, 0, 0, 0.1f, 0.05f, true, false}, 0,
 								60, 42,
 								0.125f, 0.2f, 0.25f, 0.3125f,
-								fr::Animation(11, 5, false), jab_sound);
+								fr::Animation(10, 5, false), jab_sound);
 									
 	fr::Punch body_jab = fr::Punch(	jab,
-									fr::Hit{1, 0, 0, 0.05f, 0.05f, false},
-									56, 0, 
-									fr::Animation(12, 5, false));
+									fr::Hit{1, 0, 0, 0.05f, 0.05f, false, false},
+									56, 38, 
+									fr::Animation(11, 5, false));
 					
 	fr::Punch cross = fr::Punch(fr::Control::cross,
 								fr::Hit{4, 0, 1, 0.25f, 0.125f, true, true}, 1,
 								60, 38,
 								0.125f, 0.275f, 0.325f, 0.5f,
-								fr::Animation(13, 7, false), power_sound);
+								fr::Animation(12, 7, false), power_sound);
 								
 	fr::Punch body_cross = fr::Punch(	cross,	
 										fr::Hit{1, 2, 1, 0.25f, 0.075f, false, false},
-										56, 0, 
-										fr::Animation(14, 7, false));
+										56, 36, 
+										fr::Animation(13, 7, false));
 				
 	fr::Punch upper = fr::Punch(fr::Control::upper,
 								fr::Hit{6, 0, 1, 0.25f, 0.1f, true, true}, 2,
-								34, 0,
+								44, 0,
 								0.125f, 0.3125f, 0.35f, 0.55f,
-								fr::Animation(15, 8, false), power_sound);
+								fr::Animation(14, 8, false), power_sound);
 								
 	fr::Punch body_upper = fr::Punch(	upper,	
-										fr::Hit{2, 4, 1, 0.25f, 0.05f, true, false},
-										40, 0, 
-										fr::Animation(16, 8, false));
+										fr::Hit{2, 4, 1, 0.25f, 0.05f, false, true},
+										50, 0, 
+										fr::Animation(15, 8, false));
 				
 	fr::Punch hook = fr::Punch(	fr::Control::hook,
-								fr::Hit{6, 0, 3, 0.4f, 0.25f, true}, 2,
-								40, 0,
+								fr::Hit{6, 0, 3, 0.4f, 0.25f, true, true}, 2,
+								50, 0,
 								0.1f, 0.325f, 0.425f, 0.75f,
 								fr::Animation(16, 9, false), power_sound);
 								
 	fr::Punch body_hook = fr::Punch(hook,	
-									fr::Hit{2, 4, 1, 0.3f, 0.15f, true, false},
-									40, 0, 
+									fr::Hit{2, 4, 1, 0.3f, 0.15f, false, true},
+									50, 0, 
 									fr::Animation(17, 9, false));
 					
 	punches = std::vector<Punch>{jab, body_jab, cross, body_cross, upper, 
