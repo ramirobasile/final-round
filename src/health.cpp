@@ -22,6 +22,7 @@ void fr::Health::takeDamage(int damage) {
 
 void fr::Health::takePermaDamage(int damage) {
 	max = std::clamp(max - damage, min, max);
+	current = std::clamp(current, min, max);
 }
 
 void fr::Health::resetRegen() {

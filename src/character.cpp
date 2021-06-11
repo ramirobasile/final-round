@@ -48,7 +48,7 @@ fr::Character::Character(sf::Sound jab_sound, sf::Sound power_sound) {
 								fr::Animation(14, 8, false), power_sound);
 								
 	fr::Punch body_upper = fr::Punch(	upper,	
-										fr::Hit{2, 4, 1, 0.25f, 0.05f, false, true},
+										fr::Hit{4, 4, 1, 0.25f, 0.05f, false, true},
 										50, 0, 
 										fr::Animation(15, 8, false));
 				
@@ -59,7 +59,7 @@ fr::Character::Character(sf::Sound jab_sound, sf::Sound power_sound) {
 								fr::Animation(16, 9, false), power_sound);
 								
 	fr::Punch body_hook = fr::Punch(hook,	
-									fr::Hit{2, 4, 1, 0.3f, 0.15f, false, true},
+									fr::Hit{4, 4, 2, 0.3f, 0.15f, false, true},
 									50, 0, 
 									fr::Animation(17, 9, false));
 					
